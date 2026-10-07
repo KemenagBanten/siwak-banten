@@ -1122,6 +1122,59 @@ textarea {
   color: rgba(255,255,255,0.55);
 }
 
+/* =========================================================
+   FOOTER IDENTITY
+========================================================= */
+
+.footer-brand {
+  max-width: 560px;
+}
+
+.footer-institution {
+  margin-top: 2px;
+
+  color: rgba(255,255,255,0.78);
+
+  font-size: 12px;
+}
+
+.footer-kanwil {
+  margin-top: 5px;
+
+  color: var(--gold-500);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.footer-brand p {
+  max-width: 520px;
+
+  margin: 9px 0 0;
+
+  color: rgba(255,255,255,0.58);
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.footer-info {
+  gap: 4px;
+}
+
+.footer-info strong {
+  color: rgba(255,255,255,0.85);
+
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.footer-copyright {
+  margin-top: 6px;
+
+  color: var(--gold-500);
+}
+
 
 /* =========================================================
    GENERAL MASTER COMPONENTS
