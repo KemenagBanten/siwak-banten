@@ -838,6 +838,85 @@ textarea {
   box-shadow: var(--shadow-md);
 }
 
+/* =========================================================
+   IKON PEMANFAATAN WAKAF
+========================================================= */
+
+.utilization-icon {
+  width: 50px;
+  height: 50px;
+
+  margin-bottom: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: var(--green-100);
+}
+
+.utilization-icon svg {
+  width: 26px;
+  height: 26px;
+
+  fill: none;
+
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.utilization-icon-ibadah {
+  background: var(--green-100);
+}
+
+.utilization-icon-ibadah svg {
+  stroke: var(--green-800);
+}
+
+.utilization-icon-pendidikan {
+  background: var(--gold-100);
+}
+
+.utilization-icon-pendidikan svg {
+  stroke: var(--gold-700);
+}
+
+.utilization-icon-sosial {
+  background: #edf3f7;
+}
+
+.utilization-icon-sosial svg {
+  stroke: #426579;
+}
+
+.utilization-icon-kesehatan {
+  background: #f2f6ec;
+}
+
+.utilization-icon-kesehatan svg {
+  stroke: #607b42;
+}
+
+.utilization-icon-ekonomi {
+  background: #f7f1e8;
+}
+
+.utilization-icon-ekonomi svg {
+  stroke: #8b6b38;
+}
+
+.utilization-icon-pemerintahan {
+  background: #eef2f6;
+}
+
+.utilization-icon-pemerintahan svg {
+  stroke: #536b7c;
+}
+
+
 .utilization-number {
   position: absolute;
 
