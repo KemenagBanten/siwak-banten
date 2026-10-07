@@ -383,6 +383,8 @@ renderDataWakaf(
 
 }
 
+let currentPage = 1;
+const rowsPerPage = 10;
 
 /* =========================================================
    RENDER DATA WAKAF
@@ -430,14 +432,24 @@ function renderDataWakaf(data) {
 
 
   tbody.innerHTML =
-    data.map(function (item, index) {
+    const startIndex =
+  (currentPage - 1) * rowsPerPage;
+
+const pageData =
+  data.slice(
+    startIndex,
+    startIndex + rowsPerPage
+  );
+
+tbody.innerHTML =
+    pageData.map(function (item, index) {
 
       return `
         <tr>
 
           <td>
-            ${index + 1}
-          </td>
+  ${(currentPage - 1) * rowsPerPage + index + 1}
+</td>
 
           <td>
             <strong>
@@ -495,6 +507,80 @@ function renderDataWakaf(data) {
 
 }
 
+function renderPagination(totalData) {
+
+  const container =
+    document.getElementById('paginationContainer');
+
+  if (!container) {
+    return;
+  }
+
+  const totalPages =
+    Math.ceil(totalData / rowsPerPage);
+
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+
+  html += `
+    <button
+      type="button"
+      onclick="changePage(${currentPage - 1})"
+      ${currentPage === 1 ? 'disabled' : ''}
+    >
+      Sebelumnya
+    </button>
+  `;
+
+  for (let page = 1; page <= totalPages; page++) {
+
+    html += `
+      <button
+        type="button"
+        class="${page === currentPage ? 'active' : ''}"
+        onclick="changePage(${page})"
+      >
+        ${page}
+      </button>
+    `;
+
+  }
+
+  html += `
+    <button
+      type="button"
+      onclick="changePage(${currentPage + 1})"
+      ${currentPage === totalPages ? 'disabled' : ''}
+    >
+      Berikutnya
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+function changePage(page) {
+
+  const totalPages =
+    Math.ceil(
+      semuaDataWakaf.length / rowsPerPage
+    );
+
+  if (page < 1 || page > totalPages) {
+    return;
+  }
+
+  currentPage = page;
+
+  renderDataWakaf(
+    semuaDataWakaf
+  );
+
+}
 
 /* =========================================================
    FORMAT LUAS
