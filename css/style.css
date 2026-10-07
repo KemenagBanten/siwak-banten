@@ -2691,34 +2691,41 @@ textarea {
   top: 0;
   z-index: 5;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 24px 28px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5ebe7;
+  padding: 22px 28px;
+  background: #0f5132;
+  border-bottom: 1px solid #0a3d25;
+}
+
+.detail-modal-header .detail-card-kicker {
+  color: #d9c08a;
+  margin-bottom: 5px;
 }
 
 .detail-modal-header h2 {
   margin: 0;
-  color: #174b34;
+  color: #ffffff;
   font-size: 25px;
 }
 
 .detail-modal-close {
   width: 38px;
   height: 38px;
-  border: 0;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-  background: #f1f5f2;
-  color: #365046;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
   font-size: 25px;
   line-height: 1;
   cursor: pointer;
 }
 
 .detail-modal-close:hover {
-  background: #e4ece7;
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .detail-modal-content {
