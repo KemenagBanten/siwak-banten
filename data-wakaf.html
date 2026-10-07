@@ -23,27 +23,24 @@
   ========================================================== -->
   <main class="main-content">
 
-    <!-- =======================================================
-         PAGE HEADER
-    ======================================================== -->
-    <section class="page-section">
+    <section class="data-wakaf-page">
 
-      <div class="section-heading">
+      <!-- =====================================================
+           PAGE INTRO
+      ====================================================== -->
+      <div class="data-wakaf-intro">
 
-        <div>
-
-          <div class="page-kicker">
-            DATA WAKAF
-          </div>
-
-          <h1>
-            Data Wakaf Banten
-          </h1>
-
+        <div class="page-kicker">
+          DATA WAKAF BANTEN
         </div>
 
+        <h1>
+          Data Wakaf
+          <span>Banten</span>
+        </h1>
+
         <p>
-          Informasi data wakaf yang telah tercatat dalam
+          Informasi wakaf yang telah tercatat dalam
           Sistem Informasi Wakaf Banten.
         </p>
 
@@ -51,97 +48,75 @@
 
 
       <!-- =====================================================
-           FILTER DATA
+           RINGKASAN DATA
       ====================================================== -->
-      <div class="toolbar">
+      <div class="data-wakaf-summary">
 
-        <div class="form-group">
+        <div class="data-summary-card">
 
-          <label for="filterKabKota">
-            Kabupaten / Kota
-          </label>
+          <div class="data-summary-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V10l7-5 7 5v11"></path>
+              <path d="M8 21v-7h8v7"></path>
+            </svg>
+          </div>
 
-          <select id="filterKabKota">
-            <option value="">
-              Semua Kabupaten / Kota
-            </option>
-          </select>
+          <div>
+            <strong id="totalDataWakaf">
+              —
+            </strong>
 
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="filterJenisAset">
-            Jenis Aset
-          </label>
-
-          <select id="filterJenisAset">
-            <option value="">
-              Semua Jenis Aset
-            </option>
-
-            <option value="TANAH">
-              Tanah
-            </option>
-
-            <option value="BANGUNAN">
-              Bangunan
-            </option>
-
-            <option value="TANAH_DAN_BANGUNAN">
-              Tanah dan Bangunan
-            </option>
-
-            <option value="LAINNYA">
-              Lainnya
-            </option>
-
-          </select>
+            <span>
+              Wakaf Terdata
+            </span>
+          </div>
 
         </div>
 
 
-        <div class="form-group">
+        <div class="data-summary-card">
 
-          <label for="filterSertifikasi">
-            Status Sertifikasi
-          </label>
+          <div class="data-summary-icon gold">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+            </svg>
+          </div>
 
-          <select id="filterSertifikasi">
+          <div>
+            <strong id="totalWakif">
+              —
+            </strong>
 
-            <option value="">
-              Semua Status
-            </option>
-
-            <option value="BELUM_SERTIFIKAT">
-              Belum Sertifikat
-            </option>
-
-            <option value="PROSES">
-              Proses
-            </option>
-
-            <option value="SUDAH_SERTIFIKAT">
-              Sudah Sertifikat
-            </option>
-
-          </select>
+            <span>
+              Wakif
+            </span>
+          </div>
 
         </div>
 
 
-        <div class="form-group form-search">
+        <div class="data-summary-card">
 
-          <label for="searchWakaf">
-            Pencarian
-          </label>
+          <div class="data-summary-icon blue">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3"></circle>
+              <circle cx="17" cy="9" r="2.5"></circle>
+              <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"></path>
+              <path d="M15 14.5c3 0 5 2.1 5 5.5"></path>
+            </svg>
+          </div>
 
-          <input
-            type="search"
-            id="searchWakaf"
-            placeholder="Cari data wakaf..."
-          >
+          <div>
+            <strong id="totalNazhir">
+              —
+            </strong>
+
+            <span>
+              Nazhir
+            </span>
+          </div>
 
         </div>
 
@@ -149,96 +124,231 @@
 
 
       <!-- =====================================================
-           RINGKASAN
+           FILTER CARD
       ====================================================== -->
-      <div class="result-header">
+      <div class="data-filter-card">
+
+        <div class="data-filter-heading">
+
+          <div>
+
+            <div class="page-kicker">
+              FILTER DATA
+            </div>
+
+            <h2>
+              Jelajahi Data Wakaf
+            </h2>
+
+          </div>
+
+          <p>
+            Gunakan filter untuk melihat data sesuai wilayah,
+            jenis aset, dan status sertifikasi.
+          </p>
+
+        </div>
+
+
+        <div class="data-filter-grid">
+
+          <div class="data-filter-field">
+
+            <label for="filterKabKota">
+              Kabupaten / Kota
+            </label>
+
+            <select id="filterKabKota">
+
+              <option value="">
+                Semua Kabupaten / Kota
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="data-filter-field">
+
+            <label for="filterJenisAset">
+              Jenis Aset
+            </label>
+
+            <select id="filterJenisAset">
+
+              <option value="">
+                Semua Jenis Aset
+              </option>
+
+              <option value="TANAH">
+                Tanah
+              </option>
+
+              <option value="BANGUNAN">
+                Bangunan
+              </option>
+
+              <option value="TANAH_DAN_BANGUNAN">
+                Tanah dan Bangunan
+              </option>
+
+              <option value="LAINNYA">
+                Lainnya
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="data-filter-field">
+
+            <label for="filterSertifikasi">
+              Status Sertifikasi
+            </label>
+
+            <select id="filterSertifikasi">
+
+              <option value="">
+                Semua Status
+              </option>
+
+              <option value="BELUM_SERTIFIKAT">
+                Belum Sertifikat
+              </option>
+
+              <option value="PROSES">
+                Proses
+              </option>
+
+              <option value="SUDAH_SERTIFIKAT">
+                Sudah Sertifikat
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="data-filter-field">
+
+            <label for="searchWakaf">
+              Pencarian
+            </label>
+
+            <div class="data-search">
+
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+
+              <input
+                type="search"
+                id="searchWakaf"
+                placeholder="Cari kode atau data wakaf..."
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RESULT HEADER
+      ====================================================== -->
+      <div class="data-result-header">
 
         <div>
 
-          <strong>
-            Data Wakaf
-          </strong>
+          <div class="page-kicker">
+            DATA TERDAFTAR
+          </div>
 
-          <span id="totalDataWakaf">
-            Menampilkan data
-          </span>
+          <h2>
+            Daftar Data Wakaf
+          </h2>
 
         </div>
+
+        <span id="resultInfo">
+          Menampilkan data
+        </span>
 
       </div>
 
 
       <!-- =====================================================
-           TABLE
+           TABLE CARD
       ====================================================== -->
-      <div class="table-wrapper">
+      <div class="data-table-card">
 
-        <table class="data-table">
+        <div class="data-table-scroll">
 
-          <thead>
+          <table class="data-table siwak-data-table">
 
-            <tr>
+            <thead>
 
-              <th>No.</th>
+              <tr>
 
-              <th>
-                Kode Wakaf
-              </th>
+                <th>No.</th>
 
-              <th>
-                Jenis Aset
-              </th>
+                <th>Kode Wakaf</th>
 
-              <th>
-                Luas
-              </th>
+                <th>Jenis Aset</th>
 
-              <th>
-                Peruntukan
-              </th>
+                <th>Luas</th>
 
-              <th>
-                Kabupaten / Kota
-              </th>
+                <th>Peruntukan</th>
 
-              <th>
-                Status Sertifikasi
-              </th>
+                <th>Kabupaten / Kota</th>
 
-              <th>
-                Detail
-              </th>
+                <th>Status Sertifikasi</th>
 
-            </tr>
+                <th>Aksi</th>
 
-          </thead>
+              </tr>
 
-          <tbody id="dataWakafBody">
+            </thead>
 
-            <tr>
 
-              <td colspan="8">
+            <tbody id="dataWakafBody">
 
-                <div class="empty-state">
+              <tr>
 
-                  <strong>
-                    Data wakaf belum ditampilkan
-                  </strong>
+                <td colspan="8">
 
-                  <p>
-                    Data akan ditampilkan setelah terhubung
-                    dengan sistem SIWAK Banten.
-                  </p>
+                  <div class="data-empty">
 
-                </div>
+                    <div class="data-empty-icon">
+                      ⌂
+                    </div>
 
-              </td>
+                    <strong>
+                      Data wakaf belum tersedia
+                    </strong>
 
-            </tr>
+                    <p>
+                      Data wakaf akan ditampilkan setelah
+                      terhubung dengan sistem SIWAK Banten.
+                    </p>
 
-          </tbody>
+                  </div>
 
-        </table>
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 
@@ -253,9 +363,7 @@
   <div id="site-footer"></div>
 
 
-  <!-- =========================================================
-       MASTER COMPONENT
-  ========================================================== -->
+  <!-- MASTER COMPONENT -->
   <script src="js/components.js"></script>
 
   <!-- MASTER JAVASCRIPT -->
