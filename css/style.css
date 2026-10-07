@@ -1626,3 +1626,72 @@ textarea {
   }
 
 }
+
+/* =========================================
+   IKON STATISTIK PUBLIK
+   ========================================= */
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  background: var(--green-100);
+}
+
+.stat-icon svg {
+  width: 27px;
+  height: 27px;
+
+  stroke: var(--green-800);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Wakaf */
+.stat-icon-wakaf {
+  background: var(--green-100);
+}
+
+.stat-icon-wakaf svg {
+  stroke: var(--green-800);
+}
+
+/* Wakif */
+.stat-icon-wakif {
+  background: var(--gold-100);
+}
+
+.stat-icon-wakif svg {
+  stroke: var(--gold-700);
+}
+
+/* Nazhir */
+.stat-icon-nazhir {
+  background: #edf3f7;
+}
+
+.stat-icon-nazhir svg {
+  stroke: #426579;
+}
+
+
+/* =========================================
+   SUSUNAN ISI CARD
+   ========================================= */
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-content {
+  min-width: 0;
+}
