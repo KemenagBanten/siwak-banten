@@ -1819,3 +1819,405 @@ textarea {
 .public-stat-icon-nazhir svg {
   stroke: #426579;
 }
+
+/* =========================================================
+   MOBILE OPTIMIZATION — SIWAK BANTEN
+   Hanya berlaku untuk layar <= 700px
+========================================================= */
+
+@media (max-width: 700px) {
+
+  /* -----------------------------------------
+     CONTAINER
+  ----------------------------------------- */
+  .container {
+    width: min(100% - 28px, var(--container));
+  }
+
+
+  /* -----------------------------------------
+     HEADER
+  ----------------------------------------- */
+  .site-header {
+    position: relative;
+  }
+
+  .header-inner {
+    min-height: 68px;
+    gap: 12px;
+  }
+
+  .brand {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-title {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .brand-subtitle {
+    font-size: 9px;
+    white-space: nowrap;
+  }
+
+
+  /* -----------------------------------------
+     NAVBAR MOBILE
+  ----------------------------------------- */
+  .mobile-menu-toggle {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 14px;
+    right: 14px;
+    z-index: 1000;
+
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .main-nav.is-open {
+    display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    min-height: 42px;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    width: 100%;
+    margin-top: 2px;
+
+    box-shadow: none;
+    border: 0;
+    border-radius: 8px;
+    background: var(--surface-soft);
+  }
+
+  .nav-dropdown-menu a {
+    padding: 9px 12px 9px 24px;
+    font-size: 11px;
+  }
+
+
+  /* -----------------------------------------
+     HERO
+  ----------------------------------------- */
+  .hero {
+    padding: 42px 0 34px;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .hero-content {
+    max-width: none;
+  }
+
+  .hero-kicker {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-title {
+    margin-top: 8px;
+    font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.08;
+  }
+
+  .hero-description {
+    max-width: none;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .siwak-hero-visual {
+    width: 100%;
+  }
+
+  .hero-image-card {
+    width: 100%;
+  }
+
+  .hero-image-card img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+
+  /* -----------------------------------------
+     SECTION
+  ----------------------------------------- */
+  .section {
+    padding: 34px 0;
+  }
+
+  .section-heading {
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .section-description {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+
+  /* -----------------------------------------
+     STATISTIK PUBLIK
+  ----------------------------------------- */
+  .public-stat-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .public-stat-card {
+    min-height: 92px;
+    padding: 17px;
+    gap: 13px;
+  }
+
+  .public-stat-icon {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+
+  .public-stat-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .public-stat-number {
+    font-size: 24px;
+  }
+
+  .public-stat-label {
+    font-size: 11px;
+  }
+
+
+  /* -----------------------------------------
+     MAP
+  ----------------------------------------- */
+  .map-section,
+  .map-container {
+    min-height: 320px;
+  }
+
+  .map-placeholder {
+    min-height: 300px;
+    padding: 20px;
+  }
+
+
+  /* -----------------------------------------
+     PEMANFAATAN
+  ----------------------------------------- */
+  .utilization-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .utilization-card {
+    min-height: 125px;
+    padding: 18px;
+  }
+
+  .utilization-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 16px;
+  }
+
+  .utilization-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .utilization-card strong {
+    font-size: 15px;
+  }
+
+  .utilization-card small {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .utilization-number {
+    font-size: 24px;
+    top: 14px;
+    right: 15px;
+  }
+
+
+  /* -----------------------------------------
+     DISTRIBUSI KAB/KOTA
+  ----------------------------------------- */
+  .distribution-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+
+  /* -----------------------------------------
+     OPERATOR CTA
+  ----------------------------------------- */
+  .operator-cta {
+    padding: 24px 20px;
+  }
+
+  .operator-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .operator-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+
+  /* -----------------------------------------
+     FOOTER
+  ----------------------------------------- */
+  .footer-inner {
+    width: min(100% - 28px, var(--container));
+    min-height: auto;
+
+    padding: 28px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+
+  .footer-brand {
+    max-width: none;
+  }
+
+  .footer-brand p {
+    max-width: none;
+    line-height: 1.6;
+  }
+
+  .footer-info {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+
+    line-height: 1.5;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE KECIL
+   <= 420px
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .header-inner {
+    min-height: 64px;
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand-title {
+    font-size: 12px;
+  }
+
+  .brand-subtitle {
+    font-size: 8px;
+  }
+
+  .hero {
+    padding-top: 34px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+  }
+
+  .hero-description {
+    font-size: 12px;
+  }
+
+  .section {
+    padding: 30px 0;
+  }
+
+  .section-title {
+    font-size: 21px;
+  }
+
+  .public-stat-card {
+    padding: 15px;
+  }
+
+  .utilization-card {
+    min-height: 118px;
+    padding: 16px;
+  }
+
+  .footer-info {
+    font-size: 9px;
+  }
+
+}
