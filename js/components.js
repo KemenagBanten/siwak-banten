@@ -183,3 +183,75 @@ function renderHeader() {
 ========================================================= */
 
 renderHeader();
+
+/* =========================================================
+   MASTER FOOTER
+========================================================= */
+
+function renderFooter() {
+
+  const footerContainer =
+    document.getElementById('site-footer');
+
+  if (!footerContainer) {
+    return;
+  }
+
+  footerContainer.innerHTML = `
+
+    <footer class="site-footer">
+
+      <div class="footer-inner">
+
+        <div>
+
+          <div class="footer-title">
+            SIWAK BANTEN
+          </div>
+
+          <p>
+            Sistem Informasi Wakaf Banten
+          </p>
+
+        </div>
+
+
+        <div class="footer-info">
+
+          <div>
+            <strong>
+              KANTOR WILAYAH KEMENTERIAN AGAMA PROVINSI BANTEN
+            </strong>
+          </div>
+
+          <div>
+            Jln. Syech Nawawi Al-Bantani Blok Instansi Vertikal No.01
+          </div>
+
+          <div>
+            KP3B, Kec. Curug, Kota Serang - Banten
+          </div>
+
+          <div>
+            Email: kanwilbanten@kemenag.go.id
+          </div>
+
+          <div class="footer-copyright">
+            © 2026 SIWAK Banten
+          </div>
+
+        </div>
+
+      </div>
+
+    </footer>
+
+  `;
+}
+
+
+/* =========================================================
+   RENDER MASTER FOOTER
+========================================================= */
+
+renderFooter();
