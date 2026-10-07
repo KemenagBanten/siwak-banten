@@ -952,9 +952,11 @@ function tampilkanPetaDetailWakaf(lokasi) {
     return;
   }
 
+  // Buat peta
   detailWakafMap =
     L.map('detailWakafMap');
 
+  // OpenStreetMap
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -964,39 +966,41 @@ function tampilkanPetaDetailWakaf(lokasi) {
     }
   ).addTo(detailWakafMap);
 
+  // Posisi awal
   detailWakafMap.setView(
     [latitude, longitude],
     16
   );
 
+  // Marker
   detailWakafMarker =
-  L.marker([
-    latitude,
-    longitude
-  ])
-    .addTo(detailWakafMap)
-    .bindPopup(
-      '<strong>Lokasi Wakaf</strong>'
-    )
-    .openPopup();
+    L.marker([
+      latitude,
+      longitude
+    ])
+      .addTo(detailWakafMap)
+      .bindPopup(
+        '<strong>Lokasi Wakaf</strong>'
+      )
+      .openPopup();
 
+  // Perbaiki ukuran setelah modal tampil
+  setTimeout(function () {
 
-// Pastikan Leaflet menghitung ulang ukuran
-// setelah modal benar-benar tampil
-setTimeout(function () {
+    if (detailWakafMap) {
 
-  if (detailWakafMap) {
+      detailWakafMap.invalidateSize(true);
 
-    detailWakafMap.invalidateSize(true);
+      detailWakafMap.setView(
+        [latitude, longitude],
+        16
+      );
 
-    detailWakafMap.setView(
-      [latitude, longitude],
-      16
-    );
+    }
 
-  }
+  }, 300);
 
-}, 300);
+}
 
 /* =========================================================
    TUTUP MODAL
