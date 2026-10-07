@@ -2934,3 +2934,74 @@ textarea {
   }
 
 }
+
+/* =========================================================
+   PETA DETAIL WAKAF
+   ========================================================= */
+
+.detail-map-wrapper {
+  margin-top: 22px;
+}
+
+.detail-map-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.detail-map-title span {
+  font-size: 14px;
+  font-weight: 750;
+  color: #24372f;
+}
+
+.detail-map-title small {
+  color: #718078;
+  font-size: 11px;
+}
+
+#detailWakafMap {
+  width: 100%;
+  height: 330px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #dfe8e3;
+  background: #eef3f0;
+}
+
+.detail-map-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #66756e;
+  text-align: center;
+  background: #f5f8f6;
+}
+
+.detail-map-empty strong {
+  color: #40544b;
+}
+
+.detail-map-empty span {
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+
+  #detailWakafMap {
+    height: 280px;
+  }
+
+  .detail-map-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+}
