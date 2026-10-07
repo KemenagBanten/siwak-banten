@@ -390,6 +390,10 @@ const rowsPerPage = 10;
    RENDER DATA WAKAF
    ========================================================= */
 
+/* =========================================================
+   RENDER DATA WAKAF
+   ========================================================= */
+
 function renderDataWakaf(data) {
 
   const tbody =
@@ -431,25 +435,26 @@ function renderDataWakaf(data) {
   }
 
 
+  const startIndex =
+    (currentPage - 1) * rowsPerPage;
+
+
+  const pageData =
+    data.slice(
+      startIndex,
+      startIndex + rowsPerPage
+    );
+
+
   tbody.innerHTML =
-    const startIndex =
-  (currentPage - 1) * rowsPerPage;
-
-const pageData =
-  data.slice(
-    startIndex,
-    startIndex + rowsPerPage
-  );
-
-tbody.innerHTML =
     pageData.map(function (item, index) {
 
       return `
         <tr>
 
           <td>
-  ${(currentPage - 1) * rowsPerPage + index + 1}
-</td>
+            ${(currentPage - 1) * rowsPerPage + index + 1}
+          </td>
 
           <td>
             <strong>
