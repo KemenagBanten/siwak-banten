@@ -223,6 +223,10 @@ document.addEventListener(
 const SIWAK_API_URL =
   'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
+
+let detailWakafMap = null;
+let detailWakafMarker = null;
+
 /* =========================================================
    LOAD DATA WAKAF
    ========================================================= */
@@ -819,7 +823,8 @@ function renderDetailWakafModal(data) {
     lokasi.alamat ||
     '-';
 
-
+tampilkanPetaDetailWakaf(data.lokasi);
+   
   /* WAKIF */
 
   document.getElementById(
@@ -906,6 +911,76 @@ function renderDetailWakafModal(data) {
 
 }
 
+function tampilkanPetaDetailWakaf(lokasi) {
+
+  const mapElement =
+    document.getElementById('detailWakafMap');
+
+  if (!mapElement) {
+    return;
+  }
+
+  const latitude =
+    parseFloat(lokasi.latitude);
+
+  const longitude =
+    parseFloat(lokasi.longitude);
+
+  // Hapus peta sebelumnya jika modal dibuka kembali
+  if (detailWakafMap) {
+
+    detailWakafMap.remove();
+
+    detailWakafMap = null;
+    detailWakafMarker = null;
+
+  }
+
+  // Jika koordinat tidak tersedia
+  if (
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ) {
+
+    mapElement.innerHTML = `
+      <div class="detail-map-empty">
+        <strong>Lokasi belum tersedia</strong>
+        <span>Koordinat lokasi wakaf belum tercatat.</span>
+      </div>
+    `;
+
+    return;
+  }
+
+  detailWakafMap =
+    L.map('detailWakafMap');
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      maxZoom: 19,
+      attribution:
+        '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(detailWakafMap);
+
+  detailWakafMap.setView(
+    [latitude, longitude],
+    16
+  );
+
+  detailWakafMarker =
+    L.marker([
+      latitude,
+      longitude
+    ])
+      .addTo(detailWakafMap)
+      .bindPopup(
+        '<strong>Lokasi Wakaf</strong>'
+      )
+      .openPopup();
+
+}
 
 /* =========================================================
    TUTUP MODAL
