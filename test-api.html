@@ -17,10 +17,10 @@
     }
 
     .card {
-      background: white;
+      background: #ffffff;
       padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
     h2 {
@@ -72,14 +72,8 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
   </style>
 </head>
-
 
 <body>
 
@@ -92,9 +86,6 @@
       dari browser ke Google Drive melalui Apps Script.
     </p>
 
-
-    <!-- ID WAKAF -->
-
     <label for="idWakaf">
       ID Wakaf
     </label>
@@ -105,59 +96,24 @@
       value="WAK-000001"
     >
 
-
-    <!-- JENIS DOKUMEN -->
-
     <label for="jenisDokumen">
       Jenis Dokumen
     </label>
 
     <select id="jenisDokumen">
 
-      <option value="AIW">
-        AIW
-      </option>
-
-      <option value="APAIW">
-        APAIW
-      </option>
-
-      <option value="SERTIFIKAT">
-        SERTIFIKAT
-      </option>
-
-      <option value="SURAT_UKUR">
-        SURAT UKUR
-      </option>
-
-      <option value="AKTA">
-        AKTA
-      </option>
-
-      <option value="SPPT">
-        SPPT
-      </option>
-
-      <option value="PETA_BIDANG">
-        PETA BIDANG
-      </option>
-
-      <option value="SURAT_PERNYATAAN">
-        SURAT PERNYATAAN
-      </option>
-
-      <option value="DOKUMEN_PENDUKUNG">
-        DOKUMEN PENDUKUNG
-      </option>
-
-      <option value="LAINNYA">
-        LAINNYA
-      </option>
+      <option value="AIW">AIW</option>
+      <option value="APAIW">APAIW</option>
+      <option value="SERTIFIKAT">SERTIFIKAT</option>
+      <option value="SURAT_UKUR">SURAT UKUR</option>
+      <option value="AKTA">AKTA</option>
+      <option value="SPPT">SPPT</option>
+      <option value="PETA_BIDANG">PETA BIDANG</option>
+      <option value="SURAT_PERNYATAAN">SURAT PERNYATAAN</option>
+      <option value="DOKUMEN_PENDUKUNG">DOKUMEN PENDUKUNG</option>
+      <option value="LAINNYA">LAINNYA</option>
 
     </select>
-
-
-    <!-- ID OPERATOR -->
 
     <label for="idOperator">
       ID Operator
@@ -166,5 +122,227 @@
     <input
       type="text"
       id="idOperator"
-      value="USR
+      value="USR-000001"
+    >
 
+    <label for="fileInput">
+      Pilih File
+    </label>
+
+    <input
+      type="file"
+      id="fileInput"
+    >
+
+    <button
+      id="uploadButton"
+      onclick="uploadDokumen()"
+    >
+      Upload Dokumen
+    </button>
+
+    <div id="status">
+      Belum ada proses upload.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+
+    async function uploadDokumen() {
+
+      const idWakaf =
+        document.getElementById('idWakaf').value.trim();
+
+      const jenisDokumen =
+        document.getElementById('jenisDokumen').value;
+
+      const idOperator =
+        document.getElementById('idOperator').value.trim();
+
+      const fileInput =
+        document.getElementById('fileInput');
+
+      const file =
+        fileInput.files[0];
+
+      const status =
+        document.getElementById('status');
+
+      const button =
+        document.getElementById('uploadButton');
+
+
+      if (!idWakaf) {
+        status.textContent =
+          'ID Wakaf belum diisi.';
+        return;
+      }
+
+
+      if (!idOperator) {
+        status.textContent =
+          'ID Operator belum diisi.';
+        return;
+      }
+
+
+      if (!file) {
+        status.textContent =
+          'Silakan pilih file terlebih dahulu.';
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.textContent =
+        'Mengupload...';
+
+
+      status.textContent =
+        'Membaca file...';
+
+
+      try {
+
+        const fileData =
+          await readFileAsBase64(file);
+
+
+        status.textContent =
+          'Mengirim file ke server...';
+
+
+        const payload = {
+
+          action:
+            'uploadDokumen',
+
+          id_wakaf:
+            idWakaf,
+
+          jenis_dokumen:
+            jenisDokumen,
+
+          nama_file:
+            file.name,
+
+          fileData:
+            fileData,
+
+          id_operator:
+            idOperator
+        };
+
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'text/plain;charset=utf-8'
+              },
+
+              body:
+                JSON.stringify(payload)
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        status.textContent =
+          JSON.stringify(
+            result,
+            null,
+            2
+          );
+
+
+        if (result.success) {
+
+          button.textContent =
+            'Upload Berhasil';
+
+        } else {
+
+          button.textContent =
+            'Upload Gagal';
+
+        }
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+          'ERROR:\n' +
+          error.message;
+
+        button.textContent =
+          'Upload Gagal';
+
+      } finally {
+
+        button.disabled = false;
+
+      }
+
+    }
+
+
+    function readFileAsBase64(file) {
+
+      return new Promise(
+        function(resolve, reject) {
+
+          const reader =
+            new FileReader();
+
+
+          reader.onload =
+            function() {
+
+              resolve(
+                reader.result
+              );
+
+            };
+
+
+          reader.onerror =
+            function() {
+
+              reject(
+                new Error(
+                  'Gagal membaca file.'
+                )
+              );
+
+            };
+
+
+          reader.readAsDataURL(file);
+
+        }
+      );
+
+    }
+
+  </script>
+
+</body>
+
+</html>
