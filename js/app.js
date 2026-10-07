@@ -387,6 +387,7 @@ renderPagination(
 
 let currentPage = 1;
 const rowsPerPage = 10;
+let dataWakafTampil = [];
 
 /* =========================================================
    RENDER DATA WAKAF
@@ -574,7 +575,7 @@ function changePage(page) {
 
   const totalPages =
     Math.ceil(
-      semuaDataWakaf.length / rowsPerPage
+      dataWakafTampil.length / rowsPerPage
     );
 
   if (
@@ -587,11 +588,11 @@ function changePage(page) {
   currentPage = page;
 
   renderDataWakaf(
-    semuaDataWakaf
+    dataWakafTampil
   );
 
   renderPagination(
-    semuaDataWakaf.length
+    dataWakafTampil.length
   );
 
 }
@@ -792,6 +793,7 @@ function terapkanFilterWakaf() {
       }
     );
 
+dataWakafTampil = hasilFilter;
 
   renderDataWakaf(
     hasilFilter
