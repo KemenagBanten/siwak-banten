@@ -732,7 +732,8 @@ function terapkanFilterWakaf() {
       .trim()
       .toLowerCase();
 
-
+currentPage = 1;
+   
   const hasilFilter =
     semuaDataWakaf.filter(
       function (item) {
