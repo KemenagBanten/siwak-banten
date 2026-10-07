@@ -577,7 +577,10 @@ function changePage(page) {
       semuaDataWakaf.length / rowsPerPage
     );
 
-  if (page < 1 || page > totalPages) {
+  if (
+    page < 1 ||
+    page > totalPages
+  ) {
     return;
   }
 
@@ -585,6 +588,10 @@ function changePage(page) {
 
   renderDataWakaf(
     semuaDataWakaf
+  );
+
+  renderPagination(
+    semuaDataWakaf.length
   );
 
 }
