@@ -955,3 +955,24 @@ document.addEventListener(
 
   }
 );
+
+/* =========================================================
+   INITIALIZE DATA WAKAF
+   ========================================================= */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function () {
+
+    if (
+      document.getElementById(
+        'dataWakafBody'
+      )
+    ) {
+
+      loadDataWakaf();
+
+    }
+
+  }
+);
