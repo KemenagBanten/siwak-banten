@@ -22,9 +22,9 @@ function initMobileMenu() {
 
   toggle.addEventListener('click', function () {
 
-    nav.classList.toggle('open');
+  nav.classList.toggle('is-open');
 
-  });
+});
 
 }
 
