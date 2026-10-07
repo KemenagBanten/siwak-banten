@@ -786,7 +786,10 @@ function terapkanFilterWakaf() {
   renderDataWakaf(
     hasilFilter
   );
-
+renderPagination(
+    hasilFilter.length
+  );
+   
 }
 
 /* =========================================================
