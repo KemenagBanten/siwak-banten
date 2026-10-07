@@ -970,17 +970,33 @@ function tampilkanPetaDetailWakaf(lokasi) {
   );
 
   detailWakafMarker =
-    L.marker([
-      latitude,
-      longitude
-    ])
-      .addTo(detailWakafMap)
-      .bindPopup(
-        '<strong>Lokasi Wakaf</strong>'
-      )
-      .openPopup();
+  L.marker([
+    latitude,
+    longitude
+  ])
+    .addTo(detailWakafMap)
+    .bindPopup(
+      '<strong>Lokasi Wakaf</strong>'
+    )
+    .openPopup();
 
-}
+
+// Pastikan Leaflet menghitung ulang ukuran
+// setelah modal benar-benar tampil
+setTimeout(function () {
+
+  if (detailWakafMap) {
+
+    detailWakafMap.invalidateSize(true);
+
+    detailWakafMap.setView(
+      [latitude, longitude],
+      16
+    );
+
+  }
+
+}, 300);
 
 /* =========================================================
    TUTUP MODAL
