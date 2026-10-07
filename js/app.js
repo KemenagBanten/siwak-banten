@@ -538,40 +538,419 @@ function formatStatusSertifikasi(status) {
 
 
 /* =========================================================
-   DETAIL WAKAF
+   DETAIL WAKAF - MODAL
    ========================================================= */
 
-function lihatDetailWakaf(idWakaf) {
+async function lihatDetailWakaf(idWakaf) {
 
-  console.log(
-    'Detail wakaf:',
-    idWakaf
+  if (!idWakaf) {
+    return;
+  }
+
+  const modal =
+    document.getElementById(
+      'detailWakafModal'
+    );
+
+  const loading =
+    document.getElementById(
+      'detailModalLoading'
+    );
+
+  const content =
+    document.getElementById(
+      'detailModalContent'
+    );
+
+  const errorBox =
+    document.getElementById(
+      'detailModalError'
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  /* BUKA MODAL */
+
+  modal.classList.add('is-open');
+
+  modal.setAttribute(
+    'aria-hidden',
+    'false'
   );
 
-  alert(
-    'Detail untuk ' +
-    idWakaf +
-    ' akan dibuat pada tahap berikutnya.'
-  );
+  document.body.style.overflow =
+    'hidden';
+
+  /* RESET */
+
+  loading.style.display =
+    'block';
+
+  content.style.display =
+    'none';
+
+  errorBox.style.display =
+    'none';
+
+
+  try {
+
+    const response =
+      await fetch(
+        SIWAK_API_URL +
+        '?action=detailWakaf&idWakaf=' +
+        encodeURIComponent(idWakaf)
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'Server API mengembalikan status ' +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    console.log(
+      'DETAIL WAKAF API:',
+      result
+    );
+
+
+    if (
+      !result.success ||
+      !result.data
+    ) {
+
+      throw new Error(
+        result.message ||
+        'Detail wakaf tidak tersedia.'
+      );
+
+    }
+
+
+    renderDetailWakafModal(
+      result.data
+    );
+
+
+    loading.style.display =
+      'none';
+
+    content.style.display =
+      'block';
+
+
+  } catch (error) {
+
+    console.error(
+      'ERROR DETAIL WAKAF:',
+      error
+    );
+
+    loading.style.display =
+      'none';
+
+    errorBox.style.display =
+      'block';
+
+    document.getElementById(
+      'detailModalErrorMessage'
+    ).textContent =
+      error.message ||
+      'Terjadi kesalahan.';
+
+  }
 
 }
 
 
 /* =========================================================
-   AUTO LOAD DATA WAKAF
+   RENDER DETAIL MODAL
+   ========================================================= */
+
+function renderDetailWakafModal(data) {
+
+  const identitas =
+    data.identitas || {};
+
+  const peruntukan =
+    data.peruntukan || {};
+
+  const wakif =
+    data.wakif || {};
+
+  const nazhir =
+    data.nazhir || {};
+
+  const lokasi =
+    data.lokasi || {};
+
+  const dokumen =
+    Array.isArray(data.dokumen)
+      ? data.dokumen
+      : [];
+
+
+  /* IDENTITAS */
+
+  document.getElementById(
+    'detailModalTitle'
+  ).textContent =
+    identitas.kodeWakaf ||
+    'Detail Wakaf';
+
+
+  document.getElementById(
+    'detailKodeWakaf'
+  ).textContent =
+    identitas.kodeWakaf ||
+    '-';
+
+
+  document.getElementById(
+    'detailJenisAset'
+  ).textContent =
+    identitas.jenisAset ||
+    '-';
+
+
+  document.getElementById(
+    'detailLuas'
+  ).textContent =
+    Number(
+      identitas.luas || 0
+    ).toLocaleString(
+      'id-ID'
+    ) +
+    ' ' +
+    (
+      identitas.satuanLuas ||
+      ''
+    );
+
+
+  document.getElementById(
+    'detailTahunWakaf'
+  ).textContent =
+    identitas.tahunWakaf ||
+    '-';
+
+
+  document.getElementById(
+    'detailNomorAiw'
+  ).textContent =
+    identitas.nomorAiwApaiw ||
+    '-';
+
+
+  document.getElementById(
+    'detailNomorSertifikat'
+  ).textContent =
+    identitas.nomorSertifikat ||
+    '-';
+
+
+  document.getElementById(
+    'detailStatusSertifikasi'
+  ).textContent =
+    formatStatusSertifikasi(
+      identitas.statusSertifikasi
+    );
+
+
+  /* PERUNTUKAN */
+
+  document.getElementById(
+    'detailPeruntukan'
+  ).textContent =
+    peruntukan.nama ||
+    '-';
+
+
+  document.getElementById(
+    'detailKategori'
+  ).textContent =
+    peruntukan.kategori ||
+    '-';
+
+
+  /* LOKASI */
+
+  document.getElementById(
+    'detailProvinsi'
+  ).textContent =
+    lokasi.provinsi ||
+    '-';
+
+
+  document.getElementById(
+    'detailKabKota'
+  ).textContent =
+    lokasi.kabKota ||
+    '-';
+
+
+  document.getElementById(
+    'detailKecamatan'
+  ).textContent =
+    lokasi.kecamatan ||
+    '-';
+
+
+  document.getElementById(
+    'detailDesa'
+  ).textContent =
+    lokasi.desaKelurahan ||
+    '-';
+
+
+  document.getElementById(
+    'detailAlamat'
+  ).textContent =
+    lokasi.alamat ||
+    '-';
+
+
+  /* WAKIF */
+
+  document.getElementById(
+    'detailWakif'
+  ).textContent =
+    wakif.nama ||
+    '-';
+
+
+  document.getElementById(
+    'detailJenisWakif'
+  ).textContent =
+    wakif.jenis ||
+    '-';
+
+
+  /* NAZHIR */
+
+  document.getElementById(
+    'detailNazhir'
+  ).textContent =
+    nazhir.nama ||
+    '-';
+
+
+  document.getElementById(
+    'detailJenisNazhir'
+  ).textContent =
+    nazhir.jenis ||
+    '-';
+
+
+  /* DOKUMEN */
+
+  document.getElementById(
+    'detailJumlahDokumen'
+  ).textContent =
+    dokumen.length +
+    ' dokumen';
+
+
+  const dokumenList =
+    document.getElementById(
+      'detailDokumenList'
+    );
+
+
+  if (!dokumen.length) {
+
+    dokumenList.innerHTML = `
+      <div class="detail-document-empty">
+        Belum ada dokumen publik.
+      </div>
+    `;
+
+  } else {
+
+    dokumenList.innerHTML =
+      dokumen.map(function (item) {
+
+        return `
+          <div class="detail-document-item">
+
+            <strong>
+              ${escapeHTML(
+                item.jenisDokumen ||
+                '-'
+              )}
+            </strong>
+
+            <span>
+              ${escapeHTML(
+                item.namaFile ||
+                '-'
+              )}
+            </span>
+
+          </div>
+        `;
+
+      }).join('');
+
+  }
+
+}
+
+
+/* =========================================================
+   TUTUP MODAL
+   ========================================================= */
+
+function tutupDetailWakaf() {
+
+  const modal =
+    document.getElementById(
+      'detailWakafModal'
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  modal.classList.remove(
+    'is-open'
+  );
+
+  modal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+  document.body.style.overflow =
+    '';
+
+}
+
+
+/* =========================================================
+   ESC UNTUK MENUTUP MODAL
    ========================================================= */
 
 document.addEventListener(
-  'DOMContentLoaded',
-  function () {
+  'keydown',
+  function (event) {
 
     if (
-      document.getElementById(
-        'dataWakafBody'
-      )
+      event.key === 'Escape'
     ) {
 
-      loadDataWakaf();
+      tutupDetailWakaf();
 
     }
 
