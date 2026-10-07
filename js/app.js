@@ -223,7 +223,7 @@ document.addEventListener(
 const SIWAK_API_URL =
   'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
-
+let semuaDataWakaf = [];
 let detailWakafMap = null;
 let detailWakafMarker = null;
 
@@ -332,9 +332,16 @@ if (totalNazhir) {
   totalNazhir.textContent =
     result.data.totalNazhir ?? 0;
 }
-    renderDataWakaf(
-      result.data.data
-    );
+    semuaDataWakaf =
+  result.data.data || [];
+
+isiFilterKabKota(
+  semuaDataWakaf
+);
+
+renderDataWakaf(
+  semuaDataWakaf
+);
 
 
   } catch (error) {
@@ -538,6 +545,230 @@ function formatStatusSertifikasi(status) {
   );
 
 }
+
+/* =========================================================
+   FILTER DATA WAKAF
+   ========================================================= */
+
+function isiFilterKabKota(data) {
+
+  const select =
+    document.getElementById('filterKabKota');
+
+  if (!select) {
+    return;
+  }
+
+  const daftarKabKota =
+    [...new Set(
+      data
+        .map(function (item) {
+          return String(
+            item.kabKota || ''
+          ).trim();
+        })
+        .filter(function (value) {
+          return value !== '';
+        })
+    )]
+    .sort(function (a, b) {
+      return a.localeCompare(
+        b,
+        'id'
+      );
+    });
+
+  select.innerHTML = `
+    <option value="">
+      Semua Kabupaten / Kota
+    </option>
+  `;
+
+  daftarKabKota.forEach(
+    function (kabKota) {
+
+      const option =
+        document.createElement('option');
+
+      option.value = kabKota;
+      option.textContent = kabKota;
+
+      select.appendChild(option);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   TERAPKAN FILTER
+   ========================================================= */
+
+function terapkanFilterWakaf() {
+
+  const filterKabKota =
+    document.getElementById(
+      'filterKabKota'
+    )?.value || '';
+
+  const filterJenisAset =
+    document.getElementById(
+      'filterJenisAset'
+    )?.value || '';
+
+  const filterSertifikasi =
+    document.getElementById(
+      'filterSertifikasi'
+    )?.value || '';
+
+  const search =
+    (
+      document.getElementById(
+        'searchWakaf'
+      )?.value || ''
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const hasilFilter =
+    semuaDataWakaf.filter(
+      function (item) {
+
+        const cocokKabKota =
+          !filterKabKota ||
+          String(
+            item.kabKota || ''
+          ) === filterKabKota;
+
+
+        const cocokJenisAset =
+          !filterJenisAset ||
+          String(
+            item.jenisAset || ''
+          ).toUpperCase() ===
+          filterJenisAset;
+
+
+        const cocokSertifikasi =
+          !filterSertifikasi ||
+          String(
+            item.statusSertifikasi || ''
+          ).toUpperCase() ===
+          filterSertifikasi;
+
+
+        const teksPencarian =
+          [
+            item.idWakaf,
+            item.kodeWakaf,
+            item.jenisAset,
+            item.peruntukan,
+            item.kabKota
+          ]
+            .map(function (value) {
+              return String(
+                value || ''
+              ).toLowerCase();
+            })
+            .join(' ');
+
+
+        const cocokPencarian =
+          !search ||
+          teksPencarian.includes(
+            search
+          );
+
+
+        return (
+          cocokKabKota &&
+          cocokJenisAset &&
+          cocokSertifikasi &&
+          cocokPencarian
+        );
+
+      }
+    );
+
+
+  renderDataWakaf(
+    hasilFilter
+  );
+
+}
+
+/* =========================================================
+   EVENT FILTER DATA WAKAF
+   ========================================================= */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function () {
+
+    const filterKabKota =
+      document.getElementById(
+        'filterKabKota'
+      );
+
+    const filterJenisAset =
+      document.getElementById(
+        'filterJenisAset'
+      );
+
+    const filterSertifikasi =
+      document.getElementById(
+        'filterSertifikasi'
+      );
+
+    const searchWakaf =
+      document.getElementById(
+        'searchWakaf'
+      );
+
+
+    if (filterKabKota) {
+
+      filterKabKota.addEventListener(
+        'change',
+        terapkanFilterWakaf
+      );
+
+    }
+
+
+    if (filterJenisAset) {
+
+      filterJenisAset.addEventListener(
+        'change',
+        terapkanFilterWakaf
+      );
+
+    }
+
+
+    if (filterSertifikasi) {
+
+      filterSertifikasi.addEventListener(
+        'change',
+        terapkanFilterWakaf
+      );
+
+    }
+
+
+    if (searchWakaf) {
+
+      searchWakaf.addEventListener(
+        'input',
+        terapkanFilterWakaf
+      );
+
+    }
+
+  }
+);
 
 
 /* =========================================================
