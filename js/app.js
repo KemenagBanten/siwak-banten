@@ -221,7 +221,7 @@ document.addEventListener(
    ========================================================= */
 
 const SIWAK_API_URL =
-  'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXQAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+  'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
 /* =========================================================
    LOAD DATA WAKAF
