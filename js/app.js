@@ -954,7 +954,9 @@ function tampilkanPetaDetailWakaf(lokasi) {
 
   // Buat peta
   detailWakafMap =
-    L.map('detailWakafMap');
+  L.map('detailWakafMap', {
+    scrollWheelZoom: false
+  });
 
   // OpenStreetMap
   L.tileLayer(
