@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Wakaf - SIWAK Banten</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- =========================================================
+       MASTER HEADER
+  ========================================================== -->
+  <div id="site-header"></div>
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+  ========================================================== -->
+  <main class="main-content">
+
+    <!-- =======================================================
+         PAGE HEADER
+    ======================================================== -->
+    <section class="page-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <div class="page-kicker">
+            DATA WAKAF
+          </div>
+
+          <h1>
+            Data Wakaf Banten
+          </h1>
+
+        </div>
+
+        <p>
+          Informasi data wakaf yang telah tercatat dalam
+          Sistem Informasi Wakaf Banten.
+        </p>
+
+      </div>
+
+
+      <!-- =====================================================
+           FILTER DATA
+      ====================================================== -->
+      <div class="toolbar">
+
+        <div class="form-group">
+
+          <label for="filterKabKota">
+            Kabupaten / Kota
+          </label>
+
+          <select id="filterKabKota">
+            <option value="">
+              Semua Kabupaten / Kota
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="filterJenisAset">
+            Jenis Aset
+          </label>
+
+          <select id="filterJenisAset">
+            <option value="">
+              Semua Jenis Aset
+            </option>
+
+            <option value="TANAH">
+              Tanah
+            </option>
+
+            <option value="BANGUNAN">
+              Bangunan
+            </option>
+
+            <option value="TANAH_DAN_BANGUNAN">
+              Tanah dan Bangunan
+            </option>
+
+            <option value="LAINNYA">
+              Lainnya
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="filterSertifikasi">
+            Status Sertifikasi
+          </label>
+
+          <select id="filterSertifikasi">
+
+            <option value="">
+              Semua Status
+            </option>
+
+            <option value="BELUM_SERTIFIKAT">
+              Belum Sertifikat
+            </option>
+
+            <option value="PROSES">
+              Proses
+            </option>
+
+            <option value="SUDAH_SERTIFIKAT">
+              Sudah Sertifikat
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group form-search">
+
+          <label for="searchWakaf">
+            Pencarian
+          </label>
+
+          <input
+            type="search"
+            id="searchWakaf"
+            placeholder="Cari data wakaf..."
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RINGKASAN
+      ====================================================== -->
+      <div class="result-header">
+
+        <div>
+
+          <strong>
+            Data Wakaf
+          </strong>
+
+          <span id="totalDataWakaf">
+            Menampilkan data
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           TABLE
+      ====================================================== -->
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+
+            <tr>
+
+              <th>No.</th>
+
+              <th>
+                Kode Wakaf
+              </th>
+
+              <th>
+                Jenis Aset
+              </th>
+
+              <th>
+                Luas
+              </th>
+
+              <th>
+                Peruntukan
+              </th>
+
+              <th>
+                Kabupaten / Kota
+              </th>
+
+              <th>
+                Status Sertifikasi
+              </th>
+
+              <th>
+                Detail
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="dataWakafBody">
+
+            <tr>
+
+              <td colspan="8">
+
+                <div class="empty-state">
+
+                  <strong>
+                    Data wakaf belum ditampilkan
+                  </strong>
+
+                  <p>
+                    Data akan ditampilkan setelah terhubung
+                    dengan sistem SIWAK Banten.
+                  </p>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       MASTER FOOTER
+  ========================================================== -->
+  <div id="site-footer"></div>
+
+
+  <!-- =========================================================
+       MASTER COMPONENT
+  ========================================================== -->
+  <script src="js/components.js"></script>
+
+  <!-- MASTER JAVASCRIPT -->
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
