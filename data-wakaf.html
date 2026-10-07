@@ -8,6 +8,10 @@
   <title>Data Wakaf - SIWAK Banten</title>
 
   <link rel="stylesheet" href="css/style.css">
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 </head>
 
 <body>
@@ -584,6 +588,15 @@
 
         </div>
 
+        <div class="detail-map-wrapper">
+  <div class="detail-map-title">
+    <span>Peta Lokasi</span>
+    <small>Lokasi wakaf</small>
+  </div>
+
+  <div id="detailWakafMap"></div>
+</div>
+
       </section>
 
 
@@ -658,12 +671,14 @@
 </div>
 
   
-  <!-- MASTER COMPONENT -->
   <script src="js/components.js"></script>
 
-  <!-- MASTER JAVASCRIPT -->
-  <script src="js/app.js"></script>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 
+<script src="js/app.js"></script>
+  
 </body>
 
 </html>
