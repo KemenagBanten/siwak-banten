@@ -305,7 +305,30 @@ async function loadDataWakaf() {
 
     }
 
+/* UPDATE SUMMARY CARDS */
+const totalDataWakaf =
+  document.getElementById('totalDataWakaf');
 
+const totalWakif =
+  document.getElementById('totalWakif');
+
+const totalNazhir =
+  document.getElementById('totalNazhir');
+
+if (totalDataWakaf) {
+  totalDataWakaf.textContent =
+    result.data.total ?? 0;
+}
+
+if (totalWakif) {
+  totalWakif.textContent =
+    result.data.totalWakif ?? 0;
+}
+
+if (totalNazhir) {
+  totalNazhir.textContent =
+    result.data.totalNazhir ?? 0;
+}
     renderDataWakaf(
       result.data.data
     );
