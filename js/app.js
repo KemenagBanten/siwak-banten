@@ -341,7 +341,10 @@ isiFilterKabKota(
 renderDataWakaf(
   semuaDataWakaf
 );
-
+     
+renderPagination(
+  semuaDataWakaf.length
+);
 
   } catch (error) {
 
