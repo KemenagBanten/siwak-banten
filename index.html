@@ -7,352 +7,27 @@
 
   <title>SIWAK Banten - Sistem Informasi Wakaf Banten</title>
 
-  <!-- MASTER STYLE -->
   <link rel="stylesheet" href="css/style.css">
-
-  <style>
-    /* =====================================================
-       BERANDA PUBLIK SIWAK BANTEN
-       Khusus tampilan index.html
-       ===================================================== */
-
-    .hero-public {
-      padding: 64px 0 56px;
-    }
-
-    .hero-public-inner {
-      display: grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap: 42px;
-      align-items: center;
-    }
-
-    .hero-public .page-kicker {
-      margin-bottom: 12px;
-    }
-
-    .hero-public h1 {
-      margin: 0 0 18px;
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.08;
-      letter-spacing: -1.5px;
-    }
-
-    .hero-public-description {
-      max-width: 680px;
-      font-size: 17px;
-      line-height: 1.75;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .hero-visual {
-      min-height: 300px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background:
-        linear-gradient(145deg,
-          rgba(15, 81, 50, .10),
-          rgba(205, 176, 130, .16));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-visual::before,
-    .hero-visual::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(15, 81, 50, .12);
-    }
-
-    .hero-visual::before {
-      width: 260px;
-      height: 260px;
-    }
-
-    .hero-visual::after {
-      width: 180px;
-      height: 180px;
-    }
-
-    .hero-visual-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-
-    .hero-logo {
-      width: 92px;
-      height: 92px;
-      object-fit: contain;
-      margin-bottom: 16px;
-    }
-
-    .hero-visual-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 6px;
-    }
-
-    .hero-visual-subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* STATISTIK */
-
-    .public-section {
-      padding: 56px 0;
-    }
-
-    .public-section-header {
-      margin-bottom: 28px;
-    }
-
-    .public-section-kicker {
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 7px;
-    }
-
-    .public-section-title {
-      margin: 0;
-      font-size: 30px;
-      line-height: 1.2;
-    }
-
-    .public-section-description {
-      max-width: 720px;
-      margin: 10px 0 0;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .public-stat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .public-stat-card {
-      padding: 24px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-    }
-
-    .public-stat-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .public-stat-value {
-      font-size: 32px;
-      line-height: 1;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .public-stat-note {
-      margin-top: 9px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* PETA */
-
-    .map-public {
-      min-height: 420px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background:
-        linear-gradient(rgba(15, 81, 50, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 81, 50, .035) 1px, transparent 1px);
-      background-size: 32px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .map-public-placeholder {
-      text-align: center;
-      padding: 30px;
-      max-width: 520px;
-    }
-
-    .map-public-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 16px;
-      border-radius: 50%;
-      background: rgba(15, 81, 50, .10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      font-size: 28px;
-    }
-
-    .map-public-placeholder h3 {
-      margin: 0 0 8px;
-      font-size: 21px;
-    }
-
-    .map-public-placeholder p {
-      margin: 0;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    /* PEMANFAATAN */
-
-    .utilization-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .utilization-card {
-      padding: 24px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-    }
-
-    .utilization-card h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-
-    .utilization-card p {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* KAB/KOTA */
-
-    .region-table-wrapper {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-    }
-
-    /* CTA */
-
-    .public-cta {
-      padding: 34px;
-      border-radius: 20px;
-      background: var(--primary);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .public-cta h2 {
-      margin: 0 0 8px;
-      font-size: 25px;
-    }
-
-    .public-cta p {
-      margin: 0;
-      opacity: .88;
-      line-height: 1.6;
-    }
-
-    .public-cta .btn {
-      flex-shrink: 0;
-      background: #fff;
-      color: var(--primary);
-      border-color: #fff;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 900px) {
-      .hero-public-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .public-stat-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .utilization-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .public-cta {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .hero-public {
-        padding: 42px 0;
-      }
-
-      .public-section {
-        padding: 42px 0;
-      }
-
-      .public-stat-grid,
-      .utilization-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-      }
-
-      .map-public {
-        min-height: 320px;
-      }
-    }
-  </style>
 </head>
 
 <body>
 
-  <!-- =====================================================
+  <!-- =========================================================
        HEADER
-       ===================================================== -->
-
+  ========================================================== -->
   <header class="site-header">
+
     <div class="header-inner">
 
+      <!-- BRAND -->
       <a href="index.html" class="brand">
-        <img
-          src="assets/logo-kemenag.png"
-          alt="Logo Kementerian Agama Republik Indonesia"
-          class="brand-logo">
+
+        <div class="brand-logo">
+          <img
+            src="assets/logo-kemenag.png"
+            alt="Logo Kementerian Agama Republik Indonesia"
+          >
+        </div>
 
         <div>
           <div class="brand-title">SIWAK BANTEN</div>
@@ -360,211 +35,285 @@
             Sistem Informasi Wakaf Banten
           </div>
         </div>
+
       </a>
 
+
+      <!-- MOBILE MENU -->
       <button
         class="mobile-menu-toggle"
         id="mobileMenuToggle"
         type="button"
-        aria-label="Buka menu">
+        aria-label="Buka menu"
+      >
         ☰
       </button>
 
+
+      <!-- NAVIGATION -->
       <nav class="main-nav" id="mainNav">
 
         <a href="index.html" class="nav-link active">
           Beranda
         </a>
 
-        <a href="#" class="nav-link">
-          Data Wakaf
-        </a>
+
+        <!-- DATA WAKAF -->
+        <div class="nav-dropdown">
+
+          <button class="nav-link nav-dropdown-toggle" type="button">
+            Data Wakaf
+            <span class="dropdown-arrow">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="#">
+              Data Wakaf
+            </a>
+
+            <a href="#">
+              Data Wakif
+            </a>
+
+            <a href="#">
+              Data Nazhir
+            </a>
+
+          </div>
+
+        </div>
+
 
         <a href="#" class="nav-link">
           Peta Wakaf
         </a>
 
-        <a href="#" class="nav-link">
-          Pemanfaatan
-        </a>
+
+        <!-- PEMANFAATAN -->
+        <div class="nav-dropdown">
+
+          <button class="nav-link nav-dropdown-toggle" type="button">
+            Pemanfaatan
+            <span class="dropdown-arrow">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="#">
+              Peruntukan Wakaf
+            </a>
+
+            <a href="#">
+              Sebaran Pemanfaatan
+            </a>
+
+            <a href="#">
+              Statistik Pemanfaatan
+            </a>
+
+          </div>
+
+        </div>
+
 
         <a href="#" class="nav-link">
           Statistik
         </a>
 
-        <a href="#" class="nav-link">
-          Informasi
-        </a>
 
-        <a href="#" class="nav-link">
+        <!-- INFORMASI -->
+        <div class="nav-dropdown">
+
+          <button class="nav-link nav-dropdown-toggle" type="button">
+            Informasi
+            <span class="dropdown-arrow">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="#">
+              Tentang SIWAK
+            </a>
+
+            <a href="#">
+              Regulasi Wakaf
+            </a>
+
+            <a href="#">
+              Panduan
+            </a>
+
+            <a href="#">
+              Berita / Informasi
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- LOGIN -->
+        <a href="#" class="nav-link nav-login">
           Login Operator
         </a>
 
       </nav>
 
     </div>
+
   </header>
 
 
+  <!-- =========================================================
+       MAIN CONTENT
+  ========================================================== -->
   <main class="main-content">
 
-    <!-- =====================================================
+
+    <!-- =======================================================
          HERO
-         ===================================================== -->
+    ======================================================== -->
+    <section class="siwak-hero">
 
-    <section class="hero-public">
-      <div class="container hero-public-inner">
+      <div class="siwak-hero-content">
 
-        <div>
+        <div class="page-kicker">
+          SISTEM INFORMASI WAKAF BANTEN
+        </div>
 
-          <div class="page-kicker">
-            SISTEM INFORMASI WAKAF BANTEN
-          </div>
+        <h1>
+          Informasi Wakaf Banten
+          <span>dalam Satu Portal</span>
+        </h1>
 
-          <h1>
-            Informasi Wakaf Banten
-            dalam Satu Portal
-          </h1>
+        <p>
+          Akses informasi wakaf di Provinsi Banten secara mudah,
+          informatif, dan terintegrasi dalam satu portal.
+        </p>
 
-          <p class="hero-public-description">
-            SIWAK Banten menyediakan informasi wakaf di Provinsi Banten
-            secara terbuka, informatif, dan terintegrasi untuk mendukung
-            akses masyarakat terhadap data wakaf.
-          </p>
+        <div class="hero-actions">
 
-          <div class="hero-actions">
+          <a href="#" class="btn btn-primary">
+            Jelajahi Data Wakaf
+          </a>
 
-            <a href="#" class="btn btn-primary">
-              Jelajahi Data Wakaf
-            </a>
-
-            <a href="#" class="btn btn-secondary">
-              Lihat Peta Wakaf
-            </a>
-
-          </div>
+          <a href="#" class="btn btn-secondary">
+            Lihat Peta Wakaf
+          </a>
 
         </div>
 
+      </div>
 
-        <div class="hero-visual">
 
-          <div class="hero-visual-content">
+      <!-- HERO VISUAL -->
+      <div class="siwak-hero-visual">
+
+        <div class="hero-logo-card">
+
+          <div class="hero-logo-circle">
 
             <img
               src="assets/logo-kemenag.png"
               alt="Logo Kementerian Agama"
-              class="hero-logo">
+            >
 
-            <div class="hero-visual-title">
-              SIWAK BANTEN
-            </div>
+          </div>
 
-            <div class="hero-visual-subtitle">
-              Data dan informasi wakaf Provinsi Banten
-            </div>
+          <div class="hero-logo-title">
+            SIWAK BANTEN
+          </div>
 
+          <div class="hero-logo-text">
+            Sistem Informasi Wakaf
           </div>
 
         </div>
 
       </div>
+
     </section>
 
 
-    <!-- =====================================================
-         WAKAF BANTEN DALAM ANGKA
-         ===================================================== -->
+    <!-- =======================================================
+         STATISTIK RINGKAS
+    ======================================================== -->
+    <section class="public-stat-section">
 
-    <section class="public-section">
+      <div class="section-heading">
 
-      <div class="container">
-
-        <div class="public-section-header">
-
-          <div class="public-section-kicker">
-            Gambaran Umum
+        <div>
+          <div class="page-kicker">
+            DATA TERKINI
           </div>
 
-          <h2 class="public-section-title">
-            Wakaf Banten dalam Angka
+          <h2>
+            Data Wakaf Banten
           </h2>
-
-          <p class="public-section-description">
-            Informasi statistik berdasarkan data wakaf yang telah
-            tercatat dalam SIWAK Banten.
-          </p>
-
         </div>
 
+        <p>
+          Ringkasan data wakaf yang telah tercatat dalam SIWAK Banten.
+        </p>
 
-        <div class="public-stat-grid">
+      </div>
 
-          <div class="public-stat-card">
+
+      <div class="public-stat-grid">
+
+        <div class="public-stat-card">
+
+          <div class="public-stat-icon">
+            W
+          </div>
+
+          <div>
+            <div class="public-stat-number">
+              —
+            </div>
 
             <div class="public-stat-label">
               Wakaf Terdata
             </div>
-
-            <div class="public-stat-value">
-              —
-            </div>
-
-            <div class="public-stat-note">
-              Data wakaf yang tercatat
-            </div>
-
           </div>
 
+        </div>
 
-          <div class="public-stat-card">
+
+        <div class="public-stat-card">
+
+          <div class="public-stat-icon">
+            Wk
+          </div>
+
+          <div>
+            <div class="public-stat-number">
+              —
+            </div>
 
             <div class="public-stat-label">
               Wakif
             </div>
-
-            <div class="public-stat-value">
-              —
-            </div>
-
-            <div class="public-stat-note">
-              Wakif yang telah terdata
-            </div>
-
           </div>
 
+        </div>
 
-          <div class="public-stat-card">
+
+        <div class="public-stat-card">
+
+          <div class="public-stat-icon">
+            N
+          </div>
+
+          <div>
+            <div class="public-stat-number">
+              —
+            </div>
 
             <div class="public-stat-label">
               Nazhir
             </div>
-
-            <div class="public-stat-value">
-              —
-            </div>
-
-            <div class="public-stat-note">
-              Nazhir yang telah terdata
-            </div>
-
-          </div>
-
-
-          <div class="public-stat-card">
-
-            <div class="public-stat-label">
-              Kabupaten/Kota
-            </div>
-
-            <div class="public-stat-value">
-              8
-            </div>
-
-            <div class="public-stat-note">
-              Wilayah administratif di Banten
-            </div>
-
           </div>
 
         </div>
@@ -574,280 +323,51 @@
     </section>
 
 
-    <!-- =====================================================
-         PETA
-         ===================================================== -->
+    <!-- =======================================================
+         PETA WAKAF
+    ======================================================== -->
+    <section class="public-map-section">
 
-    <section class="public-section">
+      <div class="section-heading">
 
-      <div class="container">
+        <div>
 
-        <div class="public-section-header">
-
-          <div class="public-section-kicker">
-            Sebaran Wilayah
+          <div class="page-kicker">
+            SEBARAN WILAYAH
           </div>
 
-          <h2 class="public-section-title">
+          <h2>
             Peta Wakaf Banten
           </h2>
 
-          <p class="public-section-description">
-            Jelajahi sebaran lokasi wakaf berdasarkan wilayah dan
-            informasi pemanfaatannya.
-          </p>
-
         </div>
 
-
-        <div class="map-public">
-
-          <div class="map-public-placeholder">
-
-            <div class="map-public-icon">
-              📍
-            </div>
-
-            <h3>
-              Peta Sebaran Wakaf
-            </h3>
-
-            <p>
-              Peta interaktif akan menampilkan sebaran data wakaf
-              di Provinsi Banten. Fitur ini akan terhubung dengan
-              data lokasi pada tahap pengembangan berikutnya.
-            </p>
-
-          </div>
-
-        </div>
+        <p>
+          Jelajahi persebaran lokasi wakaf di wilayah Provinsi Banten.
+        </p>
 
       </div>
 
-    </section>
 
+      <div class="map-preview-card">
 
-    <!-- =====================================================
-         PEMANFAATAN WAKAF
-         ===================================================== -->
+        <div class="map-placeholder">
 
-    <section class="public-section">
-
-      <div class="container">
-
-        <div class="public-section-header">
-
-          <div class="public-section-kicker">
-            Informasi Pemanfaatan
+          <div class="map-placeholder-icon">
+            ⌖
           </div>
 
-          <h2 class="public-section-title">
-            Pemanfaatan Wakaf
-          </h2>
+          <h3>
+            Peta Sebaran Wakaf
+          </h3>
 
-          <p class="public-section-description">
-            Informasi mengenai berbagai bentuk pemanfaatan aset wakaf
-            yang telah tercatat dalam sistem.
+          <p>
+            Peta interaktif lokasi wakaf akan ditampilkan di halaman
+            Peta Wakaf.
           </p>
 
-        </div>
-
-
-        <div class="utilization-grid">
-
-          <div class="utilization-card">
-            <h3>🕌 Ibadah</h3>
-            <p>
-              Masjid, mushalla, dan berbagai fasilitas peribadatan.
-            </p>
-          </div>
-
-          <div class="utilization-card">
-            <h3>🎓 Pendidikan</h3>
-            <p>
-              Madrasah, pesantren, sekolah, dan fasilitas pendidikan.
-            </p>
-          </div>
-
-          <div class="utilization-card">
-            <h3>🤝 Sosial</h3>
-            <p>
-              Fasilitas sosial dan kegiatan yang memberikan manfaat
-              bagi masyarakat.
-            </p>
-          </div>
-
-          <div class="utilization-card">
-            <h3>🏥 Kesehatan</h3>
-            <p>
-              Fasilitas dan kegiatan yang mendukung pelayanan kesehatan.
-            </p>
-          </div>
-
-          <div class="utilization-card">
-            <h3>🌾 Ekonomi</h3>
-            <p>
-              Pemanfaatan wakaf untuk kegiatan ekonomi dan usaha produktif.
-            </p>
-          </div>
-
-          <div class="utilization-card">
-            <h3>🏛️ Pemerintahan</h3>
-            <p>
-              Pemanfaatan untuk fasilitas yang mendukung kepentingan
-              pemerintahan.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         SEBARAN KABUPATEN / KOTA
-         ===================================================== -->
-
-    <section class="public-section">
-
-      <div class="container">
-
-        <div class="public-section-header">
-
-          <div class="public-section-kicker">
-            Data Wilayah
-          </div>
-
-          <h2 class="public-section-title">
-            Sebaran Wakaf per Kabupaten/Kota
-          </h2>
-
-          <p class="public-section-description">
-            Ringkasan jumlah data wakaf yang telah tercatat berdasarkan
-            wilayah kabupaten dan kota di Provinsi Banten.
-          </p>
-
-        </div>
-
-
-        <div class="region-table-wrapper">
-
-          <table class="data-table">
-
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Kabupaten/Kota</th>
-                <th>Wakaf Terdata</th>
-                <th>Wakif</th>
-                <th>Nazhir</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td>1</td>
-                <td>Kabupaten Pandeglang</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-                <td>Kabupaten Lebak</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>3</td>
-                <td>Kabupaten Tangerang</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>4</td>
-                <td>Kabupaten Serang</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>5</td>
-                <td>Kota Tangerang</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>6</td>
-                <td>Kota Cilegon</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>7</td>
-                <td>Kota Serang</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-              <tr>
-                <td>8</td>
-                <td>Kota Tangerang Selatan</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         CTA OPERATOR
-         ===================================================== -->
-
-    <section class="public-section">
-
-      <div class="container">
-
-        <div class="public-cta">
-
-          <div>
-
-            <h2>
-              Anda Operator SIWAK Banten?
-            </h2>
-
-            <p>
-              Masuk ke area operator untuk mengelola data wakaf,
-              wakif, nazhir, lokasi, dan dokumen.
-            </p>
-
-          </div>
-
-          <a href="#" class="btn">
-            Login Operator
+          <a href="#" class="btn btn-primary">
+            Buka Peta Wakaf
           </a>
 
         </div>
@@ -856,37 +376,216 @@
 
     </section>
 
-  </main>
 
+    <!-- =======================================================
+         PEMANFAATAN
+    ======================================================== -->
+    <section class="public-utilization-section">
 
-  <!-- =====================================================
-       FOOTER
-       ===================================================== -->
-
-  <footer class="site-footer">
-
-    <div class="container">
-
-      <div class="footer-content">
+      <div class="section-heading">
 
         <div>
-          <strong>SIWAK BANTEN</strong>
-          <p>
-            Sistem Informasi Wakaf Banten
-          </p>
+
+          <div class="page-kicker">
+            PEMANFAATAN
+          </div>
+
+          <h2>
+            Wakaf untuk Berbagai Kemaslahatan
+          </h2>
+
         </div>
 
+        <p>
+          Informasi pemanfaatan aset wakaf berdasarkan peruntukannya.
+        </p>
+
+      </div>
+
+
+      <div class="utilization-grid">
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">01</span>
+          <strong>Ibadah</strong>
+          <small>Masjid dan mushalla</small>
+        </a>
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">02</span>
+          <strong>Pendidikan</strong>
+          <small>Madrasah, sekolah dan pesantren</small>
+        </a>
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">03</span>
+          <strong>Sosial</strong>
+          <small>Fasilitas sosial dan makam</small>
+        </a>
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">04</span>
+          <strong>Kesehatan</strong>
+          <small>Fasilitas pelayanan kesehatan</small>
+        </a>
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">05</span>
+          <strong>Ekonomi</strong>
+          <small>Usaha produktif dan ekonomi</small>
+        </a>
+
+        <a href="#" class="utilization-card">
+          <span class="utilization-number">06</span>
+          <strong>Pemerintahan</strong>
+          <small>Fasilitas pemerintahan</small>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         DISTRIBUSI KABUPATEN / KOTA
+    ======================================================== -->
+    <section class="public-distribution-section">
+
+      <div class="section-heading">
+
         <div>
-          <p>
-            Informasi wakaf Provinsi Banten
-            untuk masyarakat.
-          </p>
+
+          <div class="page-kicker">
+            DISTRIBUSI DATA
+          </div>
+
+          <h2>
+            Sebaran Data Wakaf
+          </h2>
+
+        </div>
+
+        <p>
+          Ringkasan jumlah data wakaf yang telah tercatat berdasarkan
+          wilayah kabupaten/kota.
+        </p>
+
+      </div>
+
+
+      <div class="distribution-card">
+
+        <div class="distribution-list">
+
+          <div class="distribution-row">
+            <span>Kabupaten Lebak</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kabupaten Pandeglang</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kabupaten Serang</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kabupaten Tangerang</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kota Cilegon</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kota Serang</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kota Tangerang</span>
+            <strong>—</strong>
+          </div>
+
+          <div class="distribution-row">
+            <span>Kota Tangerang Selatan</span>
+            <strong>—</strong>
+          </div>
+
         </div>
 
       </div>
 
-      <div class="footer-bottom">
-        © 2026 SIWAK Banten. Hak Cipta Dilindungi.
+    </section>
+
+
+    <!-- =======================================================
+         CTA OPERATOR
+    ======================================================== -->
+    <section class="operator-cta">
+
+      <div>
+
+        <div class="page-kicker">
+          AKSES INTERNAL
+        </div>
+
+        <h2>
+          Kelola Data Wakaf
+          secara Terintegrasi
+        </h2>
+
+        <p>
+          Operator dapat masuk ke area internal untuk mengelola,
+          memperbarui, dan memantau data wakaf.
+        </p>
+
+      </div>
+
+      <a href="#" class="btn btn-primary">
+        Login Operator
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+  <footer class="site-footer">
+
+    <div class="footer-inner">
+
+      <div>
+
+        <div class="footer-title">
+          SIWAK BANTEN
+        </div>
+
+        <p>
+          Sistem Informasi Wakaf Banten
+        </p>
+
+      </div>
+
+
+      <div class="footer-info">
+
+        <span>
+          © 2026 SIWAK Banten
+        </span>
+
+        <span>
+          Kantor Wilayah Kementerian Agama Provinsi Banten
+        </span>
+
       </div>
 
     </div>
@@ -894,8 +593,9 @@
   </footer>
 
 
-  <!-- MASTER JS -->
+  <!-- MASTER JAVASCRIPT -->
   <script src="js/app.js"></script>
 
 </body>
+
 </html>
