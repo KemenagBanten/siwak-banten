@@ -2008,16 +2008,10 @@ async function lihatDetailWakaf(idWakaf) {
     }
 
 
-    renderDetailWakafModal(
-      result.data
-    );
+   renderDetailWakafModal(result.data);
 
-
-    loading.style.display =
-      'none';
-
-    content.style.display =
-      'block';
+loading.style.display = 'none';
+content.style.display = 'block';
 
 
   } catch (error) {
@@ -2190,7 +2184,9 @@ function renderDetailWakafModal(data) {
     lokasi.alamat ||
     '-';
 
-tampilkanPetaDetailWakaf(data.lokasi);
+setTimeout(() => {
+  tampilkanPetaDetailWakaf(data.lokasi);
+}, 100);
    
   /* WAKIF */
 
