@@ -455,8 +455,19 @@ function loadDataWakif() {
 
       const data =
         result.data.data || [];
+       
+console.log(
+  'JENIS WAKIF:',
+  data.map(function (item) {
+    return {
+      id: item.idWakif,
+      nama: item.namaWakif,
+      jenis: item.jenisWakif
+    };
+  })
+);
 
-
+       
       // SIMPAN DATA WAKIF
       window.semuaDataWakif = data;
 isiFilterKabKotaWakif(data);
