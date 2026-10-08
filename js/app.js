@@ -617,79 +617,82 @@ function renderDataWakif(data) {
 
 }
 
+/* =========================================================
+   TERAPKAN FILTER DATA WAKIF
+   ========================================================= */
+
 function terapkanFilterWakif() {
 
-  const searchElement =
-    document.getElementById('searchWakif');
-
-  const filterKabKotaElement =
-    document.getElementById('filterKabKotaWakif');
-
+  const filterKabKota =
+    document.getElementById(
+      'filterKabKotaWakif'
+    )?.value || '';
 
   const search =
-    searchElement
-      ? searchElement.value.toLowerCase().trim()
-      : '';
+    (
+      document.getElementById(
+        'searchWakif'
+      )?.value || ''
+    )
+      .trim()
+      .toLowerCase();
 
 
-  const filterKabKota =
-    filterKabKotaElement
-      ? filterKabKotaElement.value
-      : '';
-
-
-  const data =
+  const semuaData =
     window.semuaDataWakif || [];
 
 
-  const hasil =
-    data.filter(wakif => {
+  const hasilFilter =
+    semuaData.filter(
+      function (item) {
 
-      // ================================
-      // FILTER KABUPATEN / KOTA
-      // ================================
-
-      const sesuaiKabKota =
-        !filterKabKota ||
-        wakif.kabKota === filterKabKota;
-
-
-      // ================================
-      // PENCARIAN
-      // ================================
-
-      const teksPencarian = [
-
-        wakif.idWakif,
-        wakif.namaWakif,
-        wakif.jenisWakif,
-        wakif.nik,
-        wakif.alamat,
-        wakif.kabKota,
-        wakif.kecamatan,
-        wakif.desaKelurahan,
-        wakif.kontak,
-        wakif.keterangan
-
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
+        const cocokKabKota =
+          !filterKabKota ||
+          String(
+            item.kabKota || ''
+          ) === filterKabKota;
 
 
-      const sesuaiPencarian =
-        teksPencarian.includes(search);
+        const teksPencarian =
+          [
+            item.idWakif,
+            item.namaWakif,
+            item.jenisWakif,
+            item.nik,
+            item.alamat,
+            item.kabKota,
+            item.kecamatan,
+            item.desaKelurahan,
+            item.kontak,
+            item.keterangan
+          ]
+            .map(function (value) {
+              return String(
+                value || ''
+              ).toLowerCase();
+            })
+            .join(' ');
 
 
-      return (
-        sesuaiKabKota &&
-        sesuaiPencarian
-      );
+        const cocokPencarian =
+          !search ||
+          teksPencarian.includes(
+            search
+          );
 
-    });
+
+        return (
+          cocokKabKota &&
+          cocokPencarian
+        );
+
+      }
+    );
 
 
-  renderDataWakif(hasil);
+  renderDataWakif(
+    hasilFilter
+  );
 
 }
 
