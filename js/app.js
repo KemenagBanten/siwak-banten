@@ -459,7 +459,7 @@ function loadDataWakif() {
 
       // SIMPAN DATA WAKIF
       window.semuaDataWakif = data;
-
+isiFilterKabKotaWakif(data);
 
       // TOTAL WAKIF
       const totalElement =
@@ -622,9 +622,19 @@ function terapkanFilterWakif() {
   const searchElement =
     document.getElementById('searchWakif');
 
+  const filterKabKotaElement =
+    document.getElementById('filterKabKotaWakif');
+
+
   const search =
     searchElement
       ? searchElement.value.toLowerCase().trim()
+      : '';
+
+
+  const filterKabKota =
+    filterKabKotaElement
+      ? filterKabKotaElement.value
       : '';
 
 
@@ -634,6 +644,19 @@ function terapkanFilterWakif() {
 
   const hasil =
     data.filter(wakif => {
+
+      // ================================
+      // FILTER KABUPATEN / KOTA
+      // ================================
+
+      const sesuaiKabKota =
+        !filterKabKota ||
+        wakif.kabKota === filterKabKota;
+
+
+      // ================================
+      // PENCARIAN
+      // ================================
 
       const teksPencarian = [
 
@@ -654,7 +677,14 @@ function terapkanFilterWakif() {
         .toLowerCase();
 
 
-      return teksPencarian.includes(search);
+      const sesuaiPencarian =
+        teksPencarian.includes(search);
+
+
+      return (
+        sesuaiKabKota &&
+        sesuaiPencarian
+      );
 
     });
 
@@ -663,15 +693,15 @@ function terapkanFilterWakif() {
 
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
 
-  const searchWakif =
-    document.getElementById('searchWakif');
+  const filterKabKotaWakif =
+    document.getElementById('filterKabKotaWakif');
 
-  if (searchWakif) {
+  if (filterKabKotaWakif) {
 
-    searchWakif.addEventListener(
-      'input',
+    filterKabKotaWakif.addEventListener(
+      'change',
       terapkanFilterWakif
     );
 
@@ -987,6 +1017,61 @@ function isiFilterKabKota(data) {
 
 }
 
+/* =========================================================
+   FILTER KABUPATEN / KOTA DATA WAKIF
+   ========================================================= */
+
+function isiFilterKabKotaWakif(data) {
+
+  const select =
+    document.getElementById(
+      'filterKabKotaWakif'
+    );
+
+  if (!select) {
+    return;
+  }
+
+  const daftarKabKota =
+    [...new Set(
+      data
+        .map(function (item) {
+          return String(
+            item.kabKota || ''
+          ).trim();
+        })
+        .filter(function (value) {
+          return value !== '';
+        })
+    )]
+    .sort(function (a, b) {
+      return a.localeCompare(
+        b,
+        'id'
+      );
+    });
+
+  select.innerHTML = `
+    <option value="">
+      Semua Kabupaten / Kota
+    </option>
+  `;
+
+  daftarKabKota.forEach(
+    function (kabKota) {
+
+      const option =
+        document.createElement('option');
+
+      option.value = kabKota;
+      option.textContent = kabKota;
+
+      select.appendChild(option);
+
+    }
+  );
+
+}
 
 /* =========================================================
    TERAPKAN FILTER
