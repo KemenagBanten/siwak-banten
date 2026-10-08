@@ -70,17 +70,17 @@ function renderHeader() {
 
             <div class="nav-dropdown-menu">
 
-              <a href="#">
-                Data Wakaf
-              </a>
+             <a href="data-wakaf.html">
+  Data Wakaf
+</a>
 
-              <a href="#">
-                Data Wakif
-              </a>
+<a href="data-wakif.html">
+  Data Wakif
+</a>
 
-              <a href="#">
-                Data Nazhir
-              </a>
+<a href="data-nazhir.html">
+  Data Nazhir
+</a>
 
             </div>
 
