@@ -389,9 +389,213 @@ let currentPage = 1;
 const rowsPerPage = 10;
 let dataWakafTampil = [];
 
-/* =========================================================
-   RENDER DATA WAKAF
-   ========================================================= */
+
+// =======================================================
+// LOAD DATA WAKIF
+// =======================================================
+
+function loadDataWakif() {
+
+  const tbody =
+    document.getElementById('dataWakifBody');
+
+  if (!tbody) {
+    return;
+  }
+
+
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="9">
+        <div class="data-empty">
+          <div class="data-empty-icon">
+            ...
+          </div>
+
+          <strong>
+            Memuat data wakif...
+          </strong>
+
+          <p>
+            Mohon tunggu sebentar.
+          </p>
+        </div>
+      </td>
+    </tr>
+  `;
+
+
+  fetch(
+    SIWAK_API_URL + '?action=dataWakif'
+  )
+
+    .then(response => {
+
+      if (!response.ok) {
+        throw new Error(
+          'Gagal menghubungi API.'
+        );
+      }
+
+      return response.json();
+
+    })
+
+    .then(result => {
+
+      if (
+        !result.success ||
+        !result.data
+      ) {
+        throw new Error(
+          'Data wakif tidak dapat dimuat.'
+        );
+      }
+
+
+      const data =
+        result.data.data || [];
+
+
+      // SIMPAN DATA WAKIF
+      window.semuaDataWakif = data;
+
+
+      // TOTAL WAKIF
+      const totalElement =
+        document.getElementById(
+          'totalDataWakif'
+        );
+
+      if (totalElement) {
+        totalElement.textContent =
+          data.length;
+      }
+
+
+      // TOTAL WAKIF YANG MEMILIKI WAKAF
+      const totalAktifElement =
+        document.getElementById(
+          'totalWakifAktif'
+        );
+
+      if (totalAktifElement) {
+
+        const totalAktif =
+          data.filter(
+            item =>
+              Number(item.jumlahWakaf || 0) > 0
+          ).length;
+
+        totalAktifElement.textContent =
+          totalAktif;
+      }
+
+
+      // TOTAL SELURUH WAKAF DARI WAKIF
+      const totalWakafElement =
+        document.getElementById(
+          'totalWakafDariWakif'
+        );
+
+      if (totalWakafElement) {
+
+        const totalWakaf =
+          data.reduce(
+            (total, item) =>
+              total +
+              Number(item.jumlahWakaf || 0),
+            0
+          );
+
+        totalWakafElement.textContent =
+          totalWakaf;
+      }
+
+
+      // TAMPILKAN DATA
+      renderDataWakif(data);
+
+    })
+
+    .catch(error => {
+
+      console.error(
+        'ERROR DATA WAKIF:',
+        error
+      );
+
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9">
+
+            <div class="data-empty">
+
+              <div class="data-empty-icon">
+                !
+              </div>
+
+              <strong>
+                Data wakif tidak dapat dimuat
+              </strong>
+
+              <p>
+                ${error.message}
+              </p>
+
+            </div>
+
+          </td>
+        </tr>
+      `;
+
+    });
+
+}
+
+function renderDataWakif(data) {
+  const tbody = document.getElementById('dataWakifBody');
+
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center;">
+          Belum ada data wakif.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  data.forEach((wakif, index) => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${wakif.idWakif || '-'}</td>
+      <td>${wakif.namaWakif || '-'}</td>
+      <td>${wakif.jenisWakif || '-'}</td>
+      <td>${wakif.kabKota || '-'}</td>
+      <td>${wakif.kecamatan || '-'}</td>
+      <td>${wakif.jumlahWakaf ?? 0}</td>
+      <td>
+        <button
+          type="button"
+          class="btn-detail-wakif"
+          onclick="detailWakif('${wakif.idWakif}')">
+          Detail
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
 
 /* =========================================================
    RENDER DATA WAKAF
