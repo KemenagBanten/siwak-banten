@@ -851,33 +851,44 @@ function terapkanFilterWakif() {
       function (item) {
 
         /* -----------------------------------------
-           FILTER KABUPATEN / KOTA
+           KABUPATEN / KOTA
            ----------------------------------------- */
 
         const nilaiKabKota =
           String(
             item.kabKota || ''
-          ).trim();
+          )
+            .trim();
 
 
         const cocokKabKota =
-          !filterKabKota ||
+          filterKabKota === '' ||
           nilaiKabKota === filterKabKota;
 
 
         /* -----------------------------------------
-           FILTER JENIS WAKIF
+           JENIS WAKIF
            ----------------------------------------- */
 
         const nilaiJenisWakif =
           String(
             item.jenisWakif || ''
-          ).trim();
+          )
+            .trim()
+            .toUpperCase();
+
+
+        const pilihanJenisWakif =
+          String(
+            filterJenisWakif || ''
+          )
+            .trim()
+            .toUpperCase();
 
 
         const cocokJenisWakif =
-          !filterJenisWakif ||
-          nilaiJenisWakif === filterJenisWakif;
+          pilihanJenisWakif === '' ||
+          nilaiJenisWakif === pilihanJenisWakif;
 
 
         /* -----------------------------------------
@@ -899,20 +910,29 @@ function terapkanFilterWakif() {
           ]
             .map(
               function (value) {
+
                 return String(
                   value || ''
-                ).toLowerCase();
+                )
+                  .trim()
+                  .toLowerCase();
+
               }
             )
             .join(' ');
 
 
         const cocokPencarian =
-          !search ||
+          search === '' ||
           teksPencarian.includes(
             search
           );
 
+
+        /* -----------------------------------------
+           HASIL AKHIR
+           SEMUA FILTER HARUS COCOK
+           ----------------------------------------- */
 
         return (
           cocokKabKota &&
