@@ -3159,3 +3159,37 @@ textarea {
   }
 
 }
+
+/* =====================================================
+   MODAL DETAIL WAKIF
+===================================================== */
+
+.detail-wakif-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+}
+
+.detail-wakif-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-wakif-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.detail-wakif-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(900px, calc(100% - 32px));
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
