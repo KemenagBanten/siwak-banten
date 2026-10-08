@@ -687,6 +687,153 @@ function renderDataWakif(data) {
 }
 
 /* =========================================================
+   DETAIL DATA WAKIF
+   ========================================================= */
+
+function detailWakif(idWakif) {
+
+  // -------------------------------------------------------
+  // AMBIL MODAL
+  // -------------------------------------------------------
+
+  const modal =
+    document.getElementById(
+      'modalDetailWakif'
+    );
+
+
+  if (!modal) {
+
+    console.error(
+      'Modal detail wakif tidak ditemukan.'
+    );
+
+    return;
+  }
+
+
+  // -------------------------------------------------------
+  // TAMPILKAN LOADING
+  // -------------------------------------------------------
+
+  modal.classList.add('show');
+
+
+  const content =
+    document.getElementById(
+      'detailWakifContent'
+    );
+
+
+  if (content) {
+
+    content.innerHTML = `
+      <div class="data-empty">
+
+        <div class="data-empty-icon">
+          ...
+        </div>
+
+        <strong>
+          Memuat detail wakif...
+        </strong>
+
+        <p>
+          Mohon tunggu sebentar.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+
+  // -------------------------------------------------------
+  // PANGGIL API DETAIL WAKIF
+  // -------------------------------------------------------
+
+  fetch(
+    SIWAK_API_URL +
+    '?action=detailWakif&idWakif=' +
+    encodeURIComponent(idWakif)
+  )
+
+    .then(
+      function (response) {
+
+        if (!response.ok) {
+
+          throw new Error(
+            'Gagal menghubungi API.'
+          );
+
+        }
+
+        return response.json();
+
+      }
+    )
+
+    .then(
+      function (result) {
+
+        if (
+          !result.success ||
+          !result.data
+        ) {
+
+          throw new Error(
+            result.message ||
+            'Detail wakif tidak ditemukan.'
+          );
+
+        }
+
+
+        tampilkanDetailWakif(
+          result.data
+        );
+
+      }
+    )
+
+    .catch(
+      function (error) {
+
+        console.error(
+          'ERROR DETAIL WAKIF:',
+          error
+        );
+
+
+        if (content) {
+
+          content.innerHTML = `
+            <div class="data-empty">
+
+              <div class="data-empty-icon">
+                !
+              </div>
+
+              <strong>
+                Detail wakif tidak dapat dimuat
+              </strong>
+
+              <p>
+                ${error.message}
+              </p>
+
+            </div>
+          `;
+
+        }
+
+      }
+    );
+
+}
+
+/* =========================================================
    RENDER PAGINATION DATA WAKIF
    ========================================================= */
 
