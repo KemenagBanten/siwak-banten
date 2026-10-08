@@ -699,15 +699,29 @@ function terapkanFilterWakif() {
 }
 
 
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
   const filterKabKotaWakif =
     document.getElementById('filterKabKotaWakif');
+
+  const searchWakif =
+    document.getElementById('searchWakif');
+
 
   if (filterKabKotaWakif) {
 
     filterKabKotaWakif.addEventListener(
       'change',
+      terapkanFilterWakif
+    );
+
+  }
+
+
+  if (searchWakif) {
+
+    searchWakif.addEventListener(
+      'input',
       terapkanFilterWakif
     );
 
