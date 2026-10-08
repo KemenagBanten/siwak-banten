@@ -646,11 +646,15 @@ function terapkanFilterWakif() {
     semuaData.filter(
       function (item) {
 
-        const cocokKabKota =
-          !filterKabKota ||
+        const nilaiKabKota =
           String(
             item.kabKota || ''
-          ) === filterKabKota;
+          ).trim();
+
+
+        const cocokKabKota =
+          !filterKabKota ||
+          nilaiKabKota === filterKabKota;
 
 
         const teksPencarian =
@@ -676,9 +680,7 @@ function terapkanFilterWakif() {
 
         const cocokPencarian =
           !search ||
-          teksPencarian.includes(
-            search
-          );
+          teksPencarian.includes(search);
 
 
         return (
@@ -695,6 +697,7 @@ function terapkanFilterWakif() {
   );
 
 }
+
 
  document.addEventListener('DOMContentLoaded', function () {
 
