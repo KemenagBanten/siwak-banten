@@ -555,34 +555,51 @@ function loadDataWakif() {
 }
 
 function renderDataWakif(data) {
-  const tbody = document.getElementById('dataWakifBody');
+
+  const tbody =
+    document.getElementById('dataWakifBody');
 
   if (!tbody) return;
 
   tbody.innerHTML = '';
 
   if (!data || data.length === 0) {
+
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" style="text-align:center;">
+        <td colspan="9" style="text-align:center;">
           Belum ada data wakif.
         </td>
       </tr>
     `;
+
     return;
   }
 
+
   data.forEach((wakif, index) => {
-    const tr = document.createElement('tr');
+
+    const tr =
+      document.createElement('tr');
+
 
     tr.innerHTML = `
       <td>${index + 1}</td>
+
       <td>${wakif.idWakif || '-'}</td>
+
       <td>${wakif.namaWakif || '-'}</td>
+
       <td>${wakif.jenisWakif || '-'}</td>
+
       <td>${wakif.kabKota || '-'}</td>
+
       <td>${wakif.kecamatan || '-'}</td>
+
+      <td>${wakif.desaKelurahan || '-'}</td>
+
       <td>${wakif.jumlahWakaf ?? 0}</td>
+
       <td>
         <button
           type="button"
@@ -593,8 +610,11 @@ function renderDataWakif(data) {
       </td>
     `;
 
+
     tbody.appendChild(tr);
+
   });
+
 }
 
 /* =========================================================
