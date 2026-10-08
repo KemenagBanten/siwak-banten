@@ -3193,3 +3193,67 @@ textarea {
   border-radius: 18px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
+
+/* =====================================================
+   ITEM DATA WAKAF PADA MODAL DETAIL WAKIF
+===================================================== */
+
+.detail-wakif-item {
+  padding: 16px 18px;
+  margin-top: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.detail-wakif-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.detail-wakif-item-header strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.detail-wakif-item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+
+.detail-wakif-item-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-wakif-item-grid span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.detail-wakif-item-grid strong {
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+  .detail-wakif-item-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-wakif-item-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
