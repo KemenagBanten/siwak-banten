@@ -1058,7 +1058,11 @@ function tampilkanDetailWakif(data) {
         function (wakaf) {
 
           return `
-            <div class="detail-wakaf-item">
+            <div
+  class="detail-wakaf-item"
+  onclick="detailWakaf('${wakaf.idWakaf}')"
+  style="cursor:pointer;"
+>
 
               <div class="detail-wakaf-item-header">
 
