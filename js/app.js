@@ -858,6 +858,28 @@ function detailWakif(idWakif) {
     );
 
 }
+
+/* =========================================================
+   TUTUP DETAIL DATA WAKIF
+========================================================= */
+
+function tutupDetailWakif() {
+
+  const modal =
+    document.getElementById(
+      'detailWakifModal'
+    );
+
+  if (!modal) return;
+
+  modal.classList.remove('show');
+
+  modal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+}
+
 /* =========================================================
    RENDER PAGINATION DATA WAKIF
    ========================================================= */
