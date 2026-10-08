@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Wakif - SIWAK Banten</title>
+
+  <!-- MASTER STYLE -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <!-- =========================================================
+       MASTER HEADER
+  ========================================================== -->
+  <div id="site-header"></div>
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+  ========================================================== -->
+  <main class="main-content">
+
+    <section class="data-wakaf-page">
+
+      <!-- =====================================================
+           PAGE INTRO
+      ====================================================== -->
+
+      <div class="data-wakaf-intro">
+
+        <div class="page-kicker">
+          DATA WAKIF BANTEN
+        </div>
+
+        <h1>
+          Data Wakif Banten
+        </h1>
+
+        <p>
+          Informasi wakif yang telah tercatat dalam Sistem Informasi Wakaf Banten.
+        </p>
+
+      </div>
+
+
+      <!-- =====================================================
+           RINGKASAN DATA
+      ====================================================== -->
+
+      <div class="data-wakaf-summary">
+
+        <!-- TOTAL WAKIF -->
+
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon">
+
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+            </svg>
+
+          </div>
+
+          <div>
+
+            <strong id="totalDataWakif">
+              —
+            </strong>
+
+            <span>
+              Wakif Terdata
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- WAKIF DENGAN WAKAF -->
+
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon gold">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V10l7-5 7 5v11"></path>
+              <path d="M8 21v-7h8v7"></path>
+            </svg>
+
+          </div>
+
+          <div>
+
+            <strong id="totalWakifAktif">
+              —
+            </strong>
+
+            <span>
+              Memiliki Wakaf
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- TOTAL WAKAF -->
+
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon blue">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M4 20V10"></path>
+              <path d="M10 20V4"></path>
+              <path d="M16 20v-7"></path>
+              <path d="M22 20H2"></path>
+            </svg>
+
+          </div>
+
+          <div>
+
+            <strong id="totalWakafDariWakif">
+              —
+            </strong>
+
+            <span>
+              Wakaf Terdata
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           FILTER CARD
+      ====================================================== -->
+
+      <div class="data-filter-card">
+
+        <div class="data-filter-heading">
+
+          <div>
+
+            <div class="page-kicker">
+              FILTER DATA
+            </div>
+
+            <h2>
+              Jelajahi Data Wakif
+            </h2>
+
+          </div>
+
+          <p>
+            Gunakan filter untuk melihat data wakif berdasarkan
+            wilayah dan jenis wakif.
+          </p>
+
+        </div>
+
+
+        <div class="data-filter-grid">
+
+          <!-- KABUPATEN / KOTA -->
+
+          <div class="data-filter-field">
+
+            <label for="filterKabKotaWakif">
+              Kabupaten / Kota
+            </label>
+
+            <select id="filterKabKotaWakif">
+
+              <option value="">
+                Semua Kabupaten / Kota
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- JENIS WAKIF -->
+
+          <div class="data-filter-field">
+
+            <label for="filterJenisWakif">
+              Jenis Wakif
+            </label>
+
+            <select id="filterJenisWakif">
+
+              <option value="">
+                Semua Jenis Wakif
+              </option>
+
+              <option value="PERORANGAN">
+                Perorangan
+              </option>
+
+              <option value="ORGANISASI">
+                Organisasi
+              </option>
+
+              <option value="BADAN_HUKUM">
+                Badan Hukum
+              </option>
+
+              <option value="LAINNYA">
+                Lainnya
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- PENCARIAN -->
+
+          <div class="data-filter-field">
+
+            <label for="searchWakif">
+              Pencarian
+            </label>
+
+            <div class="data-search">
+
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+
+              <input
+                type="search"
+                id="searchWakif"
+                placeholder="Cari ID atau nama wakif..."
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RESULT HEADER
+      ====================================================== -->
+
+      <div class="data-result-header">
+
+        <div>
+
+          <div class="page-kicker">
+            DATA TERDAFTAR
+          </div>
+
+          <h2>
+            Daftar Data Wakif
+          </h2>
+
+        </div>
+
+        <span id="resultInfoWakif">
+          Menampilkan data
+        </span>
+
+      </div>
+
+
+      <!-- =====================================================
+           TABLE CARD
+      ====================================================== -->
+
+      <div class="data-table-card">
+
+        <div class="data-table-scroll">
+
+          <table class="data-table siwak-data-table">
+
+            <thead>
+
+              <tr>
+
+                <th>No.</th>
+
+                <th>ID Wakif</th>
+
+                <th>Nama Wakif</th>
+
+                <th>Jenis Wakif</th>
+
+                <th>Kabupaten / Kota</th>
+
+                <th>Kecamatan</th>
+
+                <th>Desa / Kelurahan</th>
+
+                <th>Jumlah Wakaf</th>
+
+                <th>Aksi</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="dataWakifBody">
+
+              <tr>
+
+                <td colspan="9">
+
+                  <div class="data-empty">
+
+                    <div class="data-empty-icon">
+                      ♙
+                    </div>
+
+                    <strong>
+                      Data wakif belum tersedia
+                    </strong>
+
+                    <p>
+                      Data wakif akan ditampilkan setelah
+                      terhubung dengan sistem SIWAK Banten.
+                    </p>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+
+          <!-- PAGINATION -->
+
+          <div id="paginationWakifContainer"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       MASTER FOOTER
+  ========================================================== -->
+
+  <div id="site-footer"></div>
+
+
+  <!-- =====================================================
+       MODAL DETAIL WAKIF
+  ====================================================== -->
+
+  <div
+    id="detailWakifModal"
+    class="detail-wakif-modal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="detail-wakif-overlay"
+      onclick="tutupDetailWakif()"
+    ></div>
+
+
+    <div
+      class="detail-wakif-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detailWakifModalTitle"
+    >
+
+
+      <!-- HEADER MODAL -->
+
+      <div class="detail-modal-header">
+
+        <div>
+
+          <div class="detail-card-kicker">
+            DETAIL DATA WAKIF
+          </div>
+
+          <h2 id="detailWakifModalTitle">
+            Detail Wakif
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="detail-modal-close"
+          onclick="tutupDetailWakif()"
+          aria-label="Tutup"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- LOADING -->
+
+      <div
+        id="detailWakifModalLoading"
+        class="detail-modal-loading"
+      >
+
+        <div class="detail-loading-icon">
+          ...
+        </div>
+
+        <strong>
+          Memuat detail wakif...
+        </strong>
+
+        <p>
+          Mohon tunggu sebentar.
+        </p>
+
+      </div>
+
+
+      <!-- ERROR -->
+
+      <div
+        id="detailWakifModalError"
+        class="detail-modal-error"
+        style="display:none;"
+      >
+
+        <strong>
+          Detail tidak dapat dimuat
+        </strong>
+
+        <p id="detailWakifModalErrorMessage">
+          Terjadi kesalahan.
+        </p>
+
+      </div>
+
+
+      <!-- CONTENT -->
+
+      <div
+        id="detailWakifModalContent"
+        class="detail-modal-content"
+        style="display:none;"
+      >
+
+
+        <!-- IDENTITAS WAKIF -->
+
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            IDENTITAS WAKIF
+          </div>
+
+          <div class="detail-modal-title-row">
+
+            <h3 id="detailIdWakif">
+              -
+            </h3>
+
+            <span
+              id="detailJenisWakif"
+              class="status-badge"
+            >
+              -
+            </span>
+
+          </div>
+
+
+          <div class="detail-modal-grid">
+
+            <div class="detail-modal-item">
+
+              <span>
+                Nama Wakif
+              </span>
+
+              <strong id="detailNamaWakif">
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="detail-modal-item">
+
+              <span>
+                Jenis Wakif
+              </span>
+
+              <strong id="detailJenisWakifText">
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="detail-modal-item">
+
+              <span>
+                Kabupaten / Kota
+              </span>
+
+              <strong id="detailKabKotaWakif">
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="detail-modal-item">
+
+              <span>
+                Kecamatan
+              </span>
+
+              <strong id="detailKecamatanWakif">
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="detail-modal-item">
+
+              <span>
+                Desa / Kelurahan
+              </span>
+
+              <strong id="detailDesaWakif">
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="detail-modal-item">
+
+              <span>
+                Jumlah Wakaf
+              </span>
+
+              <strong id="detailJumlahWakaf">
+                0
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ALAMAT -->
+
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            ALAMAT
+          </div>
+
+          <div class="detail-modal-address">
+
+            <span>
+              Alamat Wakif
+            </span>
+
+            <strong id="detailAlamatWakif">
+              -
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- KETERANGAN -->
+
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            KETERANGAN
+          </div>
+
+          <div class="detail-modal-highlight">
+
+            <strong id="detailKeteranganWakif">
+              -
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- DAFTAR WAKAF -->
+
+        <section class="detail-modal-section">
+
+          <div class="detail-modal-title-row">
+
+            <div class="detail-card-kicker">
+              DATA WAKAF
+            </div>
+
+            <span
+              id="detailJumlahWakafLabel"
+              class="detail-document-count"
+            >
+              0 wakaf
+            </span>
+
+          </div>
+
+          <div id="detailWakifWakafList">
+          </div>
+
+        </section>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MASTER COMPONENTS
+  ====================================================== -->
+
+  <script src="js/components.js"></script>
+
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
