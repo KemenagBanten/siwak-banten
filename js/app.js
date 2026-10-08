@@ -663,6 +663,22 @@ function terapkanFilterWakif() {
 
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+
+  const searchWakif =
+    document.getElementById('searchWakif');
+
+  if (searchWakif) {
+
+    searchWakif.addEventListener(
+      'input',
+      terapkanFilterWakif
+    );
+
+  }
+
+});
+
 /* =========================================================
    RENDER DATA WAKAF
    ========================================================= */
