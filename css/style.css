@@ -3077,3 +3077,86 @@ textarea {
   }
 
 }
+
+
+/* =========================================================
+   PAGINATION DATA WAKIF
+   ========================================================= */
+
+#paginationWakif {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+
+
+/* AREA TOMBOL */
+
+#paginationWakif .pagination-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #344054;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* HOVER */
+
+#paginationWakif .pagination-btn:hover:not(:disabled) {
+  background: #f5f7fa;
+  border-color: #b8c0cc;
+}
+
+
+/* HALAMAN AKTIF */
+
+#paginationWakif .pagination-btn.active {
+  background: #1f6f43;
+  border-color: #1f6f43;
+  color: #ffffff;
+}
+
+
+/* TOMBOL DISABLED */
+
+#paginationWakif .pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  #paginationWakif {
+    justify-content: center;
+  }
+
+  #paginationWakif .pagination-btn {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 10px;
+  }
+
+}
