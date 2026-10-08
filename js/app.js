@@ -1959,6 +1959,8 @@ async function lihatDetailWakaf(idWakaf) {
   content.style.display =
     'none';
 
+   loading.textContent = 'Memuat detail wakaf...';
+
   errorBox.style.display =
     'none';
 
