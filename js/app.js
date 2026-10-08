@@ -1131,6 +1131,23 @@ function tampilkanDetailWakif(data) {
 }
 
 /* =========================================================
+   DETAIL WAKAF DARI MODAL WAKIF
+========================================================= */
+
+function detailWakaf(idWakaf) {
+
+  if (!idWakaf) {
+    return;
+  }
+
+  console.log(
+    'DETAIL WAKAF:',
+    idWakaf
+  );
+
+}
+
+/* =========================================================
    GANTI HALAMAN DATA WAKIF
    ========================================================= */
 
