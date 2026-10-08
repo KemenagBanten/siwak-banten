@@ -698,7 +698,7 @@ function detailWakif(idWakif) {
 
   const modal =
     document.getElementById(
-      'modalDetailWakif'
+      'detailWakifModal'
     );
 
 
@@ -709,47 +709,57 @@ function detailWakif(idWakif) {
     );
 
     return;
+
   }
+
+
+  // -------------------------------------------------------
+  // TAMPILKAN MODAL
+  // -------------------------------------------------------
+
+  modal.classList.add('show');
+
+  modal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
 
 
   // -------------------------------------------------------
   // TAMPILKAN LOADING
   // -------------------------------------------------------
 
-  modal.classList.add('show');
+  const loading =
+    document.getElementById(
+      'detailWakifModalLoading'
+    );
 
+  const errorBox =
+    document.getElementById(
+      'detailWakifModalError'
+    );
 
   const content =
     document.getElementById(
-      'detailWakifContent'
+      'detailWakifModalContent'
     );
 
 
+  if (loading) {
+    loading.style.display = 'block';
+  }
+
+  if (errorBox) {
+    errorBox.style.display = 'none';
+  }
+
   if (content) {
-
-    content.innerHTML = `
-      <div class="data-empty">
-
-        <div class="data-empty-icon">
-          ...
-        </div>
-
-        <strong>
-          Memuat detail wakif...
-        </strong>
-
-        <p>
-          Mohon tunggu sebentar.
-        </p>
-
-      </div>
-    `;
-
+    content.style.display = 'none';
   }
 
 
   // -------------------------------------------------------
-  // PANGGIL API DETAIL WAKIF
+  // PANGGIL API
   // -------------------------------------------------------
 
   fetch(
@@ -794,6 +804,15 @@ function detailWakif(idWakif) {
           result.data
         );
 
+
+        if (loading) {
+          loading.style.display = 'none';
+        }
+
+        if (content) {
+          content.style.display = 'block';
+        }
+
       }
     )
 
@@ -806,25 +825,32 @@ function detailWakif(idWakif) {
         );
 
 
+        if (loading) {
+          loading.style.display = 'none';
+        }
+
         if (content) {
+          content.style.display = 'none';
+        }
 
-          content.innerHTML = `
-            <div class="data-empty">
+        if (errorBox) {
 
-              <div class="data-empty-icon">
-                !
-              </div>
+          errorBox.style.display =
+            'block';
 
-              <strong>
-                Detail wakif tidak dapat dimuat
-              </strong>
 
-              <p>
-                ${error.message}
-              </p>
+          const message =
+            document.getElementById(
+              'detailWakifModalErrorMessage'
+            );
 
-            </div>
-          `;
+
+          if (message) {
+
+            message.textContent =
+              error.message;
+
+          }
 
         }
 
@@ -832,7 +858,6 @@ function detailWakif(idWakif) {
     );
 
 }
-
 /* =========================================================
    RENDER PAGINATION DATA WAKIF
    ========================================================= */
@@ -918,6 +943,87 @@ function renderPaginationWakif(totalData) {
 
   pagination.innerHTML = html;
 
+}
+
+/* =========================================================
+   TAMPILKAN DETAIL DATA WAKIF
+========================================================= */
+
+function tampilkanDetailWakif(data) {
+
+  document.getElementById('detailIdWakif').textContent =
+    data.idWakif || '-';
+
+  document.getElementById('detailNamaWakif').textContent =
+    data.namaWakif || '-';
+
+  document.getElementById('detailJenisWakif').textContent =
+    data.jenisWakif || '-';
+
+  document.getElementById('detailJenisWakifText').textContent =
+    data.jenisWakif || '-';
+
+  document.getElementById('detailKabKotaWakif').textContent =
+    data.kabKota || '-';
+
+  document.getElementById('detailKecamatanWakif').textContent =
+    data.kecamatan || '-';
+
+  document.getElementById('detailDesaWakif').textContent =
+    data.desaKelurahan || '-';
+
+  document.getElementById('detailAlamatWakif').textContent =
+    data.alamat || '-';
+
+  document.getElementById('detailKeteranganWakif').textContent =
+    data.keterangan || '-';
+
+  /*
+   * Jumlah wakaf sementara diambil
+   * dari data wakif yang sudah dimuat di halaman.
+   */
+  const wakifDariData =
+    (window.semuaDataWakif || []).find(
+      function (item) {
+        return item.idWakif === data.idWakif;
+      }
+    );
+
+  const jumlahWakaf =
+    wakifDariData
+      ? (wakifDariData.jumlahWakaf ?? 0)
+      : 0;
+
+  document.getElementById('detailJumlahWakaf').textContent =
+    jumlahWakaf;
+
+  document.getElementById('detailJumlahWakafLabel').textContent =
+    jumlahWakaf + ' wakaf';
+
+  const list =
+    document.getElementById(
+      'detailWakifWakafList'
+    );
+
+  if (list) {
+
+    if (jumlahWakaf === 0) {
+
+      list.innerHTML = `
+        <div class="detail-empty-state">
+          Belum ada data wakaf dari wakif ini.
+        </div>
+      `;
+
+    } else {
+
+      list.innerHTML = `
+        <div class="detail-empty-state">
+          ${jumlahWakaf} data wakaf terdaftar.
+        </div>
+      `;
+    }
+  }
 }
 
 /* =========================================================
