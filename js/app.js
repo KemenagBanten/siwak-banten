@@ -1614,3 +1614,5 @@ document.addEventListener(
 
   }
 );
+
+loadDataWakif();
