@@ -2193,17 +2193,17 @@ tampilkanPetaDetailWakaf(data.lokasi);
   /* WAKIF */
 
   document.getElementById(
-    'detailWakif'
-  ).textContent =
-    wakif.nama ||
-    '-';
+  'detailWakafNamaWakif'
+).textContent =
+  wakif.nama ||
+  '-';
 
 
-  document.getElementById(
-    'detailJenisWakif'
-  ).textContent =
-    wakif.jenis ||
-    '-';
+document.getElementById(
+  'detailWakafJenisWakif'
+).textContent =
+  wakif.jenis ||
+  '-';
 
 
   /* NAZHIR */
