@@ -2184,9 +2184,7 @@ function renderDetailWakafModal(data) {
     lokasi.alamat ||
     '-';
 
-setTimeout(() => {
-  tampilkanPetaDetailWakaf(data.lokasi);
-}, 100);
+tampilkanPetaDetailWakaf(data.lokasi);
    
   /* WAKIF */
 
