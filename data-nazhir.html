@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Nazhir - SIWAK Banten</title>
+
+  <!-- CSS UTAMA -->
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- LEAFLET -->
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <div id="header-container"></div>
+
+  <!-- KONTEN UTAMA -->
+
+  <main class="page-container">
+
+```
+<!-- JUDUL -->
+<section class="page-header">
+  <h1>Data Nazhir</h1>
+  <p>
+    Data Nazhir yang terdaftar dalam Sistem Informasi Wakaf
+    Kementerian Agama Provinsi Banten.
+  </p>
+</section>
+
+
+<!-- RINGKASAN -->
+<section class="data-summary">
+
+  <div class="summary-card">
+    <div class="summary-icon">👤</div>
+
+    <div class="summary-content">
+      <span class="summary-label">Total Nazhir</span>
+      <strong id="totalNazhir">0</strong>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- FILTER -->
+<section class="data-toolbar">
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchNazhir"
+      placeholder="Cari nama, ID, registrasi..."
+    >
+  </div>
+
+  <div class="filter-group">
+
+    <select id="filterKabKota">
+      <option value="">Semua Kabupaten/Kota</option>
+    </select>
+
+    <select id="filterJenisNazhir">
+      <option value="">Semua Jenis Nazhir</option>
+    </select>
+
+    <select id="filterStatusNazhir">
+      <option value="">Semua Status</option>
+    </select>
+
+  </div>
+
+</section>
+
+
+<!-- INFO HASIL -->
+<div class="result-header">
+
+  <div>
+    <strong>Daftar Nazhir</strong>
+  </div>
+
+  <div id="resultInfoNazhir"></div>
+
+</div>
+
+
+<!-- TABEL -->
+<section class="data-table-wrapper">
+
+  <table class="data-table">
+
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>ID Nazhir</th>
+        <th>Nama Nazhir</th>
+        <th>Jenis Nazhir</th>
+        <th>Kabupaten/Kota</th>
+        <th>Kecamatan</th>
+        <th>Desa/Kelurahan</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+
+    <tbody id="dataNazhirBody">
+
+      <tr>
+        <td colspan="9" class="empty-state">
+          Data Nazhir akan ditampilkan setelah terhubung
+          dengan SIWAK Banten.
+        </td>
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</section>
+
+
+<!-- PAGINATION -->
+<div
+  id="paginationNazhir"
+  class="data-pagination"
+></div>
+```
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <div id="footer-container"></div>
+
+  <!-- LEAFLET -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- COMPONENT -->
+
+  <script src="js/components.js"></script>
+
+  <!-- APP -->
+
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
