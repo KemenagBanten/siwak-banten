@@ -662,7 +662,318 @@
 
   </div>
 
+<!-- =====================================================
+     MODAL DETAIL WAKAF
+     ===================================================== -->
 
+<div
+  id="detailWakafModal"
+  class="detail-wakaf-modal"
+  aria-hidden="true"
+>
+
+  <div
+    class="detail-wakaf-overlay"
+    onclick="tutupDetailWakaf()"
+  ></div>
+
+
+  <div
+    class="detail-wakaf-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailModalTitle"
+  >
+
+    <!-- HEADER MODAL -->
+
+    <div class="detail-modal-header">
+
+      <div>
+
+        <div class="detail-card-kicker">
+          DETAIL DATA WAKAF
+        </div>
+
+        <h2 id="detailModalTitle">
+          Detail Wakaf
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="detail-modal-close"
+        onclick="tutupDetailWakaf()"
+        aria-label="Tutup"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      id="detailModalLoading"
+      class="detail-modal-loading"
+    >
+
+      <div class="detail-loading-icon">
+        ...
+      </div>
+
+      <strong>
+        Memuat detail wakaf...
+      </strong>
+
+      <p>
+        Mohon tunggu sebentar.
+      </p>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      id="detailModalError"
+      class="detail-modal-error"
+      style="display:none;"
+    >
+
+      <strong>
+        Detail tidak dapat dimuat
+      </strong>
+
+      <p id="detailModalErrorMessage">
+        Terjadi kesalahan.
+      </p>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div
+      id="detailModalContent"
+      class="detail-modal-content"
+      style="display:none;"
+    >
+
+      <!-- IDENTITAS -->
+
+      <section class="detail-modal-section">
+
+        <div class="detail-card-kicker">
+          IDENTITAS WAKAF
+        </div>
+
+        <div class="detail-modal-title-row">
+
+          <h3 id="detailKodeWakaf">
+            -
+          </h3>
+
+          <span
+            id="detailStatusSertifikasi"
+            class="status-badge"
+          >
+            -
+          </span>
+
+        </div>
+
+
+        <div class="detail-modal-grid">
+
+          <div class="detail-modal-item">
+            <span>Jenis Aset</span>
+            <strong id="detailJenisAset">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Luas</span>
+            <strong id="detailLuas">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Tahun Wakaf</span>
+            <strong id="detailTahunWakaf">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Nomor AIW / APAIW</span>
+            <strong id="detailNomorAiw">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Nomor Sertifikat</span>
+            <strong id="detailNomorSertifikat">-</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- PERUNTUKAN -->
+
+      <section class="detail-modal-section">
+
+        <div class="detail-card-kicker">
+          PERUNTUKAN
+        </div>
+
+        <div class="detail-modal-highlight">
+
+          <strong id="detailPeruntukan">
+            -
+          </strong>
+
+          <span id="detailKategori">
+            -
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- LOKASI -->
+
+      <section class="detail-modal-section">
+
+        <div class="detail-card-kicker">
+          LOKASI WAKAF
+        </div>
+
+        <div class="detail-modal-grid">
+
+          <div class="detail-modal-item">
+            <span>Provinsi</span>
+            <strong id="detailProvinsi">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Kabupaten / Kota</span>
+            <strong id="detailKabKota">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Kecamatan</span>
+            <strong id="detailKecamatan">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Desa / Kelurahan</span>
+            <strong id="detailDesa">-</strong>
+          </div>
+
+        </div>
+
+        <div class="detail-modal-address">
+
+          <span>Alamat</span>
+
+          <strong id="detailAlamat">
+            -
+          </strong>
+
+        </div>
+
+              </section>
+
+
+      <!-- WAKIF & NAZHIR -->
+
+      <div class="detail-modal-two-column">
+
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            WAKIF
+          </div>
+
+          <h3 id="detailWakif">
+            -
+          </h3>
+
+          <p id="detailJenisWakif">
+            -
+          </p>
+
+        </section>
+
+
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            NAZHIR
+          </div>
+
+          <h3 id="detailNazhir">
+            -
+          </h3>
+
+          <p id="detailJenisNazhir">
+            -
+          </p>
+
+        </section>
+
+      </div>
+
+
+      <!-- DOKUMEN -->
+
+      <section class="detail-modal-section">
+
+        <div class="detail-modal-title-row">
+
+          <div class="detail-card-kicker">
+            DOKUMEN WAKAF
+          </div>
+
+          <span
+            id="detailJumlahDokumen"
+            class="detail-document-count"
+          >
+            0 dokumen
+          </span>
+
+        </div>
+
+        <div id="detailDokumenList">
+        </div>
+
+      </section>
+<section class="detail-modal-section detail-map-section">
+
+  <div class="detail-card-kicker">
+    PETA LOKASI WAKAF
+  </div>
+
+  <div class="detail-map-wrapper">
+
+    <div class="detail-map-title">
+      <span>Lokasi Wakaf</span>
+      <small>Posisi berdasarkan koordinat yang tercatat</small>
+    </div>
+
+    <div id="detailWakafMap"></div>
+
+  </div>
+
+</section>
+    </div>
+
+  </div>
+
+</div>
+  
   <!-- =====================================================
        MASTER COMPONENTS
   ====================================================== -->
