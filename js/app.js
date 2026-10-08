@@ -1000,19 +1000,13 @@ function tampilkanDetailWakif(data) {
   document.getElementById('detailKeteranganWakif').textContent =
     data.keterangan || '-';
 
-  /*
-   * Jumlah wakaf sementara diambil
-   * dari data wakif yang sudah dimuat di halaman.
-   */
-  const wakifDariData =
-    (window.semuaDataWakif || []).find(
-      function (item) {
-        return item.idWakif === data.idWakif;
-      }
-    );
+
+  // -------------------------------------------------------
+  // JUMLAH WAKAF
+  // -------------------------------------------------------
 
   const jumlahWakaf =
-  data.jumlahWakaf ?? 0;
+    data.jumlahWakaf ?? 0;
 
   document.getElementById('detailJumlahWakaf').textContent =
     jumlahWakaf;
@@ -1020,94 +1014,117 @@ function tampilkanDetailWakif(data) {
   document.getElementById('detailJumlahWakafLabel').textContent =
     jumlahWakaf + ' wakaf';
 
+
+  // -------------------------------------------------------
+  // DAFTAR WAKAF
+  // -------------------------------------------------------
+
   const list =
-  document.getElementById(
-    'detailWakifWakafList'
-  );
+    document.getElementById(
+      'detailWakifWakafList'
+    );
 
-if (!list) return;
+  if (!list) {
+    return;
+  }
 
-const daftarWakaf =
-  data.daftarWakaf || [];
+  const daftarWakaf =
+    data.daftarWakaf || [];
 
-if (daftarWakaf.length === 0) {
 
-  list.innerHTML = `
-    <div class="detail-empty-state">
-      Belum ada data wakaf dari wakif ini.
-    </div>
-  `;
+  // -------------------------------------------------------
+  // BELUM ADA DATA WAKAF
+  // -------------------------------------------------------
 
-  return;
+  if (daftarWakaf.length === 0) {
+
+    list.innerHTML = `
+      <div class="detail-empty-state">
+        Belum ada data wakaf dari wakif ini.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  // -------------------------------------------------------
+  // TAMPILKAN DAFTAR WAKAF
+  // -------------------------------------------------------
+
+  list.innerHTML =
+    daftarWakaf
+      .map(
+        function (wakaf) {
+
+          return `
+            <div class="detail-wakaf-item">
+
+              <div class="detail-wakaf-item-header">
+
+                <strong>
+                  ${wakaf.kodeWakaf || '-'}
+                </strong>
+
+                <span class="status-badge">
+                  ${wakaf.statusSertifikasi || '-'}
+                </span>
+
+              </div>
+
+
+              <div class="detail-wakaf-item-grid">
+
+                <div>
+                  <span>Jenis Aset</span>
+                  <strong>
+                    ${wakaf.jenisAset || '-'}
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>Luas</span>
+                  <strong>
+                    ${wakaf.luas ?? '-'}
+                    ${wakaf.satuanLuas || ''}
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>Tahun Wakaf</span>
+                  <strong>
+                    ${wakaf.tahunWakaf || '-'}
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>Nomor AIW/APAIW</span>
+                  <strong>
+                    ${wakaf.nomorAiwApaiw || '-'}
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>Nomor Sertifikat</span>
+                  <strong>
+                    ${wakaf.nomorSertifikat || '-'}
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join('');
+
 }
-
-list.innerHTML =
-  daftarWakaf
-    .map(
-      function (wakaf) {
-
-        return `
-          <div class="detail-wakaf-item">
-
-            <div class="detail-wakaf-item-header">
-
-              <strong>
-                ${wakaf.kodeWakaf || '-'}
-              </strong>
-
-              <span class="status-badge">
-                ${wakaf.statusSertifikasi || '-'}
-              </span>
-
-            </div>
-
-            <div class="detail-wakaf-item-grid">
-
-              <div>
-                <span>Jenis Aset</span>
-                <strong>
-                  ${wakaf.jenisAset || '-'}
-                </strong>
-              </div>
-
-              <div>
-                <span>Luas</span>
-                <strong>
-                  ${wakaf.luas ?? '-'}
-                  ${wakaf.satuanLuas || ''}
-                </strong>
-              </div>
-
-              <div>
-                <span>Tahun Wakaf</span>
-                <strong>
-                  ${wakaf.tahunWakaf || '-'}
-                </strong>
-              </div>
-
-              <div>
-                <span>Nomor AIW/APAIW</span>
-                <strong>
-                  ${wakaf.nomorAiwApaiw || '-'}
-                </strong>
-              </div>
-
-              <div>
-                <span>Nomor Sertifikat</span>
-                <strong>
-                  ${wakaf.nomorSertifikat || '-'}
-                </strong>
-              </div>
-
-            </div>
-
-          </div>
-        `;
-
-      }
-    )
-    .join('');
-   
 
 /* =========================================================
    GANTI HALAMAN DATA WAKIF
