@@ -878,6 +878,9 @@ function terapkanFilterWakif() {
     );
 
 
+    // KEMBALI KE HALAMAN 1
+  currentPageWakif = 1;
+
   renderDataWakif(
     hasilFilter
   );
