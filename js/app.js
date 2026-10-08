@@ -617,6 +617,52 @@ function renderDataWakif(data) {
 
 }
 
+function terapkanFilterWakif() {
+
+  const searchElement =
+    document.getElementById('searchWakif');
+
+  const search =
+    searchElement
+      ? searchElement.value.toLowerCase().trim()
+      : '';
+
+
+  const data =
+    window.semuaDataWakif || [];
+
+
+  const hasil =
+    data.filter(wakif => {
+
+      const teksPencarian = [
+
+        wakif.idWakif,
+        wakif.namaWakif,
+        wakif.jenisWakif,
+        wakif.nik,
+        wakif.alamat,
+        wakif.kabKota,
+        wakif.kecamatan,
+        wakif.desaKelurahan,
+        wakif.kontak,
+        wakif.keterangan
+
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+
+      return teksPencarian.includes(search);
+
+    });
+
+
+  renderDataWakif(hasil);
+
+}
+
 /* =========================================================
    RENDER DATA WAKAF
    ========================================================= */
