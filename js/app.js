@@ -1966,7 +1966,7 @@ async function lihatDetailWakaf(idWakaf) {
 
 
   try {
-
+console.time('WAKTU API DETAIL WAKAF');
     const response =
       await fetch(
         SIWAK_API_URL +
@@ -1988,7 +1988,8 @@ async function lihatDetailWakaf(idWakaf) {
     const result =
       await response.json();
 
-
+console.timeEnd('WAKTU API DETAIL WAKAF');
+     
     console.log(
       'DETAIL WAKAF API:',
       result
