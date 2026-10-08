@@ -1140,10 +1140,7 @@ function detailWakaf(idWakaf) {
     return;
   }
 
-  console.log(
-    'DETAIL WAKAF:',
-    idWakaf
-  );
+  lihatDetailWakaf(idWakaf);
 
 }
 
