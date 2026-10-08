@@ -554,6 +554,18 @@ isiFilterKabKotaWakif(data);
 
 }
 
+/* =========================================================
+   PAGINATION DATA WAKIF
+   ========================================================= */
+
+let currentPageWakif = 1;
+const rowsPerPageWakif = 10;
+let dataWakifTampil = [];
+
+/* =========================================================
+   RENDER DATA WAKIF
+   ========================================================= */
+
 function renderDataWakif(data) {
 
   const tbody =
@@ -561,9 +573,32 @@ function renderDataWakif(data) {
 
   if (!tbody) return;
 
-  tbody.innerHTML = '';
 
-  if (!data || data.length === 0) {
+  // SIMPAN DATA HASIL FILTER
+  dataWakifTampil = data || [];
+
+
+  // HITUNG TOTAL HALAMAN
+  const totalData =
+    dataWakifTampil.length;
+
+  const totalPages =
+    Math.ceil(
+      totalData / rowsPerPageWakif
+    );
+
+
+  // Jika halaman sekarang melebihi jumlah halaman
+  if (
+    totalPages > 0 &&
+    currentPageWakif > totalPages
+  ) {
+    currentPageWakif = totalPages;
+  }
+
+
+  // Jika tidak ada data
+  if (totalData === 0) {
 
     tbody.innerHTML = `
       <tr>
@@ -573,47 +608,198 @@ function renderDataWakif(data) {
       </tr>
     `;
 
+    renderPaginationWakif(0);
+
     return;
   }
 
 
-  data.forEach((wakif, index) => {
+  // HITUNG DATA UNTUK HALAMAN AKTIF
+  const start =
+    (currentPageWakif - 1) *
+    rowsPerPageWakif;
 
-    const tr =
-      document.createElement('tr');
+  const end =
+    start + rowsPerPageWakif;
+
+  const dataHalaman =
+    dataWakifTampil.slice(
+      start,
+      end
+    );
 
 
-    tr.innerHTML = `
-      <td>${index + 1}</td>
+  // KOSONGKAN TABEL
+  tbody.innerHTML = '';
 
-      <td>${wakif.idWakif || '-'}</td>
 
-      <td>${wakif.namaWakif || '-'}</td>
+  // TAMPILKAN DATA
+  dataHalaman.forEach(
+    function (wakif, index) {
 
-      <td>${wakif.jenisWakif || '-'}</td>
+      const nomor =
+        start + index + 1;
 
-      <td>${wakif.kabKota || '-'}</td>
 
-      <td>${wakif.kecamatan || '-'}</td>
+      const tr =
+        document.createElement('tr');
 
-      <td>${wakif.desaKelurahan || '-'}</td>
 
-      <td>${wakif.jumlahWakaf ?? 0}</td>
+      tr.innerHTML = `
+        <td>${nomor}</td>
 
-      <td>
-        <button
-          type="button"
-          class="btn-detail-wakif"
-          onclick="detailWakif('${wakif.idWakif}')">
-          Detail
-        </button>
-      </td>
+        <td>${wakif.idWakif || '-'}</td>
+
+        <td>${wakif.namaWakif || '-'}</td>
+
+        <td>${wakif.jenisWakif || '-'}</td>
+
+        <td>${wakif.kabKota || '-'}</td>
+
+        <td>${wakif.kecamatan || '-'}</td>
+
+        <td>${wakif.desaKelurahan || '-'}</td>
+
+        <td>${wakif.jumlahWakaf ?? 0}</td>
+
+        <td>
+          <button
+            type="button"
+            class="btn-detail-wakif"
+            onclick="detailWakif('${wakif.idWakif}')">
+            Detail
+          </button>
+        </td>
+      `;
+
+
+      tbody.appendChild(tr);
+
+    }
+  );
+
+
+  // TAMPILKAN PAGINATION
+  renderPaginationWakif(
+    totalData
+  );
+
+}
+
+/* =========================================================
+   RENDER PAGINATION DATA WAKIF
+   ========================================================= */
+
+function renderPaginationWakif(totalData) {
+
+  const pagination =
+    document.getElementById(
+      'paginationWakif'
+    );
+
+  if (!pagination) return;
+
+
+  const totalPages =
+    Math.ceil(
+      totalData / rowsPerPageWakif
+    );
+
+
+  // Tidak perlu pagination jika data 10 atau kurang
+  if (totalPages <= 1) {
+
+    pagination.innerHTML = '';
+
+    return;
+  }
+
+
+  let html = '';
+
+
+  // TOMBOL SEBELUMNYA
+  html += `
+    <button
+      type="button"
+      class="pagination-btn"
+      onclick="changePageWakif(${currentPageWakif - 1})"
+      ${currentPageWakif === 1 ? 'disabled' : ''}>
+      Sebelumnya
+    </button>
+  `;
+
+
+  // NOMOR HALAMAN
+  for (
+    let i = 1;
+    i <= totalPages;
+    i++
+  ) {
+
+    html += `
+      <button
+        type="button"
+        class="pagination-btn ${
+          i === currentPageWakif
+            ? 'active'
+            : ''
+        }"
+        onclick="changePageWakif(${i})">
+        ${i}
+      </button>
     `;
 
+  }
 
-    tbody.appendChild(tr);
 
-  });
+  // TOMBOL BERIKUTNYA
+  html += `
+    <button
+      type="button"
+      class="pagination-btn"
+      onclick="changePageWakif(${currentPageWakif + 1})"
+      ${
+        currentPageWakif === totalPages
+          ? 'disabled'
+          : ''
+      }>
+      Berikutnya
+    </button>
+  `;
+
+
+  pagination.innerHTML = html;
+
+}
+
+/* =========================================================
+   GANTI HALAMAN DATA WAKIF
+   ========================================================= */
+
+function changePageWakif(page) {
+
+  const totalPages =
+    Math.ceil(
+      dataWakifTampil.length /
+      rowsPerPageWakif
+    );
+
+
+  if (
+    page < 1 ||
+    page > totalPages
+  ) {
+    return;
+  }
+
+
+  currentPageWakif = page;
+
+
+  renderDataWakif(
+    dataWakifTampil
+  );
 
 }
 
