@@ -568,7 +568,7 @@ tbody.innerHTML = `     <tr>       <td colspan="9" class="empty-state">
 
 try {
 
-```
+
 const response =
   await fetch(
     SIWAK_API_URL +
@@ -654,11 +654,11 @@ tbody.innerHTML =
     `;
 
   }).join('');
-```
+
 
 } catch (error) {
 
-```
+
 console.error(
   'ERROR DATA NAZHIR:',
   error
@@ -671,7 +671,7 @@ tbody.innerHTML = `
     </td>
   </tr>
 `;
-```
+
 
 }
 
