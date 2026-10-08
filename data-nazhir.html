@@ -52,102 +52,341 @@
 
 
 <!-- RINGKASAN -->
-<section class="data-summary">
+<!-- =====================================================
+     RINGKASAN DATA
+====================================================== -->
 
-  <div class="summary-card">
-    <div class="summary-icon">👤</div>
+<div class="data-wakaf-summary">
 
-    <div class="summary-content">
-      <span class="summary-label">Total Nazhir</span>
-      <strong id="totalNazhir">0</strong>
+  <!-- TOTAL NAZHIR -->
+
+  <div class="data-summary-card">
+
+    <div class="data-summary-icon">
+
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+      </svg>
+
     </div>
-  </div>
 
-</section>
+    <div>
 
+      <strong id="totalDataNazhir">
+        —
+      </strong>
 
-<!-- FILTER -->
-<section class="data-toolbar">
+      <span>
+        Nazhir Terdata
+      </span>
 
-  <div class="search-box">
-    <input
-      type="text"
-      id="searchNazhir"
-      placeholder="Cari nama, ID, registrasi..."
-    >
-  </div>
-
-  <div class="filter-group">
-
-    <select id="filterKabKota">
-      <option value="">Semua Kabupaten/Kota</option>
-    </select>
-
-    <select id="filterJenisNazhir">
-      <option value="">Semua Jenis Nazhir</option>
-    </select>
-
-    <select id="filterStatusNazhir">
-      <option value="">Semua Status</option>
-    </select>
+    </div>
 
   </div>
 
-</section>
 
+  <!-- NAZHIR AKTIF -->
 
-<!-- INFO HASIL -->
-<div class="result-header">
+  <div class="data-summary-card">
 
-  <div>
-    <strong>Daftar Nazhir</strong>
+    <div class="data-summary-icon gold">
+
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v18"></path>
+        <path d="M5 8h14"></path>
+        <path d="M7 8c0 4 2 6 5 6s5-2 5-6"></path>
+      </svg>
+
+    </div>
+
+    <div>
+
+      <strong id="totalNazhirAktif">
+        —
+      </strong>
+
+      <span>
+        Nazhir Aktif
+      </span>
+
+    </div>
+
   </div>
 
-  <div id="resultInfoNazhir"></div>
+
+  <!-- WAKAF DIKELOLA -->
+
+  <div class="data-summary-card">
+
+    <div class="data-summary-icon blue">
+
+      <svg viewBox="0 0 24 24">
+        <path d="M4 20V10"></path>
+        <path d="M10 20V4"></path>
+        <path d="M16 20v-7"></path>
+        <path d="M22 20H2"></path>
+      </svg>
+
+    </div>
+
+    <div>
+
+      <strong id="totalWakafDikelola">
+        —
+      </strong>
+
+      <span>
+        Wakaf Dikelola
+      </span>
+
+    </div>
+
+  </div>
 
 </div>
 
 
-<!-- TABEL -->
-<section class="data-table-wrapper">
+<!-- FILTER -->
+<!-- =====================================================
+     FILTER CARD
+====================================================== -->
 
-  <table class="data-table">
+<div class="data-filter-card">
 
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>ID Nazhir</th>
-        <th>Nama Nazhir</th>
-        <th>Jenis Nazhir</th>
-        <th>Kabupaten/Kota</th>
-        <th>Kecamatan</th>
-        <th>Desa/Kelurahan</th>
-        <th>Status</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
+  <div class="data-filter-heading">
 
-    <tbody id="dataNazhirBody">
+    <div>
 
-      <tr>
-        <td colspan="9" class="empty-state">
-          Data Nazhir akan ditampilkan setelah terhubung
-          dengan SIWAK Banten.
-        </td>
-      </tr>
+      <div class="page-kicker">
+        FILTER DATA
+      </div>
 
-    </tbody>
+      <h2>
+        Jelajahi Data Nazhir
+      </h2>
 
-  </table>
+    </div>
 
-</section>
+    <p>
+      Gunakan filter untuk melihat data Nazhir berdasarkan
+      wilayah, jenis, dan status Nazhir.
+    </p>
+
+  </div>
 
 
-<!-- PAGINATION -->
-<div
-  id="paginationNazhir"
-  class="data-pagination"
-></div>
+  <div class="data-filter-grid">
+
+    <!-- KABUPATEN / KOTA -->
+
+    <div class="data-filter-field">
+
+      <label for="filterKabKotaNazhir">
+        Kabupaten / Kota
+      </label>
+
+      <select id="filterKabKotaNazhir">
+
+        <option value="">
+          Semua Kabupaten / Kota
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- JENIS NAZHIR -->
+
+    <div class="data-filter-field">
+
+      <label for="filterJenisNazhir">
+        Jenis Nazhir
+      </label>
+
+      <select id="filterJenisNazhir">
+
+        <option value="">
+          Semua Jenis Nazhir
+        </option>
+
+        <option value="PERORANGAN">
+          Perorangan
+        </option>
+
+        <option value="BADAN_HUKUM">
+          Badan Hukum
+        </option>
+
+        <option value="LAINNYA">
+          Lainnya
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- STATUS NAZHIR -->
+
+    <div class="data-filter-field">
+
+      <label for="filterStatusNazhir">
+        Status Nazhir
+      </label>
+
+      <select id="filterStatusNazhir">
+
+        <option value="">
+          Semua Status
+        </option>
+
+        <option value="AKTIF">
+          Aktif
+        </option>
+
+        <option value="DALAM_PROSES">
+          Dalam Proses
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- PENCARIAN -->
+
+    <div class="data-filter-field">
+
+      <label for="searchNazhir">
+        Pencarian
+      </label>
+
+      <div class="data-search">
+
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="6"></circle>
+          <path d="m16 16 5 5"></path>
+        </svg>
+
+        <input
+          type="search"
+          id="searchNazhir"
+          placeholder="Cari ID, nama, atau nomor registrasi..."
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     RESULT HEADER
+====================================================== -->
+
+<div class="data-result-header">
+
+  <div>
+
+    <div class="page-kicker">
+      DATA TERDAFTAR
+    </div>
+
+    <h2>
+      Daftar Data Nazhir
+    </h2>
+
+  </div>
+
+  <span id="resultInfoNazhir">
+    Menampilkan data
+  </span>
+
+</div>
+
+<!-- =====================================================
+     TABLE CARD
+====================================================== -->
+
+<div class="data-table-card">
+
+  <div class="data-table-scroll">
+
+    <table class="data-table siwak-data-table">
+
+      <thead>
+
+        <tr>
+
+          <th>No.</th>
+
+          <th>ID Nazhir</th>
+
+          <th>Nama Nazhir</th>
+
+          <th>Jenis Nazhir</th>
+
+          <th>Nomor Registrasi</th>
+
+          <th>Kabupaten / Kota</th>
+
+          <th>Status</th>
+
+          <th>Aksi</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="dataNazhirBody">
+
+        <tr>
+
+          <td colspan="8">
+
+            <div class="data-empty">
+
+              <div class="data-empty-icon">
+                ♙
+              </div>
+
+              <strong>
+                Data Nazhir belum tersedia
+              </strong>
+
+              <p>
+                Data Nazhir akan ditampilkan setelah
+                terhubung dengan sistem SIWAK Banten.
+              </p>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+
+    <!-- PAGINATION -->
+
+    <div
+      id="paginationNazhir"
+      class="data-pagination">
+    </div>
+
+  </div>
+
+</div>
 
 
   </main>
