@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - SIWAK Banten</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    :root {
+      --hijau: #087b52;
+      --hijau-gelap: #075c40;
+      --latar: #f3f7f5;
+      --teks: #20352c;
+      --abu: #708078;
+      --putih: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--latar);
+      color: var(--teks);
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #087b52, #064b37);
+      color: white;
+      padding: 25px 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+
+    .brand img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      background: white;
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: #d5eee3;
+      font-size: 11px;
+    }
+
+    .menu-title {
+      margin: 27px 10px 10px;
+      color: #c6e4d7;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 7px;
+    }
+
+    .menu a {
+      display: block;
+      color: #edf8f2;
+      text-decoration: none;
+      padding: 12px 13px;
+      border-radius: 9px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: rgba(255,255,255,.16);
+      color: white;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: white;
+      padding: 19px 30px;
+      border-bottom: 1px solid #e4ece7;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .topbar p {
+      margin: 5px 0 0;
+      color: var(--abu);
+      font-size: 13px;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: var(--hijau-gelap);
+      background: #e1f4e9;
+      font-weight: bold;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .user-role {
+      margin-top: 4px;
+      color: var(--abu);
+      font-size: 11px;
+    }
+
+    .content {
+      padding: 28px 30px;
+    }
+
+    .welcome {
+      padding: 25px;
+      color: white;
+      border-radius: 16px;
+      background: linear-gradient(110deg, #087b52, #15966b);
+      box-shadow: 0 8px 24px rgba(8,123,82,.12);
+    }
+
+    .welcome h2 {
+      margin: 0 0 9px;
+      font-size: 23px;
+    }
+
+    .welcome p {
+      margin: 0;
+      color: #e3f7ec;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .section-heading {
+      margin: 29px 0 15px;
+      font-size: 17px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 21px;
+      background: white;
+      border: 1px solid #e7eee9;
+      border-radius: 13px;
+      box-shadow: 0 4px 15px rgba(20,60,40,.035);
+    }
+
+    .stat-label {
+      color: var(--abu);
+      font-size: 13px;
+    }
+
+    .stat-value {
+      margin-top: 13px;
+      font-size: 27px;
+      font-weight: bold;
+      color: var(--hijau-gelap);
+    }
+
+    .stat-note {
+      margin-top: 8px;
+      color: #89978f;
+      font-size: 11px;
+    }
+
+    .info-panel {
+      margin-top: 22px;
+      padding: 23px;
+      background: white;
+      border: 1px solid #e7eee9;
+      border-radius: 13px;
+    }
+
+    .info-panel h3 {
+      margin: 0 0 9px;
+      font-size: 16px;
+    }
+
+    .info-panel p {
+      margin: 0;
+      color: var(--abu);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .notice {
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #fff7df;
+      color: #805d13;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .logout {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      color: white;
+      border: 1px solid rgba(255,255,255,.3);
+      background: transparent;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: rgba(255,255,255,.12);
+    }
+
+    .footer {
+      padding: 20px 30px;
+      color: var(--abu);
+      font-size: 12px;
+      border-top: 1px solid #e4ece7;
+      background: white;
+    }
+
+    @media (max-width: 1000px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sidebar { width: 220px; }
+    }
+
+    @media (max-width: 650px) {
+      .layout { display: block; }
+      .sidebar { width: 100%; padding: 18px; }
+      .menu-title { margin-top: 18px; }
+      .menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .logout { margin-top: 15px; }
+      .topbar { padding: 17px 18px; align-items: flex-start; }
+      .topbar h1 { font-size: 18px; }
+      .user-area { gap: 7px; }
+      .user-name { max-width: 100px; overflow-wrap: anywhere; }
+      .content { padding: 20px 16px; }
+      .welcome { padding: 21px; }
+      .welcome h2 { font-size: 20px; }
+      .stats { gap: 10px; }
+      .stat-card { padding: 15px; }
+      .stat-value { font-size: 23px; }
+      .footer { padding: 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="../assets/logo-kemenag.png" alt="Logo Kementerian Agama">
+        <div>
+          <strong>SIWAK BANTEN</strong>
+          <small>Sistem Informasi Wakaf</small>
+        </div>
+      </div>
+
+      <div class="menu-title">Menu utama</div>
+      <nav class="menu">
+        <a href="#" class="active">▦ &nbsp; Dashboard</a>
+        <a href="#" data-menu="wakaf">▤ &nbsp; Data Wakaf</a>
+        <a href="#" data-menu="wakif">♙ &nbsp; Data Wakif</a>
+        <a href="#" data-menu="nazhir">♧ &nbsp; Data Nazhir</a>
+        <a href="#" data-menu="gis">⌖ &nbsp; Peta GIS</a>
+      </nav>
+
+      <div class="menu-title" id="penggunaMenuTitle" hidden>Administrasi</div>
+      <nav class="menu">
+        <a href="#" id="penggunaMenu" hidden>♙ &nbsp; Kelola Pengguna</a>
+      </nav>
+
+      <button type="button" class="logout" id="logoutButton">
+        ↪ &nbsp; Keluar
+      </button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Ringkasan informasi wakaf Provinsi Banten</p>
+        </div>
+
+        <div class="user-area">
+          <div>
+            <div class="user-name" id="namaPengguna">Admin</div>
+            <div class="user-role" id="rolePengguna">Memeriksa sesi...</div>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="welcome">
+          <h2 id="sapaan">Selamat datang di SIWAK Banten</h2>
+          <p id="deskripsiSapaan">
+            Sistem Informasi Wakaf terintegrasi untuk mendukung pengelolaan
+            data wakaf di Provinsi Banten.
+          </p>
+        </div>
+
+        <h2 class="section-heading">Ringkasan Data</h2>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Aset Wakaf</div>
+            <div class="stat-value" id="totalWakaf">—</div>
+            <div class="stat-note">Data aset terdaftar</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Total Wakif</div>
+            <div class="stat-value" id="totalWakif">—</div>
+            <div class="stat-note">Data pemberi wakaf</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Total Nazhir</div>
+            <div class="stat-value" id="totalNazhir">—</div>
+            <div class="stat-note">Data pengelola wakaf</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Wilayah Akses</div>
+            <div class="stat-value" id="wilayahAkses" style="font-size:19px">—</div>
+            <div class="stat-note">Sesuai hak akses akun</div>
+          </div>
+        </div>
+
+        <div class="info-panel">
+          <h3>Status Sistem</h3>
+          <p id="statusSistem">
+            Dashboard sedang memeriksa sesi login.
+          </p>
+          <div class="notice">
+            Angka ringkasan belum dihubungkan ke API. Data akan ditampilkan
+            setelah pengamanan akses wilayah dan koneksi dashboard selesai.
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        SIWAK Banten · Kantor Wilayah Kementerian Agama Provinsi Banten
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const SIWAK_API_URL =
+      'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+    const token = sessionStorage.getItem('siwakToken');
+    const dataPengguna = sessionStorage.getItem('siwakPengguna');
+
+    if (!token || !dataPengguna) {
+      window.location.href = 'login.html';
+    } else {
+      try {
+        const pengguna = JSON.parse(dataPengguna);
+
+        document.getElementById('namaPengguna').textContent =
+          pengguna.username || 'Admin';
+
+        const isSuperAdmin =
+          pengguna.role === 'SUPER_ADMIN_PROVINSI';
+
+        document.getElementById('rolePengguna').textContent =
+          isSuperAdmin ? 'Super Admin Provinsi' : 'Admin Kabupaten/Kota';
+
+        document.getElementById('sapaan').textContent =
+          'Selamat datang, ' + (pengguna.username || 'Admin') + '!';
+
+        document.getElementById('wilayahAkses').textContent =
+          isSuperAdmin ? 'Seluruh Banten' :
+          (pengguna.kodeWilayah || 'Wilayah terbatas');
+
+        document.getElementById('penggunaMenu').hidden = !isSuperAdmin;
+        document.getElementById('penggunaMenuTitle').hidden = !isSuperAdmin;
+
+        document.getElementById('statusSistem').textContent =
+          'Informasi akun berhasil dibaca dari sesi login. Verifikasi token ke server dan pengamanan API masih perlu diselesaikan sebelum dashboard digunakan untuk pengelolaan data.';
+
+      } catch (error) {
+        sessionStorage.removeItem('siwakToken');
+        sessionStorage.removeItem('siwakPengguna');
+        window.location.href = 'login.html';
+      }
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+      sessionStorage.removeItem('siwakToken');
+      sessionStorage.removeItem('siwakPengguna');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
