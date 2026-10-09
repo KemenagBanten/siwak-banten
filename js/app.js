@@ -554,6 +554,12 @@ isiFilterKabKotaWakif(data);
 
 }
 
+
+let semuaDataNazhir = [];
+let hasilFilterNazhir = [];
+let halamanNazhir = 1;
+const dataPerHalamanNazhir = 10;
+
 async function loadDataNazhir() {
   const tbody = document.getElementById('dataNazhirBody');
 
@@ -586,7 +592,14 @@ async function loadDataNazhir() {
       throw new Error('Format data Nazhir tidak sesuai.');
     }
 
-    const dataNazhir = result.data.data;
+   
+semuaDataNazhir = result.data.data;
+hasilFilterNazhir = semuaDataNazhir;
+halamanNazhir = 1;
+
+     inisialisasiFilterNazhir();
+     
+const dataNazhir = semuaDataNazhir;
 
     const totalElement = document.getElementById('totalDataNazhir');
 
@@ -622,29 +635,7 @@ async function loadDataNazhir() {
       return;
     }
 
-    tbody.innerHTML = dataNazhir.map(function(nazhir, index) {
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${escapeHTML(nazhir.idNazhir || '-')}</td>
-          <td>${escapeHTML(nazhir.namaNazhir || '-')}</td>
-          <td>${escapeHTML(nazhir.jenisNazhir || '-')}</td>
-          <td>${escapeHTML(nazhir.kabKota || '-')}</td>
-          <td>${escapeHTML(nazhir.kecamatan || '-')}</td>
-          <td>${escapeHTML(nazhir.desaKelurahan || '-')}</td>
-          <td>${escapeHTML(nazhir.statusNazhir || '-')}</td>
-          <td>
-            <button
-              type="button"
-              class="btn-detail"
-              onclick="lihatDetailNazhir('${String(nazhir.idNazhir || '').replace(/'/g, "\\'")}')"
-            >
-              Detail
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join('');
+   renderDataNazhir();
 
   } catch (error) {
     console.error('ERROR DATA NAZHIR:', error);
@@ -659,6 +650,222 @@ async function loadDataNazhir() {
         </td>
       </tr>
     `;
+  }
+}
+
+
+function terapkanFilterNazhir() {
+  const filterKabKota = document.getElementById('filterKabKotaNazhir');
+  const filterJenis = document.getElementById('filterJenisNazhir');
+  const filterStatus = document.getElementById('filterStatusNazhir');
+  const searchInput = document.getElementById('searchNazhir');
+
+  const kabKotaDipilih = filterKabKota ? filterKabKota.value : '';
+  const jenisDipilih = filterJenis ? filterJenis.value : '';
+  const statusDipilih = filterStatus ? filterStatus.value : '';
+  const kataKunci = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+  const hasilFilter = semuaDataNazhir.filter(function(nazhir) {
+    const cocokKabKota =
+      !kabKotaDipilih || nazhir.kabKota === kabKotaDipilih;
+
+    const cocokJenis =
+      !jenisDipilih || nazhir.jenisNazhir === jenisDipilih;
+
+    const cocokStatus =
+      !statusDipilih || nazhir.statusNazhir === statusDipilih;
+
+    const teksPencarian = [
+      nazhir.idNazhir,
+      nazhir.namaNazhir,
+      nazhir.jenisNazhir,
+      nazhir.nomorRegistrasi,
+      nazhir.kabKota,
+      nazhir.kecamatan,
+      nazhir.desaKelurahan,
+      nazhir.statusNazhir
+    ].join(' ').toLowerCase();
+
+    const cocokPencarian =
+      !kataKunci || teksPencarian.includes(kataKunci);
+
+    return (
+      cocokKabKota &&
+      cocokJenis &&
+      cocokStatus &&
+      cocokPencarian
+    );
+  });
+
+  hasilFilterNazhir = hasilFilter;
+halamanNazhir = 1;
+renderDataNazhir();
+}
+
+
+function renderDataNazhir() {
+  const tbody = document.getElementById('dataNazhirBody');
+  const resultInfo = document.getElementById('resultInfoNazhir');
+  const pagination = document.getElementById('paginationNazhir');
+
+  if (!tbody) return;
+
+  const total = hasilFilterNazhir.length;
+  const totalHalaman = Math.ceil(total / dataPerHalamanNazhir);
+
+  if (halamanNazhir > totalHalaman && totalHalaman > 0) {
+    halamanNazhir = totalHalaman;
+  }
+
+  const mulai = (halamanNazhir - 1) * dataPerHalamanNazhir;
+  const dataHalaman = hasilFilterNazhir.slice(
+    mulai,
+    mulai + dataPerHalamanNazhir
+  );
+
+  if (resultInfo) {
+    resultInfo.textContent = total === 0
+      ? 'Tidak ada data'
+      : `Menampilkan ${mulai + 1}–${Math.min(mulai + dataPerHalamanNazhir, total)} dari ${total} data`;
+  }
+
+  if (total === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9">
+          <div class="data-empty">
+            <strong>Data Nazhir tidak ditemukan</strong>
+            <p>Coba ubah kata pencarian atau pilihan filter.</p>
+          </div>
+        </td>
+      </tr>
+    `;
+
+    if (pagination) pagination.innerHTML = '';
+    return;
+  }
+
+  tbody.innerHTML = dataHalaman.map(function(nazhir, index) {
+    const idNazhir = String(nazhir.idNazhir || '');
+
+    return `
+      <tr>
+        <td>${mulai + index + 1}</td>
+        <td>${escapeHTML(idNazhir || '-')}</td>
+        <td>${escapeHTML(nazhir.namaNazhir || '-')}</td>
+        <td>${escapeHTML(nazhir.jenisNazhir || '-')}</td>
+        <td>${escapeHTML(nazhir.kabKota || '-')}</td>
+        <td>${escapeHTML(nazhir.kecamatan || '-')}</td>
+        <td>${escapeHTML(nazhir.desaKelurahan || '-')}</td>
+        <td>${escapeHTML(nazhir.statusNazhir || '-')}</td>
+        <td>
+          <button
+            type="button"
+            class="btn-detail"
+            onclick="lihatDetailNazhir('${idNazhir.replace(/'/g, "\\'")}')"
+          >
+            Detail
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  if (!pagination || totalHalaman <= 1) {
+    if (pagination) pagination.innerHTML = '';
+    return;
+  }
+
+  let tombol = `
+    <button
+      type="button"
+      class="pagination-btn"
+      ${halamanNazhir === 1 ? 'disabled' : ''}
+      onclick="ubahHalamanNazhir(${halamanNazhir - 1})"
+    >‹</button>
+  `;
+
+  for (let i = 1; i <= totalHalaman; i++) {
+    tombol += `
+      <button
+        type="button"
+        class="pagination-btn ${i === halamanNazhir ? 'active' : ''}"
+        onclick="ubahHalamanNazhir(${i})"
+      >${i}</button>
+    `;
+  }
+
+  tombol += `
+    <button
+      type="button"
+      class="pagination-btn"
+      ${halamanNazhir === totalHalaman ? 'disabled' : ''}
+      onclick="ubahHalamanNazhir(${halamanNazhir + 1})"
+    >›</button>
+  `;
+
+  pagination.innerHTML = tombol;
+}
+
+function ubahHalamanNazhir(halaman) {
+  const totalHalaman = Math.ceil(
+    hasilFilterNazhir.length / dataPerHalamanNazhir
+  );
+
+  if (halaman < 1 || halaman > totalHalaman) return;
+
+  halamanNazhir = halaman;
+  renderDataNazhir();
+}
+
+
+function inisialisasiFilterNazhir() {
+  const filterKabKota = document.getElementById('filterKabKotaNazhir');
+  const filterJenis = document.getElementById('filterJenisNazhir');
+  const filterStatus = document.getElementById('filterStatusNazhir');
+  const searchInput = document.getElementById('searchNazhir');
+
+  // Isi pilihan Kabupaten/Kota dari data API
+  if (filterKabKota) {
+    const pilihanLama = filterKabKota.value;
+    const daftarKabKota = [
+      ...new Set(
+        semuaDataNazhir
+          .map(function(nazhir) {
+            return String(nazhir.kabKota || '').trim();
+          })
+          .filter(Boolean)
+      )
+    ].sort();
+
+    filterKabKota.innerHTML =
+      '<option value="">Semua Kabupaten / Kota</option>';
+
+    daftarKabKota.forEach(function(nama) {
+      const option = document.createElement('option');
+      option.value = nama;
+      option.textContent = nama;
+      filterKabKota.appendChild(option);
+    });
+
+    filterKabKota.value = pilihanLama;
+  }
+
+  // Hubungkan perubahan filter
+  if (filterKabKota) {
+    filterKabKota.onchange = terapkanFilterNazhir;
+  }
+
+  if (filterJenis) {
+    filterJenis.onchange = terapkanFilterNazhir;
+  }
+
+  if (filterStatus) {
+    filterStatus.onchange = terapkanFilterNazhir;
+  }
+
+  if (searchInput) {
+    searchInput.oninput = terapkanFilterNazhir;
   }
 }
 
