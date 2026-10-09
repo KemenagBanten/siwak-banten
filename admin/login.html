@@ -179,6 +179,14 @@
         id="loginMessage"
         role="alert"
       ></div>
+
+      
+<p style="text-align:center; margin-top:16px; font-size:14px;">
+  <a href="#" id="forgotPasswordLink" style="color:#174a8b;">
+    Lupa password?
+  </a>
+</p>
+      
     </form>
 
     <div class="login-footer">
@@ -202,6 +210,50 @@
   const loginForm = document.getElementById('loginForm');
   const loginButton = loginForm.querySelector('button[type="submit"]');
   const loginMessage = document.getElementById('loginMessage');
+  
+const forgotPasswordLink =
+  document.getElementById('forgotPasswordLink');
+
+forgotPasswordLink.addEventListener('click', async function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+
+  if (!email) {
+    loginMessage.style.display = 'block';
+    loginMessage.textContent =
+      'Masukkan email admin terlebih dahulu.';
+    return;
+  }
+
+  forgotPasswordLink.textContent = 'Mengirim email...';
+
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo:
+          'https://kemenagbanten.github.io/siwak-banten/admin/reset-password.html'
+      }
+    );
+
+    if (error) throw error;
+
+    loginMessage.style.display = 'block';
+    loginMessage.style.background = '#ecfdf5';
+    loginMessage.style.color = '#166534';
+    loginMessage.textContent =
+      'Jika email terdaftar, tautan pemulihan akan dikirim. Periksa kotak masuk dan folder spam.';
+  } catch (error) {
+    loginMessage.style.display = 'block';
+    loginMessage.style.background = '#fff1f2';
+    loginMessage.style.color = '#be123c';
+    loginMessage.textContent =
+      'Email reset belum berhasil dikirim. Silakan coba kembali.';
+  } finally {
+    forgotPasswordLink.textContent = 'Lupa password?';
+  }
+});
 
   // Aktifkan tombol setelah pustaka Supabase tersedia.
   loginButton.disabled = false;
