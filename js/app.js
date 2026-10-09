@@ -822,15 +822,10 @@ function ubahHalamanNazhir(halaman) {
 async function lihatDetailNazhir(idNazhir) {
    
 
-   console.log('Fungsi Detail Nazhir berjalan:', idNazhir);
    
   const modal = document.getElementById('detailNazhirModal');
 
-   console.log('Modal ditemukan:', !!modal);
-console.log('Class modal:', modal ? modal.className : 'TIDAK DITEMUKAN');
-console.log('CSS display:', modal ? getComputedStyle(modal).display : '-');
-console.log('CSS visibility:', modal ? getComputedStyle(modal).visibility : '-');
-   
+    
   const loading = document.getElementById('detailNazhirModalLoading');
   const error = document.getElementById('detailNazhirModalError');
   const errorMessage = document.getElementById('detailNazhirModalErrorMessage');
@@ -839,7 +834,7 @@ console.log('CSS visibility:', modal ? getComputedStyle(modal).visibility : '-')
   if (!modal) return;
 
   // Tampilkan modal dan status loading
-  modal.classList.add('is-open');
+  modal.classList.add('show');
 modal.setAttribute('aria-hidden', 'false');
 document.body.style.overflow = 'hidden';
 
@@ -925,7 +920,7 @@ function tutupDetailNazhir() {
 
   if (!modal) return;
 
-  modal.classList.remove('is-open');
+  modal.classList.remove('show');
   modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
 }
