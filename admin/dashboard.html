@@ -473,6 +473,49 @@ async function periksaSesiAdmin() {
   }
 }
 
+
+async function muatStatistikDashboard() {
+  const token = sessionStorage.getItem('siwakToken');
+
+  if (!token) return;
+
+  try {
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action: 'statistikDashboardAdmin',
+        token: token
+      })
+    });
+
+    const hasil = await response.json();
+
+    if (!response.ok || !hasil.success) {
+      throw new Error(
+        hasil.message || 'Statistik dashboard gagal dimuat.'
+      );
+    }
+
+    const statistik = hasil.statistik || {};
+
+    document.getElementById('totalWakaf').textContent =
+      Number(statistik.totalWakaf || 0).toLocaleString('id-ID');
+
+    document.getElementById('totalWakif').textContent =
+      Number(statistik.totalWakif || 0).toLocaleString('id-ID');
+
+    document.getElementById('totalNazhir').textContent =
+      Number(statistik.totalNazhir || 0).toLocaleString('id-ID');
+
+    console.log('Statistik dashboard berhasil dimuat.');
+  } catch (error) {
+    console.error('Gagal memuat statistik dashboard:', error);
+  }
+}
+    
 periksaSesiAdmin();
 
     document.getElementById('logoutButton').addEventListener('click', function() {
