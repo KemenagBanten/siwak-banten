@@ -909,6 +909,9 @@ async function lihatDetailNazhir(idNazhir) {
   }
 }
 
+async function lihatDetailNazhir(idNazhir) {
+  console.log('Tombol Detail diklik, ID:', idNazhir);
+
 function tutupDetailNazhir() {
   const modal = document.getElementById('detailNazhirModal');
 
