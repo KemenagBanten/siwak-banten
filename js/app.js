@@ -821,13 +821,16 @@ function ubahHalamanNazhir(halaman) {
 
 async function lihatDetailNazhir(idNazhir) {
    
-console.log('Modal ditemukan:', !!modal);
-console.log('Class modal:', modal ? modal.className : 'TIDAK DITEMUKAN');
-console.log('CSS display:', modal ? getComputedStyle(modal).display : '-');
-console.log('CSS visibility:', modal ? getComputedStyle(modal).visibility : '-');
+
    console.log('Fungsi Detail Nazhir berjalan:', idNazhir);
    
   const modal = document.getElementById('detailNazhirModal');
+
+   console.log('Modal ditemukan:', !!modal);
+console.log('Class modal:', modal ? modal.className : 'TIDAK DITEMUKAN');
+console.log('CSS display:', modal ? getComputedStyle(modal).display : '-');
+console.log('CSS visibility:', modal ? getComputedStyle(modal).visibility : '-');
+   
   const loading = document.getElementById('detailNazhirModalLoading');
   const error = document.getElementById('detailNazhirModalError');
   const errorMessage = document.getElementById('detailNazhirModalErrorMessage');
