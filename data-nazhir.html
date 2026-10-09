@@ -401,6 +401,205 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+ 
+<!-- =====================================================
+     MODAL DETAIL NAZHIR
+====================================================== -->
+
+<div
+  id="detailNazhirModal"
+  class="detail-wakif-modal"
+  aria-hidden="true"
+>
+  <div
+    class="detail-wakif-overlay"
+    onclick="tutupDetailNazhir()"
+  ></div>
+
+  <div
+    class="detail-wakif-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailNazhirModalTitle"
+  >
+
+    <!-- HEADER -->
+    <div class="detail-modal-header">
+      <div>
+        <div class="detail-card-kicker">
+          DETAIL DATA NAZHIR
+        </div>
+
+        <h2 id="detailNazhirModalTitle">
+          Detail Nazhir
+        </h2>
+      </div>
+
+      <button
+        type="button"
+        class="detail-modal-close"
+        onclick="tutupDetailNazhir()"
+        aria-label="Tutup"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- LOADING -->
+    <div
+      id="detailNazhirModalLoading"
+      class="detail-modal-loading"
+    >
+      <div class="detail-loading-icon">...</div>
+      <strong>Memuat detail Nazhir...</strong>
+      <p>Mohon tunggu sebentar.</p>
+    </div>
+
+    <!-- ERROR -->
+    <div
+      id="detailNazhirModalError"
+      class="detail-modal-error"
+      style="display:none;"
+    >
+      <strong>Detail tidak dapat dimuat</strong>
+      <p id="detailNazhirModalErrorMessage">
+        Terjadi kesalahan.
+      </p>
+    </div>
+
+    <!-- CONTENT -->
+    <div
+      id="detailNazhirModalContent"
+      class="detail-modal-content"
+      style="display:none;"
+    >
+
+      <!-- IDENTITAS NAZHIR -->
+      <section class="detail-modal-section">
+        <div class="detail-card-kicker">
+          IDENTITAS NAZHIR
+        </div>
+
+        <div class="detail-modal-title-row">
+          <h3 id="detailNazhirId">-</h3>
+
+          <span
+            id="detailNazhirStatus"
+            class="status-badge"
+          >
+            -
+          </span>
+        </div>
+
+        <div class="detail-modal-grid">
+
+          <div class="detail-modal-item">
+            <span>Nama Nazhir</span>
+            <strong id="detailNazhirNama">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Jenis Nazhir</span>
+            <strong id="detailNazhirJenis">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Nomor Registrasi</span>
+            <strong id="detailNazhirRegistrasi">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Kabupaten / Kota</span>
+            <strong id="detailNazhirKabKota">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Kecamatan</span>
+            <strong id="detailNazhirKecamatan">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Desa / Kelurahan</span>
+            <strong id="detailNazhirDesa">-</strong>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ALAMAT -->
+      <section class="detail-modal-section">
+        <div class="detail-card-kicker">
+          ALAMAT
+        </div>
+
+        <div class="detail-modal-address">
+          <span>Alamat Nazhir</span>
+          <strong id="detailNazhirAlamat">-</strong>
+        </div>
+      </section>
+
+      <!-- KONTAK -->
+      <section class="detail-modal-section">
+        <div class="detail-card-kicker">
+          INFORMASI KONTAK
+        </div>
+
+        <div class="detail-modal-grid">
+
+          <div class="detail-modal-item">
+            <span>Nomor Kontak</span>
+            <strong id="detailNazhirKontak">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Email</span>
+            <strong id="detailNazhirEmail">-</strong>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- KETERANGAN -->
+      <section class="detail-modal-section">
+        <div class="detail-card-kicker">
+          KETERANGAN
+        </div>
+
+        <div class="detail-modal-highlight">
+          <strong id="detailNazhirKeterangan">-</strong>
+        </div>
+      </section>
+
+      <!-- RIWAYAT PENCATATAN -->
+      <section class="detail-modal-section">
+        <div class="detail-card-kicker">
+          RIWAYAT PENCATATAN
+        </div>
+
+        <div class="detail-modal-grid">
+
+          <div class="detail-modal-item">
+            <span>Tanggal Input</span>
+            <strong id="detailNazhirTanggalInput">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>Tanggal Update</span>
+            <strong id="detailNazhirTanggalUpdate">-</strong>
+          </div>
+
+          <div class="detail-modal-item">
+            <span>ID Operator</span>
+            <strong id="detailNazhirOperator">-</strong>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+  
   <!-- COMPONENT -->
 
   <script src="js/components.js"></script>
