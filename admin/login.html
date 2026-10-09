@@ -189,14 +189,85 @@
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    // Koneksi Supabase akan ditambahkan pada langkah berikutnya.
-    document.getElementById('loginForm').addEventListener(
-      'submit',
-      function (event) {
-        event.preventDefault();
+  
+<script>
+  const SUPABASE_URL = 'https://xfsbjxnisagupgruzzcr.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'TEMPEL_PUBLISHABLE_KEY_ANDA';
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const loginForm = document.getElementById('loginForm');
+  const loginButton = loginForm.querySelector('button[type="submit"]');
+  const loginMessage = document.getElementById('loginMessage');
+
+  // Aktifkan tombol setelah pustaka Supabase tersedia.
+  loginButton.disabled = false;
+
+  loginForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    loginButton.disabled = true;
+    loginButton.textContent = 'Memeriksa akun...';
+    loginMessage.style.display = 'none';
+
+    try {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // 1. Login melalui Supabase Auth.
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+        throw new Error('Login gagal. Periksa email dan password Anda.');
       }
-    );
-  </script>
+
+      // 2. Minta Apps Script memverifikasi hak akses admin.
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify({
+            action: 'verifikasiAdmin',
+            access_token: data.session.access_token
+          })
+        }
+      );
+
+      const result = await response.json();
+
+      if (!result.success) {
+        await supabaseClient.auth.signOut();
+        throw new Error(result.message || 'Akun tidak memiliki akses admin.');
+      }
+
+      // Belum mengalihkan halaman sebelum dashboard admin tersedia.
+      loginMessage.style.display = 'block';
+      loginMessage.style.background = '#ecfdf5';
+      loginMessage.style.color = '#166534';
+      loginMessage.textContent =
+        'Login berhasil. Akun admin terverifikasi. Dashboard belum diaktifkan.';
+
+    } catch (error) {
+      loginMessage.style.display = 'block';
+      loginMessage.style.background = '#fff1f2';
+      loginMessage.style.color = '#be123c';
+      loginMessage.textContent = error.message;
+    } finally {
+      loginButton.disabled = false;
+      loginButton.textContent = 'Login';
+    }
+  });
+</script>
+  
 </body>
 </html>
