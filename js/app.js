@@ -829,8 +829,9 @@ async function lihatDetailNazhir(idNazhir) {
   if (!modal) return;
 
   // Tampilkan modal dan status loading
-  modal.classList.add('active');
-  modal.setAttribute('aria-hidden', 'false');
+  modal.classList.add('is-open');
+modal.setAttribute('aria-hidden', 'false');
+document.body.style.overflow = 'hidden';
 
   loading.style.display = 'block';
   error.style.display = 'none';
@@ -914,8 +915,9 @@ function tutupDetailNazhir() {
 
   if (!modal) return;
 
-  modal.classList.remove('active');
+  modal.classList.remove('is-open');
   modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
 }
 
 function formatTanggalNazhir(nilai) {
