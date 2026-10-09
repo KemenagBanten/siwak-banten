@@ -553,128 +553,113 @@ isiFilterKabKotaWakif(data);
     });
 
 }
+
 async function loadDataNazhir() {
+  const tbody = document.getElementById('dataNazhirBody');
 
-const tbody =
-document.getElementById('dataNazhirBody');
-
-if (!tbody) {
-return;
-}
-
-tbody.innerHTML = `     <tr>       <td colspan="9" class="empty-state">
-        Memuat data Nazhir...       </td>     </tr>
-  `;
-
-try {
-
-
-const response =
-  await fetch(
-    SIWAK_API_URL +
-    '?action=dataNazhir'
-  );
-
-const result =
-  await response.json();
-
-console.log(
-  'DATA NAZHIR API:',
-  result
-);
-
-if (
-  !result.success ||
-  !result.data ||
-  !Array.isArray(result.data.data)
-) {
-
-  throw new Error(
-    'Format data Nazhir tidak sesuai.'
-  );
-
-}
-
-const dataNazhir =
-  result.data.data;
-
-const totalElement =
-  document.getElementById('totalNazhir');
-
-if (totalElement) {
-  totalElement.textContent =
-    dataNazhir.length;
-}
-
-if (dataNazhir.length === 0) {
+  if (!tbody) return;
 
   tbody.innerHTML = `
     <tr>
-      <td colspan="9" class="empty-state">
-        Belum ada data Nazhir.
+      <td colspan="9">
+        <div class="data-empty">
+          <strong>Memuat data Nazhir...</strong>
+        </div>
       </td>
     </tr>
   `;
 
-  return;
-}
+  try {
+    const response = await fetch(
+      SIWAK_API_URL + '?action=dataNazhir'
+    );
 
-tbody.innerHTML =
-  dataNazhir.map(function(nazhir, index) {
+    const result = await response.json();
 
-    return `
+    console.log('DATA NAZHIR API:', result);
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error('Format data Nazhir tidak sesuai.');
+    }
+
+    const dataNazhir = result.data.data;
+
+    const totalElement = document.getElementById('totalDataNazhir');
+
+    if (totalElement) {
+      totalElement.textContent = dataNazhir.length;
+    }
+
+    const totalAktif = document.getElementById('totalNazhirAktif');
+
+    if (totalAktif) {
+      totalAktif.textContent = dataNazhir.filter(function(nazhir) {
+        return String(nazhir.statusNazhir || '').trim().toUpperCase() === 'AKTIF';
+      }).length;
+    }
+
+    const resultInfo = document.getElementById('resultInfoNazhir');
+
+    if (resultInfo) {
+      resultInfo.textContent = 'Menampilkan ' + dataNazhir.length + ' data';
+    }
+
+    if (dataNazhir.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9">
+            <div class="data-empty">
+              <strong>Data Nazhir belum tersedia</strong>
+              <p>Belum ada data Nazhir yang dapat ditampilkan.</p>
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = dataNazhir.map(function(nazhir, index) {
+      return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeHTML(nazhir.idNazhir || '-')}</td>
+          <td>${escapeHTML(nazhir.namaNazhir || '-')}</td>
+          <td>${escapeHTML(nazhir.jenisNazhir || '-')}</td>
+          <td>${escapeHTML(nazhir.kabKota || '-')}</td>
+          <td>${escapeHTML(nazhir.kecamatan || '-')}</td>
+          <td>${escapeHTML(nazhir.desaKelurahan || '-')}</td>
+          <td>${escapeHTML(nazhir.statusNazhir || '-')}</td>
+          <td>
+            <button
+              type="button"
+              class="btn-detail"
+              onclick="lihatDetailNazhir('${String(nazhir.idNazhir || '').replace(/'/g, "\\'")}')"
+            >
+              Detail
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+  } catch (error) {
+    console.error('ERROR DATA NAZHIR:', error);
+
+    tbody.innerHTML = `
       <tr>
-
-        <td>${index + 1}</td>
-
-        <td>${nazhir.idNazhir || '-'}</td>
-
-        <td>${nazhir.namaNazhir || '-'}</td>
-
-        <td>${nazhir.jenisNazhir || '-'}</td>
-
-        <td>${nazhir.kabKota || '-'}</td>
-
-        <td>${nazhir.kecamatan || '-'}</td>
-
-        <td>${nazhir.desaKelurahan || '-'}</td>
-
-        <td>${nazhir.statusNazhir || '-'}</td>
-
-        <td>
-          <button
-            type="button"
-            class="btn-detail"
-          >
-            Detail
-          </button>
+        <td colspan="9">
+          <div class="data-empty">
+            <strong>Gagal memuat data Nazhir</strong>
+            <p>Periksa koneksi API dan Console browser.</p>
+          </div>
         </td>
-
       </tr>
     `;
-
-  }).join('');
-
-
-} catch (error) {
-
-
-console.error(
-  'ERROR DATA NAZHIR:',
-  error
-);
-
-tbody.innerHTML = `
-  <tr>
-    <td colspan="9" class="empty-state">
-      Gagal memuat data Nazhir.
-    </td>
-  </tr>
-`;
-
-
-}
-
+  }
 }
 
 /* =========================================================
