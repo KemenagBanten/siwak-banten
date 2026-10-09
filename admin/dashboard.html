@@ -398,43 +398,82 @@
     const SIWAK_API_URL =
       'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
-    const token = sessionStorage.getItem('siwakToken');
-    const dataPengguna = sessionStorage.getItem('siwakPengguna');
+   
+async function periksaSesiAdmin() {
+  const token = sessionStorage.getItem('siwakToken');
+  const dataPengguna = sessionStorage.getItem('siwakPengguna');
 
-    if (!token || !dataPengguna) {
-      window.location.href = 'login.html';
-    } else {
-      try {
-        const pengguna = JSON.parse(dataPengguna);
+  if (!token || !dataPengguna) {
+    window.location.href = 'login.html';
+    return;
+  }
 
-        document.getElementById('namaPengguna').textContent =
-          pengguna.username || 'Admin';
+  try {
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action: 'verifikasiAdmin',
+        token: token
+      })
+    });
 
-        const isSuperAdmin =
-          pengguna.role === 'SUPER_ADMIN_PROVINSI';
+    const hasil = await response.json();
 
-        document.getElementById('rolePengguna').textContent =
-          isSuperAdmin ? 'Super Admin Provinsi' : 'Admin Kabupaten/Kota';
-
-        document.getElementById('sapaan').textContent =
-          'Selamat datang, ' + (pengguna.username || 'Admin') + '!';
-
-        document.getElementById('wilayahAkses').textContent =
-          isSuperAdmin ? 'Seluruh Banten' :
-          (pengguna.kodeWilayah || 'Wilayah terbatas');
-
-        document.getElementById('penggunaMenu').hidden = !isSuperAdmin;
-        document.getElementById('penggunaMenuTitle').hidden = !isSuperAdmin;
-
-        document.getElementById('statusSistem').textContent =
-          'Informasi akun berhasil dibaca dari sesi login. Verifikasi token ke server dan pengamanan API masih perlu diselesaikan sebelum dashboard digunakan untuk pengelolaan data.';
-
-      } catch (error) {
-        sessionStorage.removeItem('siwakToken');
-        sessionStorage.removeItem('siwakPengguna');
-        window.location.href = 'login.html';
-      }
+    if (!response.ok || !hasil.success) {
+      throw new Error('Sesi tidak valid.');
     }
+
+    const pengguna = JSON.parse(dataPengguna);
+
+    // Pastikan role dan wilayah cocok dengan hasil server
+    if (
+      hasil.pengguna &&
+      (
+        hasil.pengguna.idUser !== pengguna.idUser ||
+        hasil.pengguna.role !== pengguna.role ||
+        hasil.pengguna.kodeWilayah !== pengguna.kodeWilayah
+      )
+    ) {
+      throw new Error('Informasi akun tidak cocok.');
+    }
+
+    document.getElementById('namaPengguna').textContent =
+      pengguna.username || 'Admin';
+
+    const isSuperAdmin =
+      hasil.role === 'SUPER_ADMIN_PROVINSI' ||
+      (hasil.pengguna && hasil.pengguna.role === 'SUPER_ADMIN_PROVINSI');
+
+    const role = hasil.role ||
+      (hasil.pengguna && hasil.pengguna.role);
+
+    document.getElementById('rolePengguna').textContent =
+      isSuperAdmin ? 'Super Admin Provinsi' : 'Admin Kabupaten/Kota';
+
+    document.getElementById('sapaan').textContent =
+      'Selamat datang, ' + (pengguna.username || 'Admin') + '!';
+
+    document.getElementById('wilayahAkses').textContent =
+      isSuperAdmin ? 'Seluruh Banten' :
+      (pengguna.kodeWilayah || 'Wilayah terbatas');
+
+    document.getElementById('penggunaMenu').hidden = !isSuperAdmin;
+    document.getElementById('penggunaMenuTitle').hidden = !isSuperAdmin;
+
+    document.getElementById('statusSistem').textContent =
+      'Token sesi berhasil diverifikasi oleh server.';
+
+  } catch (error) {
+    sessionStorage.removeItem('siwakToken');
+    sessionStorage.removeItem('siwakPengguna');
+    window.location.href = 'login.html';
+  }
+}
+
+periksaSesiAdmin();
 
     document.getElementById('logoutButton').addEventListener('click', function() {
       sessionStorage.removeItem('siwakToken');
