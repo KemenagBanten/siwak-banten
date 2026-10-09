@@ -762,7 +762,7 @@ function renderDataNazhir() {
           <button
             type="button"
             class="btn-detail"
-            onclick="lihatDetailNazhir('${idNazhir.replace(/'/g, "\\'")}')"
+            onclick="alert('Tombol Detail diklik')"
           >
             Detail
           </button>
