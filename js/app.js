@@ -760,12 +760,12 @@ function renderDataNazhir() {
         <td>${escapeHTML(nazhir.statusNazhir || '-')}</td>
         <td>
           <button
-            type="button"
-            class="btn-detail"
-            onclick="alert('Tombol Detail diklik')"
-          >
-            Detail
-          </button>
+  type="button"
+  class="btn-detail"
+  onclick="lihatDetailNazhir('${idNazhir.replace(/'/g, "\\'")}')"
+>
+  Detail
+</button>
         </td>
       </tr>
     `;
@@ -820,6 +820,9 @@ function ubahHalamanNazhir(halaman) {
 
 
 async function lihatDetailNazhir(idNazhir) {
+
+   console.log('Fungsi Detail Nazhir berjalan:', idNazhir);
+   
   const modal = document.getElementById('detailNazhirModal');
   const loading = document.getElementById('detailNazhirModalLoading');
   const error = document.getElementById('detailNazhirModalError');
