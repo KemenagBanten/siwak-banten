@@ -516,13 +516,18 @@ async function muatStatistikDashboard() {
   }
 }
     
-periksaSesiAdmin();
 
-    document.getElementById('logoutButton').addEventListener('click', function() {
-      sessionStorage.removeItem('siwakToken');
-      sessionStorage.removeItem('siwakPengguna');
-      window.location.href = 'login.html';
-    });
+periksaSesiAdmin().then(function() {
+  if (sessionStorage.getItem('siwakToken')) {
+    muatStatistikDashboard();
+  }
+});
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+  sessionStorage.removeItem('siwakToken');
+  sessionStorage.removeItem('siwakPengguna');
+  window.location.href = 'login.html';
+});
   </script>
 </body>
 </html>
