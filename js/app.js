@@ -819,6 +819,124 @@ function ubahHalamanNazhir(halaman) {
 }
 
 
+async function lihatDetailNazhir(idNazhir) {
+  const modal = document.getElementById('detailNazhirModal');
+  const loading = document.getElementById('detailNazhirModalLoading');
+  const error = document.getElementById('detailNazhirModalError');
+  const errorMessage = document.getElementById('detailNazhirModalErrorMessage');
+  const content = document.getElementById('detailNazhirModalContent');
+
+  if (!modal) return;
+
+  // Tampilkan modal dan status loading
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+
+  loading.style.display = 'block';
+  error.style.display = 'none';
+  content.style.display = 'none';
+
+  try {
+    const url = SIWAK_API_URL
+      + '?action=detailNazhir&idNazhir='
+      + encodeURIComponent(idNazhir);
+
+    const response = await fetch(url);
+    const result = await response.json();
+
+    if (!response.ok || !result.success || !result.data) {
+      throw new Error(
+        result.message || 'Data Nazhir tidak ditemukan.'
+      );
+    }
+
+    const data = result.data;
+
+    // Isi data ke dalam modal
+    document.getElementById('detailNazhirId').textContent =
+      data.idNazhir || '-';
+
+    document.getElementById('detailNazhirNama').textContent =
+      data.namaNazhir || '-';
+
+    document.getElementById('detailNazhirJenis').textContent =
+      data.jenisNazhir || '-';
+
+    document.getElementById('detailNazhirRegistrasi').textContent =
+      data.nomorRegistrasi || '-';
+
+    document.getElementById('detailNazhirStatus').textContent =
+      data.statusNazhir || '-';
+
+    document.getElementById('detailNazhirKabKota').textContent =
+      data.kabKota || '-';
+
+    document.getElementById('detailNazhirKecamatan').textContent =
+      data.kecamatan || '-';
+
+    document.getElementById('detailNazhirDesa').textContent =
+      data.desaKelurahan || '-';
+
+    document.getElementById('detailNazhirAlamat').textContent =
+      data.alamat || '-';
+
+    document.getElementById('detailNazhirKontak').textContent =
+      data.kontak || '-';
+
+    document.getElementById('detailNazhirEmail').textContent =
+      data.email || '-';
+
+    document.getElementById('detailNazhirKeterangan').textContent =
+      data.keterangan || '-';
+
+    document.getElementById('detailNazhirTanggalInput').textContent =
+      formatTanggalNazhir(data.tanggalInput);
+
+    document.getElementById('detailNazhirTanggalUpdate').textContent =
+      formatTanggalNazhir(data.tanggalUpdate);
+
+    document.getElementById('detailNazhirOperator').textContent =
+      data.idOperator || '-';
+
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+  } catch (err) {
+    loading.style.display = 'none';
+    error.style.display = 'block';
+    errorMessage.textContent =
+      err.message || 'Terjadi kesalahan saat memuat data.';
+  }
+}
+
+function tutupDetailNazhir() {
+  const modal = document.getElementById('detailNazhirModal');
+
+  if (!modal) return;
+
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function formatTanggalNazhir(nilai) {
+  if (!nilai) return '-';
+
+  const tanggal = new Date(nilai);
+
+  if (isNaN(tanggal.getTime())) {
+    return String(nilai);
+  }
+
+  return tanggal.toLocaleString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Jakarta'
+  });
+}
+
 function inisialisasiFilterNazhir() {
   const filterKabKota = document.getElementById('filterKabKotaNazhir');
   const filterJenis = document.getElementById('filterJenisNazhir');
