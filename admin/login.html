@@ -285,10 +285,13 @@
       sessionStorage.removeItem('siwakToken');
       sessionStorage.removeItem('siwakPengguna');
 
-      tampilkanPesanLogin(
-        error.message ||
-        'Tidak dapat menghubungi server. Silakan coba kembali.'
-      );
+      
+tampilkanPesanLogin(
+  'Login berhasil. Mengalihkan ke dashboard...',
+  true
+);
+
+window.location.href = 'dashboard.html';
 
     } finally {
       loginButton.disabled = false;
