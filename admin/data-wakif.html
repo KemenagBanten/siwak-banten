@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -651,11 +650,6 @@
             </div>
 
             <div class="wakif-detail-item full">
-              <span class="wakif-detail-label">Alamat</span>
-              <div id="detailAlamatWakif" class="wakif-detail-value">-</div>
-            </div>
-
-            <div class="wakif-detail-item full">
               <span class="wakif-detail-label">Keterangan</span>
               <div id="detailKeteranganWakif" class="wakif-detail-value">-</div>
             </div>
@@ -794,6 +788,7 @@
 
     function isiTeksDetailWakif(id, nilai) {
       const elemen = document.getElementById(id);
+
       if (elemen) {
         elemen.textContent = tampilkanNilaiWakif(nilai);
       }
@@ -1093,6 +1088,15 @@
           );
         }
 
+        /*
+         * NAMA WAKIF
+         * Nama ditampilkan pada bagian paling atas modal.
+         */
+        isiTeksDetailWakif(
+          'detailNamaWakif',
+          nilaiWakif(detail, 'namaWakif', 'nama_wakif')
+        );
+
         isiTeksDetailWakif('detailIdWakif', idHasil);
 
         isiTeksDetailWakif(
@@ -1127,7 +1131,7 @@
 
         isiTeksDetailWakif(
           'detailJumlahWakaf',
-          nilaiWakif(detail, 'jumlahWakaf', 'jumlah_wakaf', 0)
+          nilaiWakif(detail, 'jumlahWakaf', 'jumlah_wakaf')
         );
 
         isiTeksDetailWakif(
@@ -1149,10 +1153,10 @@
           )
         );
 
-        tampilkanDaftarWakafWakif(
-  detail.daftarWakaf,
-  nilaiWakif(detail, 'alamat')
-);
+        /*
+         * Tampilkan kartu aset tanpa meneruskan alamat wakif.
+         */
+        tampilkanDaftarWakafWakif(detail.daftarWakaf);
 
         elWakif.loading.hidden = true;
         elWakif.content.hidden = false;
@@ -1169,7 +1173,11 @@
       }
     }
 
-    function tampilkanDaftarWakafWakif(daftar, alamatWakif) {
+    /* =====================================================
+       DAFTAR ASET WAKAF TERKAIT
+       ===================================================== */
+
+    function tampilkanDaftarWakafWakif(daftar) {
       elWakif.daftarWakaf.replaceChildren();
 
       if (!Array.isArray(daftar) || daftar.length === 0) {
@@ -1177,6 +1185,7 @@
         kosong.className = 'wakif-empty-list';
         kosong.textContent =
           'Belum ada data wakaf aktif dan publik yang terkait dengan wakif ini.';
+
         elWakif.daftarWakaf.appendChild(kosong);
         return;
       }
@@ -1197,26 +1206,23 @@
         const grid = document.createElement('div');
         grid.className = 'wakif-list-grid';
 
+        /*
+         * Kartu hanya menampilkan alamat aset.
+         * Alamat wakif dan wilayah yang berulang dihapus.
+         */
         const kolom = [
-  ['ID Wakaf', nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')],
           [
-  'Alamat Lengkap Aset',
-  nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
-],
-  ['Alamat Wakif', alamatWakif],
+            'ID Wakaf',
+            nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')
+          ],
           [
-  'Desa/Kelurahan',
-  nilaiWakif(wakaf, 'desaKelurahan', 'desa_kelurahan')
-],
-[
-  'Kecamatan',
-  nilaiWakif(wakaf, 'kecamatan')
-],
-[
-  'Kabupaten/Kota',
-  nilaiWakif(wakaf, 'kabKota', 'kab_kota')
-],
-          ['Jenis Aset', nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')],
+            'Alamat Lengkap Aset',
+            nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
+          ],
+          [
+            'Jenis Aset',
+            nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')
+          ],
           [
             'Luas',
             [
@@ -1226,7 +1232,10 @@
                 : nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas')
             ].filter(v => v !== '-' && v !== '').join(' ') || '-'
           ],
-          ['Tahun Wakaf', nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')],
+          [
+            'Tahun Wakaf',
+            nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')
+          ],
           [
             'ID Peruntukan',
             nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
@@ -1268,6 +1277,10 @@
         elWakif.daftarWakaf.appendChild(kartu);
       });
     }
+
+    /* =====================================================
+       TUTUP MODAL
+       ===================================================== */
 
     function tutupModalWakif() {
       elWakif.modal.classList.remove('open');
