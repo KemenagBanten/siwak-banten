@@ -1159,7 +1159,10 @@
           )
         );
 
-        tampilkanDaftarWakafWakif(detail.daftarWakaf);
+        tampilkanDaftarWakafWakif(
+  detail.daftarWakaf,
+  nilaiWakif(detail, 'alamat')
+);
 
         elWakif.loading.hidden = true;
         elWakif.content.hidden = false;
@@ -1176,7 +1179,7 @@
       }
     }
 
-    function tampilkanDaftarWakafWakif(daftar) {
+    function tampilkanDaftarWakafWakif(daftar, alamatWakif) {
       elWakif.daftarWakaf.replaceChildren();
 
       if (!Array.isArray(daftar) || daftar.length === 0) {
@@ -1205,8 +1208,8 @@
         grid.className = 'wakif-list-grid';
 
         const kolom = [
-          ['ID Wakaf', nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')],
-          ['Alamat Wakif', nilaiWakif(wakaf, 'alamat')],
+  ['ID Wakaf', nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')],
+  ['Alamat Wakif', alamatWakif],
           [
   'Desa/Kelurahan',
   nilaiWakif(wakaf, 'desaKelurahan', 'desa_kelurahan')
