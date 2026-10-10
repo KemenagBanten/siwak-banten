@@ -225,6 +225,28 @@
       overflow-wrap: anywhere;
     }
 
+/* SPINNER DI DALAM CARD RINGKASAN */
+.wakif-card-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+.wakif-spinner {
+  width: 27px;
+  height: 27px;
+  border: 3px solid #dcebe0;
+  border-top-color: var(--wakif-primary);
+  border-radius: 50%;
+  animation: wakif-spin .8s linear infinite;
+}
+
+@keyframes wakif-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
     /* PANEL DAN FILTER */
     .wakif-panel {
       min-width: 0;
@@ -650,7 +672,13 @@
       <div class="wakif-summary-icon" aria-hidden="true">♙</div>
       <div>
         <p class="wakif-summary-label">Total Wakif</p>
-        <p class="wakif-summary-number" id="summaryTotalWakif">—</p>
+       
+<p class="wakif-summary-number" id="summaryTotalWakif">
+  <span class="wakif-card-loading">
+    <span class="wakif-spinner" aria-label="Memuat data"></span>
+  </span>
+</p>
+
       </div>
     </div>
 
