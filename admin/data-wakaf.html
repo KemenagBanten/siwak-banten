@@ -974,6 +974,16 @@ async function loadDataWakaf() {
   
 elemen.status.textContent = 'Memuat data wakaf...';
 
+  
+[
+  'summaryTotalWakaf',
+  'summaryBersertifikat',
+  'summaryBelumSertifikat'
+].forEach(function(id) {
+  document.getElementById(id).innerHTML =
+    '<span class="wakaf-spinner" aria-label="Memuat data"></span>';
+});
+
 elemen.body.innerHTML =
   '<tr><td colspan="8" class="wakaf-message">' +
   '<span class="wakaf-loading">' +
