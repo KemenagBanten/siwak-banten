@@ -1,219 +1,441 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#125b43">
   <title>Data Wakif Admin - SIWAK Banten</title>
 
   <link rel="stylesheet" href="../css/style.css">
 
   <style>
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    :root {
+      --wakif-green: #145b43;
+      --wakif-green-dark: #0d4432;
+      --wakif-green-light: #eaf5ee;
+      --wakif-gold: #d5a642;
+      --wakif-blue: #28658b;
+      --wakif-text: #233447;
+      --wakif-muted: #718096;
+      --wakif-border: #e0e9e4;
+      --wakif-surface: #ffffff;
+      --wakif-background: #f3f6f4;
+      --wakif-shadow: 0 8px 26px rgba(19, 65, 47, .07);
     }
 
     body {
       margin: 0;
-      background: #f4f7f6;
-      color: #203047;
+      background:
+        radial-gradient(ellipse at top right, rgba(213,166,66,.09), transparent 34%),
+        var(--wakif-background);
+      color: var(--wakif-text);
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    button, input, select { font: inherit; }
+
     .wakif-page {
-      max-width: 1400px;
-      margin: 28px auto;
-      padding: 0 22px 40px;
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 30px 24px 48px;
     }
 
+    /* HEADER */
     .wakif-heading {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 20px;
+      margin-bottom: 25px;
+      padding: 25px 27px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: linear-gradient(120deg, #104b38, #176b4e 68%, #238064);
+      box-shadow: 0 12px 30px rgba(20,91,67,.16);
+      color: #fff;
+    }
+
+    .wakif-heading::after {
+      position: absolute;
+      right: -40px;
+      bottom: -105px;
+      width: 250px;
+      height: 250px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 50%;
+      box-shadow: 0 0 0 28px rgba(255,255,255,.035),
+                  0 0 0 58px rgba(255,255,255,.025);
+      content: "";
+      pointer-events: none;
+    }
+
+    .wakif-heading-main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .wakif-heading-icon {
+      display: grid;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 14px;
+      background: rgba(255,255,255,.12);
+      color: #f3d68c;
+      font-size: 24px;
     }
 
     .wakif-heading h1 {
       margin: 0 0 8px;
-      color: #175c46;
-      font-size: 28px;
+      color: #fff;
+      font-size: clamp(23px, 3vw, 30px);
+      font-weight: 750;
+      letter-spacing: -.5px;
     }
 
     .wakif-heading p {
+      max-width: 650px;
       margin: 0;
-      color: #64748b;
-      line-height: 1.6;
+      color: rgba(255,255,255,.82);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .wakif-heading-kicker {
+      display: block;
+      margin-bottom: 7px;
+      color: #f1d68e;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
     }
 
     .wakif-button {
+      position: relative;
+      z-index: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 10px 15px;
-      border: 0;
-      border-radius: 8px;
-      background: #176b50;
+      gap: 8px;
+      min-height: 42px;
+      padding: 11px 16px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: var(--wakif-green);
       color: #fff;
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
+      transition: background .2s, transform .2s, box-shadow .2s;
     }
 
     .wakif-button:hover {
-      background: #10543e;
+      transform: translateY(-1px);
+      background: var(--wakif-green-dark);
+      box-shadow: 0 5px 14px rgba(0,0,0,.12);
     }
 
     .wakif-button.secondary {
-      background: #e8eef2;
-      color: #334155;
+      border-color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      white-space: nowrap;
     }
 
     .wakif-button.secondary:hover {
-      background: #dbe4e9;
+      background: rgba(255,255,255,.2);
     }
 
+    /* SUMMARY CARDS */
     .wakif-summary {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 22px;
+      gap: 17px;
+      margin-bottom: 23px;
     }
 
     .wakif-summary-card {
       position: relative;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      min-height: 126px;
       padding: 22px;
-      border: 1px solid #e0e9e4;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
+      overflow: hidden;
+      border: 1px solid var(--wakif-border);
+      border-radius: 16px;
+      background: var(--wakif-surface);
+      box-shadow: var(--wakif-shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .wakif-summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(19,65,47,.11);
     }
 
     .wakif-summary-card::before {
       position: absolute;
       top: 0;
       left: 0;
-      width: 5px;
+      width: 4px;
       height: 100%;
-      background: #248363;
+      background: var(--wakif-green);
       content: "";
     }
 
+    .wakif-summary-card:nth-child(2)::before {
+      background: var(--wakif-gold);
+    }
+
+    .wakif-summary-card:nth-child(3)::before {
+      background: var(--wakif-blue);
+    }
+
+    .wakif-summary-icon {
+      display: grid;
+      flex: 0 0 50px;
+      width: 50px;
+      height: 50px;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--wakif-green-light);
+      color: var(--wakif-green);
+      font-size: 23px;
+    }
+
+    .wakif-summary-card:nth-child(2) .wakif-summary-icon {
+      background: #fbf3df;
+      color: #98701c;
+    }
+
+    .wakif-summary-card:nth-child(3) .wakif-summary-icon {
+      background: #eaf2fa;
+      color: var(--wakif-blue);
+    }
+
+    .wakif-summary-text { min-width: 0; }
+
     .wakif-summary-card span {
       display: block;
-      margin-bottom: 10px;
-      color: #64748b;
-      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--wakif-muted);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
     }
 
     .wakif-summary-card strong {
-      color: #176b50;
-      font-size: 30px;
+      display: block;
+      color: var(--wakif-green);
+      font-size: 31px;
+      font-weight: 750;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
     }
 
+    .wakif-summary-card:nth-child(2) strong { color: #98701c; }
+    .wakif-summary-card:nth-child(3) strong { color: var(--wakif-blue); }
+
+    /* MAIN PANEL */
     .wakif-panel {
-      padding: 22px;
-      border: 1px solid #e0e9e4;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
+      padding: 23px;
+      border: 1px solid var(--wakif-border);
+      border-radius: 17px;
+      background: var(--wakif-surface);
+      box-shadow: var(--wakif-shadow);
+    }
+
+    .wakif-panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .wakif-panel-title {
+      margin: 0 0 5px;
+      color: var(--wakif-green-dark);
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .wakif-panel-subtitle {
+      margin: 0;
+      color: var(--wakif-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .wakif-panel-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border: 1px solid #dcebe1;
+      border-radius: 20px;
+      background: #f0f7f2;
+      color: var(--wakif-green);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .wakif-panel-label::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #32976d;
+      content: "";
     }
 
     .wakif-toolbar {
       display: grid;
-      grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(180px, 1fr));
+      grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(175px, 1fr));
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 19px;
+    }
+
+    .wakif-search-wrap { position: relative; min-width: 0; }
+
+    .wakif-search-icon {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      color: #7a8b86;
+      font-size: 17px;
+      pointer-events: none;
     }
 
     .wakif-toolbar input,
     .wakif-toolbar select {
       width: 100%;
       min-width: 0;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      min-height: 45px;
+      padding: 11px 13px;
+      border: 1px solid #d9e3de;
+      border-radius: 10px;
       outline: none;
       background: #fff;
-      color: #203047;
-      font-size: 14px;
+      color: var(--wakif-text);
+      font-size: 13px;
+      transition: border-color .2s, box-shadow .2s;
     }
+
+    .wakif-toolbar input { padding-left: 40px; }
+
+    .wakif-toolbar input::placeholder { color: #98a5a0; }
 
     .wakif-toolbar input:focus,
     .wakif-toolbar select:focus {
-      border-color: #248363;
-      box-shadow: 0 0 0 3px rgba(36, 131, 99, .12);
+      border-color: #278362;
+      box-shadow: 0 0 0 3px rgba(39,131,98,.12);
     }
 
     .wakif-table-wrap {
       width: 100%;
       overflow-x: auto;
-      border: 1px solid #e7edf0;
-      border-radius: 9px;
+      border: 1px solid #e3ebe6;
+      border-radius: 12px;
+      scrollbar-width: thin;
     }
 
     .wakif-table {
       width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
+      min-width: 980px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12px;
     }
 
     .wakif-table th,
     .wakif-table td {
-      padding: 13px 12px;
-      border-bottom: 1px solid #e8edf2;
+      padding: 14px 13px;
+      border-bottom: 1px solid #eaf0ec;
       text-align: left;
       vertical-align: middle;
     }
 
     .wakif-table th {
-      background: #edf5f0;
-      color: #285643;
-      font-weight: 700;
+      background: #edf5ef;
+      color: #285b45;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .25px;
       white-space: nowrap;
     }
 
-    .wakif-table tbody tr:hover {
-      background: #f7fbf8;
-    }
+    .wakif-table tbody tr { transition: background .15s; }
+    .wakif-table tbody tr:hover { background: #f5faf6; }
+    .wakif-table tbody tr:last-child td { border-bottom: 0; }
 
-    .wakif-table tbody tr:last-child td {
-      border-bottom: 0;
+    .wakif-table td { line-height: 1.55; }
+
+    .wakif-table td:first-child {
+      color: #82918a;
+      font-variant-numeric: tabular-nums;
     }
 
     .wakif-id {
-      color: #176b50;
-      font-weight: 700;
+      color: var(--wakif-green);
+      font-weight: 750;
       white-space: nowrap;
     }
 
     .wakif-detail-button {
-      padding: 7px 11px;
-      border: 1px solid #b7d9ca;
-      border-radius: 7px;
-      background: #edf8f2;
-      color: #176b50;
-      font-size: 12px;
-      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 32px;
+      padding: 7px 12px;
+      border: 1px solid #c9e2d3;
+      border-radius: 8px;
+      background: #edf7f0;
+      color: #176446;
+      font-size: 11px;
+      font-weight: 750;
       cursor: pointer;
       white-space: nowrap;
+      transition: background .2s, border-color .2s;
     }
 
     .wakif-detail-button:hover {
-      background: #dcefe4;
+      border-color: #93c7aa;
+      background: #dcefe3;
     }
 
     .wakif-info {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 16px;
-      color: #64748b;
-      font-size: 13px;
+      margin-top: 17px;
+      color: var(--wakif-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .wakif-status {
+      color: #52806a;
+      font-size: 11px;
     }
 
     .wakif-pagination {
@@ -221,42 +443,50 @@
       justify-content: flex-end;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 16px;
+      margin-top: 17px;
     }
 
     .wakif-pagination button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-width: 36px;
-      padding: 8px 11px;
-      border: 1px solid #d5dee7;
-      border-radius: 7px;
+      min-height: 35px;
+      padding: 7px 11px;
+      border: 1px solid #dbe5df;
+      border-radius: 8px;
       background: #fff;
-      color: #203047;
+      color: #41534a;
+      font-size: 12px;
+      font-weight: 650;
       cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+
+    .wakif-pagination button:hover:not(:disabled):not(.active) {
+      border-color: #a9cdb8;
+      background: #f1f8f3;
     }
 
     .wakif-pagination button.active {
-      border-color: #176b50;
-      background: #176b50;
+      border-color: var(--wakif-green);
+      background: var(--wakif-green);
       color: #fff;
+      box-shadow: 0 3px 8px rgba(20,91,67,.15);
     }
 
     .wakif-pagination button:disabled {
-      opacity: .45;
+      opacity: .4;
       cursor: not-allowed;
     }
 
     .wakif-message {
-      padding: 28px 12px !important;
-      color: #64748b;
+      padding: 32px 14px !important;
+      color: var(--wakif-muted);
       text-align: center !important;
     }
 
-    .wakif-status {
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    /* MODAL DETAIL */
+    /* DETAIL MODAL */
     .wakif-modal {
       position: fixed;
       z-index: 9999;
@@ -265,21 +495,27 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: rgba(15, 23, 42, .6);
+      background: rgba(12,32,24,.64);
+      backdrop-filter: blur(4px);
     }
 
-    .wakif-modal.open {
-      display: flex;
-    }
+    .wakif-modal.open { display: flex; }
 
     .wakif-modal-box {
       width: 100%;
-      max-width: 900px;
-      max-height: 90vh;
-      overflow-y: auto;
-      border-radius: 14px;
+      max-width: 940px;
+      max-height: 91vh;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 18px;
       background: #fff;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+      box-shadow: 0 25px 80px rgba(0,0,0,.25);
+      animation: wakifModalMasuk .2s ease-out;
+    }
+
+    @keyframes wakifModalMasuk {
+      from { opacity: 0; transform: translateY(8px) scale(.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .wakif-modal-header {
@@ -289,83 +525,140 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 14px;
+      padding: 19px 23px;
+      border-bottom: 1px solid #e4ece7;
+      background: rgba(255,255,255,.97);
+    }
+
+    .wakif-modal-header-title {
+      display: flex;
+      align-items: center;
       gap: 12px;
-      padding: 18px 22px;
-      border-bottom: 1px solid #e2e8f0;
-      background: #fff;
+    }
+
+    .wakif-modal-header-icon {
+      display: grid;
+      flex: 0 0 40px;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--wakif-green-light);
+      color: var(--wakif-green);
+      font-size: 20px;
     }
 
     .wakif-modal-header h2 {
       margin: 0;
-      color: #175c46;
-      font-size: 20px;
+      color: var(--wakif-green-dark);
+      font-size: 19px;
+    }
+
+    .wakif-modal-header p {
+      margin: 5px 0 0;
+      color: var(--wakif-muted);
+      font-size: 12px;
     }
 
     .wakif-close {
-      width: 36px;
-      height: 36px;
-      border: 0;
-      border-radius: 8px;
-      background: #eef2f5;
-      color: #334155;
-      font-size: 23px;
+      display: grid;
+      flex: 0 0 37px;
+      width: 37px;
+      height: 37px;
+      place-items: center;
+      border: 1px solid #e2e9e4;
+      border-radius: 10px;
+      background: #f5f7f5;
+      color: #47574e;
+      font-size: 24px;
       cursor: pointer;
     }
 
-    .wakif-modal-content {
-      padding: 22px;
-    }
+    .wakif-close:hover { background: #e8eee9; }
+
+    .wakif-modal-content { padding: 23px; }
 
     .wakif-modal-loading,
     .wakif-modal-error {
-      padding: 28px 12px;
-      color: #64748b;
+      padding: 30px 12px;
+      color: var(--wakif-muted);
       text-align: center;
+      line-height: 1.7;
     }
 
-    .wakif-modal-error {
-      color: #b42318;
-    }
+    .wakif-modal-error { color: #b42318; }
 
     .wakif-detail-heading {
+      position: relative;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding: 18px;
-      border: 1px solid #d9e9df;
-      border-radius: 10px;
-      background: #f3f9f5;
+      gap: 15px;
+      margin-bottom: 24px;
+      padding: 22px;
+      overflow: hidden;
+      border: 1px solid #d8e9dd;
+      border-radius: 14px;
+      background: linear-gradient(120deg, #eff8f1, #f8fbf8);
+    }
+
+    .wakif-detail-heading::after {
+      position: absolute;
+      right: -24px;
+      bottom: -70px;
+      width: 150px;
+      height: 150px;
+      border: 20px solid rgba(36,131,99,.045);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
     }
 
     .wakif-detail-heading h3 {
       margin: 0 0 8px;
-      color: #175c46;
-      font-size: 21px;
+      color: var(--wakif-green-dark);
+      font-size: 22px;
+      overflow-wrap: anywhere;
     }
 
     .wakif-detail-heading p {
       margin: 0;
-      color: #64748b;
-      font-size: 13px;
+      color: var(--wakif-muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
     }
 
     .wakif-badge {
+      position: relative;
+      z-index: 1;
       display: inline-block;
-      padding: 6px 10px;
+      padding: 7px 12px;
+      border: 1px solid #d4e8da;
       border-radius: 20px;
-      background: #dcefe4;
-      color: #176b50;
-      font-size: 12px;
-      font-weight: 700;
+      background: #e1f1e6;
+      color: var(--wakif-green);
+      font-size: 11px;
+      font-weight: 750;
     }
 
     .wakif-section-title {
-      margin: 24px 0 12px;
-      color: #285643;
-      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 25px 0 13px;
+      color: var(--wakif-green-dark);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .wakif-section-title::before {
+      width: 4px;
+      height: 19px;
+      border-radius: 4px;
+      background: var(--wakif-gold);
+      content: "";
     }
 
     .wakif-detail-grid {
@@ -376,112 +669,133 @@
 
     .wakif-detail-item {
       min-width: 0;
-      padding: 13px;
-      border: 1px solid #e6ebef;
-      border-radius: 9px;
+      padding: 14px;
+      border: 1px solid #e5ece7;
+      border-radius: 11px;
       background: #fff;
     }
 
-    .wakif-detail-item.full {
-      grid-column: 1 / -1;
-    }
+    .wakif-detail-item.full { grid-column: 1 / -1; }
 
     .wakif-detail-label {
       display: block;
       margin-bottom: 7px;
-      color: #64748b;
-      font-size: 12px;
+      color: var(--wakif-muted);
+      font-size: 11px;
+      font-weight: 600;
     }
 
     .wakif-detail-value {
-      color: #203047;
-      font-size: 14px;
-      line-height: 1.6;
+      color: #263b30;
+      font-size: 13px;
+      line-height: 1.7;
       overflow-wrap: anywhere;
       white-space: pre-wrap;
     }
 
     .wakif-list {
       display: grid;
-      gap: 12px;
+      gap: 14px;
     }
 
     .wakif-list-card {
-      padding: 16px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      background: #fbfdfc;
+      padding: 17px;
+      border: 1px solid #e0eae3;
+      border-radius: 13px;
+      background: #fbfdfb;
     }
 
     .wakif-list-card h4 {
-      margin: 0 0 12px;
-      color: #176b50;
-      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e6eee8;
+      color: var(--wakif-green);
+      font-size: 14px;
+      overflow-wrap: anywhere;
     }
 
     .wakif-list-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: 14px;
     }
+
+    .wakif-list-item { min-width: 0; }
 
     .wakif-list-item span {
       display: block;
-      margin-bottom: 4px;
-      color: #64748b;
-      font-size: 12px;
+      margin-bottom: 5px;
+      color: var(--wakif-muted);
+      font-size: 11px;
     }
 
     .wakif-list-item strong {
-      color: #334155;
-      font-size: 13px;
-      font-weight: 600;
+      color: #33483c;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.65;
       overflow-wrap: anywhere;
     }
 
     .wakif-empty-list {
-      padding: 20px;
-      border: 1px dashed #cbd5e1;
-      border-radius: 9px;
-      color: #64748b;
+      padding: 23px;
+      border: 1px dashed #cbded0;
+      border-radius: 12px;
+      background: #fafcfb;
+      color: var(--wakif-muted);
+      font-size: 13px;
+      line-height: 1.7;
       text-align: center;
     }
 
-    @media (max-width: 800px) {
-      .wakif-toolbar {
-        grid-template-columns: 1fr;
-      }
+    [hidden] { display: none !important; }
 
-      .wakif-summary {
-        grid-template-columns: 1fr;
-      }
-
-      .wakif-page {
-        padding-right: 12px;
-        padding-left: 12px;
-      }
-
-      .wakif-panel {
-        padding: 14px;
-      }
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .wakif-page { padding: 22px 16px 36px; }
+      .wakif-toolbar { grid-template-columns: 1fr 1fr; }
+      .wakif-search-wrap { grid-column: 1 / -1; }
+      .wakif-summary { gap: 12px; }
+      .wakif-summary-card { padding: 17px; gap: 12px; }
+      .wakif-summary-icon { flex-basis: 42px; width: 42px; height: 42px; }
+      .wakif-summary-card strong { font-size: 27px; }
+      .wakif-panel { padding: 18px; }
     }
 
-    @media (max-width: 560px) {
-      .wakif-detail-grid,
-      .wakif-list-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 600px) {
+      .wakif-page { padding: 15px 11px 28px; }
+      .wakif-heading { align-items: flex-start; padding: 20px 17px; }
+      .wakif-heading-main { gap: 11px; }
+      .wakif-heading-icon { flex-basis: 40px; width: 40px; height: 40px; font-size: 20px; }
+      .wakif-heading h1 { font-size: 23px; }
+      .wakif-heading p { font-size: 12px; }
+      .wakif-button.secondary { width: 100%; }
+      .wakif-summary { grid-template-columns: 1fr; gap: 11px; }
+      .wakif-summary-card { min-height: 96px; padding: 17px 19px; }
+      .wakif-summary-card strong { font-size: 28px; }
+      .wakif-panel { padding: 14px; border-radius: 14px; }
+      .wakif-toolbar { grid-template-columns: 1fr; }
+      .wakif-search-wrap { grid-column: auto; }
+      .wakif-panel-heading { align-items: flex-start; }
+      .wakif-detail-grid, .wakif-list-grid { grid-template-columns: 1fr; }
+      .wakif-modal { padding: 7px; }
+      .wakif-modal-box { max-height: 95vh; border-radius: 13px; }
+      .wakif-modal-header { padding: 14px; }
+      .wakif-modal-content { padding: 14px; }
+      .wakif-detail-heading { padding: 16px; }
+      .wakif-detail-heading h3 { font-size: 19px; }
+      .wakif-list-card { padding: 14px; }
+      .wakif-info { align-items: flex-start; flex-direction: column; }
+    }
 
-      .wakif-modal {
-        padding: 8px;
-      }
-
-      .wakif-modal-content {
-        padding: 14px;
-      }
-
-      .wakif-modal-header {
-        padding: 14px;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
@@ -491,43 +805,69 @@
   <main class="wakif-page">
 
     <header class="wakif-heading">
-      <div>
-        <h1>Data Wakif</h1>
-        <p>Daftar dan informasi wakif dalam Sistem Informasi Wakaf Banten.</p>
+      <div class="wakif-heading-main">
+        <div class="wakif-heading-icon" aria-hidden="true">♙</div>
+        <div>
+          <span class="wakif-heading-kicker">SIWAK Banten · Panel Admin</span>
+          <h1>Data Wakif</h1>
+          <p>Daftar dan informasi wakif dalam Sistem Informasi Wakaf Banten.</p>
+        </div>
       </div>
 
       <a class="wakif-button secondary" href="dashboard.html">
-        ← Kembali ke Dashboard
+        <span aria-hidden="true">←</span> Kembali ke Dashboard
       </a>
     </header>
 
     <!-- RINGKASAN -->
-    <section class="wakif-summary">
+    <section class="wakif-summary" aria-label="Ringkasan data wakif">
       <div class="wakif-summary-card">
-        <span>Total Wakif Terdata</span>
-        <strong id="totalWakif">0</strong>
+        <div class="wakif-summary-icon" aria-hidden="true">♙</div>
+        <div class="wakif-summary-text">
+          <span>Total Wakif Terdata</span>
+          <strong id="totalWakif">0</strong>
+        </div>
       </div>
 
       <div class="wakif-summary-card">
-        <span>Wakif Memiliki Wakaf</span>
-        <strong id="wakifMemilikiWakaf">0</strong>
+        <div class="wakif-summary-icon" aria-hidden="true">▣</div>
+        <div class="wakif-summary-text">
+          <span>Wakif Memiliki Wakaf</span>
+          <strong id="wakifMemilikiWakaf">0</strong>
+        </div>
       </div>
 
       <div class="wakif-summary-card">
-        <span>Total Wakaf Terkait</span>
-        <strong id="totalWakafWakif">0</strong>
+        <div class="wakif-summary-icon" aria-hidden="true">⌂</div>
+        <div class="wakif-summary-text">
+          <span>Total Wakaf Terkait</span>
+          <strong id="totalWakafWakif">0</strong>
+        </div>
       </div>
     </section>
 
     <!-- TABEL DATA WAKIF -->
     <section class="wakif-panel">
+      <div class="wakif-panel-heading">
+        <div>
+          <h2 class="wakif-panel-title">Daftar Wakif</h2>
+          <p class="wakif-panel-subtitle">
+            Cari, saring, dan lihat detail data wakif yang terdaftar.
+          </p>
+        </div>
+        <span class="wakif-panel-label">Data Wakif</span>
+      </div>
+
       <div class="wakif-toolbar">
-        <input
-          id="searchWakif"
-          type="search"
-          placeholder="Cari ID, nama, NIK, alamat, atau wilayah..."
-          aria-label="Cari data wakif"
-        >
+        <div class="wakif-search-wrap">
+          <span class="wakif-search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="searchWakif"
+            type="search"
+            placeholder="Cari ID, nama, NIK, alamat, atau wilayah..."
+            aria-label="Cari data wakif"
+          >
+        </div>
 
         <select id="filterKabKotaWakif" aria-label="Filter kabupaten kota">
           <option value="">Semua Kabupaten/Kota</option>
@@ -556,9 +896,7 @@
 
           <tbody id="dataWakifBody">
             <tr>
-              <td colspan="9" class="wakif-message">
-                Memuat data wakif...
-              </td>
+              <td colspan="9" class="wakif-message">Memuat data wakif...</td>
             </tr>
           </tbody>
         </table>
@@ -566,7 +904,7 @@
 
       <div class="wakif-info">
         <span id="resultInfoWakif">Menyiapkan data...</span>
-        <span id="statusWakif" class="wakif-status"></span>
+        <span id="statusWakif" class="wakif-status" role="status" aria-live="polite"></span>
       </div>
 
       <div
@@ -587,7 +925,13 @@
   >
     <div class="wakif-modal-box">
       <div class="wakif-modal-header">
-        <h2 id="judulDetailWakif">Detail Wakif</h2>
+        <div class="wakif-modal-header-title">
+          <div class="wakif-modal-header-icon" aria-hidden="true">♙</div>
+          <div>
+            <h2 id="judulDetailWakif">Detail Wakif</h2>
+            <p>Informasi wakif dan aset wakaf terkait</p>
+          </div>
+        </div>
         <button
           type="button"
           id="tutupDetailWakif"
@@ -601,11 +945,7 @@
           Memuat detail wakif...
         </div>
 
-        <div
-          id="detailWakifError"
-          class="wakif-modal-error"
-          hidden
-        ></div>
+        <div id="detailWakifError" class="wakif-modal-error" hidden></div>
 
         <div id="detailWakifContent" hidden>
           <div class="wakif-detail-heading">
@@ -967,7 +1307,7 @@
                   type="button"
                   class="wakif-detail-button"
                   data-id-wakif="${teksAmanWakif(id)}"
-                >Detail</button>
+                >Lihat Detail →</button>
               </td>
             </tr>
           `;
@@ -996,6 +1336,10 @@
         tombol.disabled = nonaktif;
 
         if (aktif) tombol.classList.add('active');
+
+        if (aktif) {
+          tombol.setAttribute('aria-current', 'page');
+        }
 
         tombol.addEventListener('click', () => {
           halamanWakif = tujuan;
@@ -1059,9 +1403,7 @@
         }
 
         /*
-         * Mendukung dua bentuk respons:
-         * { success: true, data: { idWakif: ... } }
-         * { success: true, data: { data: { idWakif: ... } } }
+         * Mendukung dua bentuk respons API.
          */
         let detail = hasil.data;
 
@@ -1088,10 +1430,6 @@
           );
         }
 
-        /*
-         * NAMA WAKIF
-         * Nama ditampilkan pada bagian paling atas modal.
-         */
         isiTeksDetailWakif(
           'detailNamaWakif',
           nilaiWakif(detail, 'namaWakif', 'nama_wakif')
@@ -1153,9 +1491,6 @@
           )
         );
 
-        /*
-         * Tampilkan kartu aset tanpa meneruskan alamat wakif.
-         */
         tampilkanDaftarWakafWakif(detail.daftarWakaf);
 
         elWakif.loading.hidden = true;
@@ -1206,61 +1541,64 @@
         const grid = document.createElement('div');
         grid.className = 'wakif-list-grid';
 
-       const kolom = [
-  [
-    'ID Wakaf',
-    nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')
-  ],
-  [
-    'Alamat Lengkap Aset',
-    nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
-  ],
-  [
-    'Kabupaten/Kota',
-    nilaiWakif(wakaf, 'kabKota', 'kab_kota')
-  ],
-  [
-    'Kecamatan',
-    nilaiWakif(wakaf, 'kecamatan')
-  ],
-  [
-    'Desa/Kelurahan',
-    nilaiWakif(wakaf, 'desaKelurahan', 'desa_kelurahan')
-  ],
-  [
-    'Jenis Aset',
-    nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')
-  ],
-  [
-    'Luas',
-    [
-      nilaiWakif(wakaf, 'luas'),
-      nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas') === '-'
-        ? ''
-        : nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas')
-    ].filter(v => v !== '-' && v !== '').join(' ') || '-'
-  ],
-  [
-    'Tahun Wakaf',
-    nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')
-  ],
-  [
-    'ID Peruntukan',
-    nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
-  ],
-  [
-    'Nomor AIW/APAIW',
-    nilaiWakif(wakaf, 'nomorAiwApaiw', 'nomor_aiw_apaiw')
-  ],
-  [
-    'Status Sertifikasi',
-    nilaiWakif(wakaf, 'statusSertifikasi', 'status_sertifikasi')
-  ],
-  [
-    'Nomor Sertifikat',
-    nilaiWakif(wakaf, 'nomorSertifikat', 'nomor_sertifikat')
-  ]
-];
+        const nilaiLuas = nilaiWakif(wakaf, 'luas');
+        const satuanLuas = nilaiWakif(
+          wakaf, 'satuanLuas', 'satuan_luas'
+        );
+
+        const kolom = [
+          [
+            'ID Wakaf',
+            nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')
+          ],
+          [
+            'Alamat Lengkap Aset',
+            nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
+          ],
+          [
+            'Kabupaten/Kota',
+            nilaiWakif(wakaf, 'kabKota', 'kab_kota')
+          ],
+          [
+            'Kecamatan',
+            nilaiWakif(wakaf, 'kecamatan')
+          ],
+          [
+            'Desa/Kelurahan',
+            nilaiWakif(wakaf, 'desaKelurahan', 'desa_kelurahan')
+          ],
+          [
+            'Jenis Aset',
+            nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')
+          ],
+          [
+            'Luas',
+            [
+              nilaiLuas,
+              satuanLuas === '-' ? '' : satuanLuas
+            ].filter(v => v !== '-' && v !== '').join(' ') || '-'
+          ],
+          [
+            'Tahun Wakaf',
+            nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')
+          ],
+          [
+            'ID Peruntukan',
+            nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
+          ],
+          [
+            'Nomor AIW/APAIW',
+            nilaiWakif(wakaf, 'nomorAiwApaiw', 'nomor_aiw_apaiw')
+          ],
+          [
+            'Status Sertifikasi',
+            nilaiWakif(wakaf, 'statusSertifikasi', 'status_sertifikasi')
+          ],
+          [
+            'Nomor Sertifikat',
+            nilaiWakif(wakaf, 'nomorSertifikat', 'nomor_sertifikat')
+          ]
+        ];
 
         kolom.forEach(([label, nilai]) => {
           const item = document.createElement('div');
@@ -1334,4 +1672,3 @@
   </script>
 </body>
 </html>
-
