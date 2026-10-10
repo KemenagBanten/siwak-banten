@@ -442,6 +442,33 @@
       line-height: 1.7;
     }
 
+    
+/* Animasi loading Data Wakaf */
+.wakaf-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: wakaf-berputar 0.7s linear infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+@keyframes wakaf-berputar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wakaf-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+}
+
     /* MODAL DETAIL */
     .wakaf-modal {
       position: fixed;
