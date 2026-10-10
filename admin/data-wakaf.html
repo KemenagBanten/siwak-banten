@@ -859,7 +859,9 @@ function tampilkanPetaAdminWakaf(lokasi) {
     petaAdminWakaf = null;
   }
 
-  petaAdminWakaf = L.map(wadah).setView([lat, lng], 15);
+  petaAdminWakaf = L.map(wadah, {
+  scrollWheelZoom: false
+}).setView([lat, lng], 15);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
