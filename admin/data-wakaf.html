@@ -1034,6 +1034,15 @@ const respons = await fetch(SIWAK_API_URL, {
   } catch (error) {
     console.error('Gagal memuat data wakaf:', error);
 
+    
+[
+  'summaryTotalWakaf',
+  'summaryBersertifikat',
+  'summaryBelumSertifikat'
+].forEach(function(id) {
+  document.getElementById(id).textContent = 'Gagal';
+});
+
     elemen.body.innerHTML =
       '<tr><td colspan="8" class="wakaf-message">' +
       'Data gagal dimuat. Periksa koneksi API dan struktur responsnya.' +
