@@ -643,7 +643,31 @@
       font-size: 11px;
       line-height: 1.7;
     }
+/* Indikator pemuatan statistik dashboard */
+.statistik-memuat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 
+
+.statistik-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  vertical-align: middle;
+  animation: statistik-berputar 0.7s linear infinite;
+}
+
+@keyframes statistik-berputar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+    
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .sidebar {
@@ -798,33 +822,8 @@
       .stat-value {
         font-size: 27px;
       }
-
-      
-/* Indikator pemuatan statistik dashboard */
-.statistik-memuat {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-
-.statistik-spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #dbeafe;
-  border-top-color: #2563eb;
-  border-radius: 50%;
-  vertical-align: middle;
-  animation: statistik-berputar 0.7s linear infinite;
-}
-
-@keyframes statistik-berputar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-      
+     
+    
       .section-heading h2 {
         font-size: 16px;
       }
