@@ -1,0 +1,1310 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Wakif Admin - SIWAK Banten</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7f6;
+      color: #203047;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .wakif-page {
+      max-width: 1400px;
+      margin: 28px auto;
+      padding: 0 22px 40px;
+    }
+
+    .wakif-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .wakif-heading h1 {
+      margin: 0 0 8px;
+      color: #175c46;
+      font-size: 28px;
+    }
+
+    .wakif-heading p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .wakif-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 8px;
+      background: #176b50;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .wakif-button:hover {
+      background: #10543e;
+    }
+
+    .wakif-button.secondary {
+      background: #e8eef2;
+      color: #334155;
+    }
+
+    .wakif-button.secondary:hover {
+      background: #dbe4e9;
+    }
+
+    .wakif-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .wakif-summary-card {
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+      border: 1px solid #e0e9e4;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
+    }
+
+    .wakif-summary-card::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: #248363;
+      content: "";
+    }
+
+    .wakif-summary-card span {
+      display: block;
+      margin-bottom: 10px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .wakif-summary-card strong {
+      color: #176b50;
+      font-size: 30px;
+    }
+
+    .wakif-panel {
+      padding: 22px;
+      border: 1px solid #e0e9e4;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
+    }
+
+    .wakif-toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .wakif-toolbar input,
+    .wakif-toolbar select {
+      width: 100%;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      color: #203047;
+      font-size: 14px;
+    }
+
+    .wakif-toolbar input:focus,
+    .wakif-toolbar select:focus {
+      border-color: #248363;
+      box-shadow: 0 0 0 3px rgba(36, 131, 99, .12);
+    }
+
+    .wakif-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #e7edf0;
+      border-radius: 9px;
+    }
+
+    .wakif-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .wakif-table th,
+    .wakif-table td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #e8edf2;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .wakif-table th {
+      background: #edf5f0;
+      color: #285643;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .wakif-table tbody tr:hover {
+      background: #f7fbf8;
+    }
+
+    .wakif-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .wakif-id {
+      color: #176b50;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .wakif-detail-button {
+      padding: 7px 11px;
+      border: 1px solid #b7d9ca;
+      border-radius: 7px;
+      background: #edf8f2;
+      color: #176b50;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .wakif-detail-button:hover {
+      background: #dcefe4;
+    }
+
+    .wakif-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .wakif-pagination {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .wakif-pagination button {
+      min-width: 36px;
+      padding: 8px 11px;
+      border: 1px solid #d5dee7;
+      border-radius: 7px;
+      background: #fff;
+      color: #203047;
+      cursor: pointer;
+    }
+
+    .wakif-pagination button.active {
+      border-color: #176b50;
+      background: #176b50;
+      color: #fff;
+    }
+
+    .wakif-pagination button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .wakif-message {
+      padding: 28px 12px !important;
+      color: #64748b;
+      text-align: center !important;
+    }
+
+    .wakif-status {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    /* MODAL DETAIL */
+    .wakif-modal {
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(15, 23, 42, .6);
+    }
+
+    .wakif-modal.open {
+      display: flex;
+    }
+
+    .wakif-modal-box {
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+    }
+
+    .wakif-modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid #e2e8f0;
+      background: #fff;
+    }
+
+    .wakif-modal-header h2 {
+      margin: 0;
+      color: #175c46;
+      font-size: 20px;
+    }
+
+    .wakif-close {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 8px;
+      background: #eef2f5;
+      color: #334155;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    .wakif-modal-content {
+      padding: 22px;
+    }
+
+    .wakif-modal-loading,
+    .wakif-modal-error {
+      padding: 28px 12px;
+      color: #64748b;
+      text-align: center;
+    }
+
+    .wakif-modal-error {
+      color: #b42318;
+    }
+
+    .wakif-detail-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding: 18px;
+      border: 1px solid #d9e9df;
+      border-radius: 10px;
+      background: #f3f9f5;
+    }
+
+    .wakif-detail-heading h3 {
+      margin: 0 0 8px;
+      color: #175c46;
+      font-size: 21px;
+    }
+
+    .wakif-detail-heading p {
+      margin: 0;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .wakif-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: #dcefe4;
+      color: #176b50;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .wakif-section-title {
+      margin: 24px 0 12px;
+      color: #285643;
+      font-size: 16px;
+    }
+
+    .wakif-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .wakif-detail-item {
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #e6ebef;
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .wakif-detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .wakif-detail-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .wakif-detail-value {
+      color: #203047;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .wakif-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .wakif-list-card {
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fbfdfc;
+    }
+
+    .wakif-list-card h4 {
+      margin: 0 0 12px;
+      color: #176b50;
+      font-size: 15px;
+    }
+
+    .wakif-list-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .wakif-list-item span {
+      display: block;
+      margin-bottom: 4px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .wakif-list-item strong {
+      color: #334155;
+      font-size: 13px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .wakif-empty-list {
+      padding: 20px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 9px;
+      color: #64748b;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .wakif-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .wakif-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .wakif-page {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .wakif-panel {
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wakif-detail-grid,
+      .wakif-list-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wakif-modal {
+        padding: 8px;
+      }
+
+      .wakif-modal-content {
+        padding: 14px;
+      }
+
+      .wakif-modal-header {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wakif-page">
+
+    <header class="wakif-heading">
+      <div>
+        <h1>Data Wakif</h1>
+        <p>Daftar dan informasi wakif dalam Sistem Informasi Wakaf Banten.</p>
+      </div>
+
+      <a class="wakif-button secondary" href="dashboard.html">
+        ← Kembali ke Dashboard
+      </a>
+    </header>
+
+    <!-- RINGKASAN -->
+    <section class="wakif-summary">
+      <div class="wakif-summary-card">
+        <span>Total Wakif Terdata</span>
+        <strong id="totalWakif">0</strong>
+      </div>
+
+      <div class="wakif-summary-card">
+        <span>Wakif Memiliki Wakaf</span>
+        <strong id="wakifMemilikiWakaf">0</strong>
+      </div>
+
+      <div class="wakif-summary-card">
+        <span>Total Wakaf Terkait</span>
+        <strong id="totalWakafWakif">0</strong>
+      </div>
+    </section>
+
+    <!-- TABEL DATA WAKIF -->
+    <section class="wakif-panel">
+      <div class="wakif-toolbar">
+        <input
+          id="searchWakif"
+          type="search"
+          placeholder="Cari ID, nama, NIK, alamat, atau wilayah..."
+          aria-label="Cari data wakif"
+        >
+
+        <select id="filterKabKotaWakif" aria-label="Filter kabupaten kota">
+          <option value="">Semua Kabupaten/Kota</option>
+        </select>
+
+        <select id="filterJenisWakif" aria-label="Filter jenis wakif">
+          <option value="">Semua Jenis Wakif</option>
+        </select>
+      </div>
+
+      <div class="wakif-table-wrap">
+        <table class="wakif-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>ID Wakif</th>
+              <th>Nama Wakif</th>
+              <th>Jenis Wakif</th>
+              <th>Kabupaten/Kota</th>
+              <th>Kecamatan</th>
+              <th>Desa/Kelurahan</th>
+              <th>Jumlah Wakaf</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="dataWakifBody">
+            <tr>
+              <td colspan="9" class="wakif-message">
+                Memuat data wakif...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="wakif-info">
+        <span id="resultInfoWakif">Menyiapkan data...</span>
+        <span id="statusWakif" class="wakif-status"></span>
+      </div>
+
+      <div
+        id="paginationWakif"
+        class="wakif-pagination"
+        aria-label="Navigasi halaman data wakif">
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DETAIL WAKIF -->
+  <div
+    id="detailWakifModal"
+    class="wakif-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="judulDetailWakif"
+  >
+    <div class="wakif-modal-box">
+      <div class="wakif-modal-header">
+        <h2 id="judulDetailWakif">Detail Wakif</h2>
+        <button
+          type="button"
+          id="tutupDetailWakif"
+          class="wakif-close"
+          aria-label="Tutup detail"
+        >&times;</button>
+      </div>
+
+      <div class="wakif-modal-content">
+        <div id="detailWakifLoading" class="wakif-modal-loading">
+          Memuat detail wakif...
+        </div>
+
+        <div
+          id="detailWakifError"
+          class="wakif-modal-error"
+          hidden
+        ></div>
+
+        <div id="detailWakifContent" hidden>
+          <div class="wakif-detail-heading">
+            <div>
+              <h3 id="detailNamaWakif">-</h3>
+              <p id="detailIdWakif">-</p>
+            </div>
+            <span id="detailJenisWakifBadge" class="wakif-badge">-</span>
+          </div>
+
+          <h3 class="wakif-section-title">Identitas Wakif</h3>
+
+          <div class="wakif-detail-grid">
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">NIK</span>
+              <div id="detailNikWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Kontak</span>
+              <div id="detailKontakWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Kabupaten/Kota</span>
+              <div id="detailKabKotaWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Kecamatan</span>
+              <div id="detailKecamatanWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Desa/Kelurahan</span>
+              <div id="detailDesaWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Jumlah Wakaf</span>
+              <div id="detailJumlahWakaf" class="wakif-detail-value">0</div>
+            </div>
+
+            <div class="wakif-detail-item full">
+              <span class="wakif-detail-label">Alamat</span>
+              <div id="detailAlamatWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item full">
+              <span class="wakif-detail-label">Keterangan</span>
+              <div id="detailKeteranganWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Tanggal Input</span>
+              <div id="detailTanggalInputWakif" class="wakif-detail-value">-</div>
+            </div>
+
+            <div class="wakif-detail-item">
+              <span class="wakif-detail-label">Tanggal Update</span>
+              <div id="detailTanggalUpdateWakif" class="wakif-detail-value">-</div>
+            </div>
+          </div>
+
+          <h3 class="wakif-section-title">Daftar Wakaf Terkait</h3>
+          <div id="detailDaftarWakaf" class="wakif-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================
+       KONFIGURASI API
+       ===================================================== */
+
+    const SIWAK_API_URL =
+      'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+    const JUMLAH_PER_HALAMAN = 10;
+
+    let semuaDataWakif = [];
+    let dataTerfilterWakif = [];
+    let halamanWakif = 1;
+
+    const elWakif = {
+      body: document.getElementById('dataWakifBody'),
+      cari: document.getElementById('searchWakif'),
+      kabKota: document.getElementById('filterKabKotaWakif'),
+      jenis: document.getElementById('filterJenisWakif'),
+      info: document.getElementById('resultInfoWakif'),
+      status: document.getElementById('statusWakif'),
+      pagination: document.getElementById('paginationWakif'),
+      modal: document.getElementById('detailWakifModal'),
+      loading: document.getElementById('detailWakifLoading'),
+      error: document.getElementById('detailWakifError'),
+      content: document.getElementById('detailWakifContent'),
+      daftarWakaf: document.getElementById('detailDaftarWakaf')
+    };
+
+    /* =====================================================
+       UTILITAS
+       ===================================================== */
+
+    function nilaiWakif(data, ...kunci) {
+      if (!data) return '-';
+
+      for (const namaKolom of kunci) {
+        const nilai = data[namaKolom];
+
+        if (nilai !== undefined && nilai !== null && nilai !== '') {
+          return nilai;
+        }
+      }
+
+      return '-';
+    }
+
+    function teksAmanWakif(teks) {
+      return String(teks ?? '-').replace(/[&<>"']/g, karakter => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[karakter]);
+    }
+
+    function tampilkanNilaiWakif(nilai) {
+      if (nilai === undefined || nilai === null || nilai === '') {
+        return '-';
+      }
+
+      if (nilai instanceof Date) {
+        return nilai.toLocaleDateString('id-ID');
+      }
+
+      return String(nilai);
+    }
+
+    function tampilkanTanggalWakif(nilai) {
+      if (!nilai || nilai === '-') return '-';
+
+      const tanggal = new Date(nilai);
+
+      if (Number.isNaN(tanggal.getTime())) {
+        return tampilkanNilaiWakif(nilai);
+      }
+
+      return tanggal.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function jumlahWakafDariData(data) {
+      const jumlah = Number(
+        nilaiWakif(data, 'jumlahWakaf', 'jumlah_wakaf')
+      );
+
+      return Number.isFinite(jumlah) && jumlah > 0 ? jumlah : 0;
+    }
+
+    function isiPilihanWakif(select, daftar, labelAwal) {
+      const pilihanLama = select.value;
+      select.replaceChildren();
+
+      const pilihanAwal = document.createElement('option');
+      pilihanAwal.value = '';
+      pilihanAwal.textContent = labelAwal;
+      select.appendChild(pilihanAwal);
+
+      daftar.forEach(nilai => {
+        const opsi = document.createElement('option');
+        opsi.value = nilai;
+        opsi.textContent = nilai;
+        select.appendChild(opsi);
+      });
+
+      if (daftar.includes(pilihanLama)) {
+        select.value = pilihanLama;
+      }
+    }
+
+    function isiTeksDetailWakif(id, nilai) {
+      const elemen = document.getElementById(id);
+      if (elemen) {
+        elemen.textContent = tampilkanNilaiWakif(nilai);
+      }
+    }
+
+    /* =====================================================
+       FILTER
+       ===================================================== */
+
+    function siapkanFilterWakif() {
+      const daftarKabKota = [
+        ...new Set(
+          semuaDataWakif
+            .map(d => nilaiWakif(d, 'kabKota', 'kab_kota'))
+            .filter(v => v !== '-')
+        )
+      ].sort((a, b) => String(a).localeCompare(String(b), 'id'));
+
+      const daftarJenis = [
+        ...new Set(
+          semuaDataWakif
+            .map(d => nilaiWakif(d, 'jenisWakif', 'jenis_wakif'))
+            .filter(v => v !== '-')
+        )
+      ].sort((a, b) => String(a).localeCompare(String(b), 'id'));
+
+      isiPilihanWakif(
+        elWakif.kabKota,
+        daftarKabKota,
+        'Semua Kabupaten/Kota'
+      );
+
+      isiPilihanWakif(
+        elWakif.jenis,
+        daftarJenis,
+        'Semua Jenis Wakif'
+      );
+    }
+
+    function terapkanFilterWakif() {
+      const kata = elWakif.cari.value.trim().toLowerCase();
+      const kabKota = elWakif.kabKota.value;
+      const jenis = elWakif.jenis.value;
+
+      dataTerfilterWakif = semuaDataWakif.filter(d => {
+        const teksCari = [
+          nilaiWakif(d, 'idWakif', 'id_wakif'),
+          nilaiWakif(d, 'namaWakif', 'nama_wakif'),
+          nilaiWakif(d, 'jenisWakif', 'jenis_wakif'),
+          nilaiWakif(d, 'nik'),
+          nilaiWakif(d, 'alamat'),
+          nilaiWakif(d, 'kabKota', 'kab_kota'),
+          nilaiWakif(d, 'kecamatan'),
+          nilaiWakif(d, 'desaKelurahan', 'desa_kelurahan'),
+          nilaiWakif(d, 'kontak'),
+          nilaiWakif(d, 'keterangan')
+        ].join(' ').toLowerCase();
+
+        return teksCari.includes(kata) &&
+          (!kabKota ||
+            nilaiWakif(d, 'kabKota', 'kab_kota') === kabKota) &&
+          (!jenis ||
+            nilaiWakif(d, 'jenisWakif', 'jenis_wakif') === jenis);
+      });
+
+      halamanWakif = 1;
+      tampilkanTabelWakif();
+    }
+
+    /* =====================================================
+       MEMUAT DATA WAKIF
+       ===================================================== */
+
+    async function loadDataWakif() {
+      elWakif.status.textContent = 'Menghubungkan ke API...';
+
+      try {
+        const respons = await fetch(
+          SIWAK_API_URL + '?action=dataWakif'
+        );
+
+        if (!respons.ok) {
+          throw new Error('HTTP ' + respons.status);
+        }
+
+        const hasil = await respons.json();
+
+        if (!hasil.success) {
+          throw new Error(hasil.message || 'API mengembalikan kegagalan.');
+        }
+
+        const data = hasil.data?.data;
+
+        if (!Array.isArray(data)) {
+          throw new Error('Format respons dataWakif tidak sesuai.');
+        }
+
+        semuaDataWakif = data;
+
+        document.getElementById('totalWakif').textContent =
+          data.length;
+
+        document.getElementById('wakifMemilikiWakaf').textContent =
+          data.filter(d => jumlahWakafDariData(d) > 0).length;
+
+        document.getElementById('totalWakafWakif').textContent =
+          data.reduce((total, d) => total + jumlahWakafDariData(d), 0);
+
+        siapkanFilterWakif();
+        terapkanFilterWakif();
+
+        elWakif.status.textContent = 'Koneksi API berhasil.';
+      } catch (error) {
+        console.error('Gagal memuat data wakif:', error);
+
+        elWakif.body.innerHTML =
+          '<tr><td colspan="9" class="wakif-message">' +
+          'Data gagal dimuat. Periksa koneksi dan respons API.' +
+          '</td></tr>';
+
+        elWakif.info.textContent = 'Data belum dapat ditampilkan.';
+        elWakif.status.textContent = 'Koneksi API gagal.';
+      }
+    }
+
+    /* =====================================================
+       TABEL DAN PAGINATION
+       ===================================================== */
+
+    function tampilkanTabelWakif() {
+      const total = dataTerfilterWakif.length;
+      const totalHalaman = Math.ceil(total / JUMLAH_PER_HALAMAN);
+
+      if (totalHalaman > 0 && halamanWakif > totalHalaman) {
+        halamanWakif = totalHalaman;
+      }
+
+      const mulai = (halamanWakif - 1) * JUMLAH_PER_HALAMAN;
+
+      const dataHalaman = dataTerfilterWakif.slice(
+        mulai,
+        mulai + JUMLAH_PER_HALAMAN
+      );
+
+      if (dataHalaman.length === 0) {
+        elWakif.body.innerHTML =
+          '<tr><td colspan="9" class="wakif-message">' +
+          'Tidak ada data wakif yang sesuai dengan pencarian atau filter.' +
+          '</td></tr>';
+      } else {
+        elWakif.body.innerHTML = dataHalaman.map((d, indeks) => {
+          const id = nilaiWakif(d, 'idWakif', 'id_wakif');
+
+          return `
+            <tr>
+              <td>${mulai + indeks + 1}</td>
+              <td class="wakif-id">${teksAmanWakif(id)}</td>
+              <td>${teksAmanWakif(
+                nilaiWakif(d, 'namaWakif', 'nama_wakif')
+              )}</td>
+              <td>${teksAmanWakif(
+                nilaiWakif(d, 'jenisWakif', 'jenis_wakif')
+              )}</td>
+              <td>${teksAmanWakif(
+                nilaiWakif(d, 'kabKota', 'kab_kota')
+              )}</td>
+              <td>${teksAmanWakif(
+                nilaiWakif(d, 'kecamatan')
+              )}</td>
+              <td>${teksAmanWakif(
+                nilaiWakif(d, 'desaKelurahan', 'desa_kelurahan')
+              )}</td>
+              <td>${jumlahWakafDariData(d)}</td>
+              <td>
+                <button
+                  type="button"
+                  class="wakif-detail-button"
+                  data-id-wakif="${teksAmanWakif(id)}"
+                >Detail</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      elWakif.info.textContent = total
+        ? `Menampilkan ${mulai + 1}–${Math.min(
+            mulai + dataHalaman.length,
+            total
+          )} dari ${total} data`
+        : 'Menampilkan 0 data';
+
+      tampilkanPaginationWakif(totalHalaman);
+    }
+
+    function tampilkanPaginationWakif(totalHalaman) {
+      elWakif.pagination.replaceChildren();
+
+      if (totalHalaman <= 1) return;
+
+      function buatTombol(label, tujuan, aktif, nonaktif) {
+        const tombol = document.createElement('button');
+        tombol.type = 'button';
+        tombol.textContent = label;
+        tombol.disabled = nonaktif;
+
+        if (aktif) tombol.classList.add('active');
+
+        tombol.addEventListener('click', () => {
+          halamanWakif = tujuan;
+          tampilkanTabelWakif();
+        });
+
+        elWakif.pagination.appendChild(tombol);
+      }
+
+      buatTombol('‹', halamanWakif - 1, false, halamanWakif === 1);
+
+      for (let i = 1; i <= totalHalaman; i++) {
+        buatTombol(
+          String(i),
+          i,
+          i === halamanWakif,
+          false
+        );
+      }
+
+      buatTombol(
+        '›',
+        halamanWakif + 1,
+        false,
+        halamanWakif === totalHalaman
+      );
+    }
+
+    /* =====================================================
+       DETAIL WAKIF
+       ===================================================== */
+
+    async function bukaDetailWakif(idWakif) {
+      if (!idWakif || idWakif === '-') return;
+
+      elWakif.modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      elWakif.loading.hidden = false;
+      elWakif.error.hidden = true;
+      elWakif.content.hidden = true;
+      elWakif.loading.textContent = 'Memuat detail wakif...';
+
+      try {
+        const url = SIWAK_API_URL +
+          '?action=detailWakif&idWakif=' +
+          encodeURIComponent(idWakif);
+
+        const respons = await fetch(url);
+
+        if (!respons.ok) {
+          throw new Error('HTTP ' + respons.status);
+        }
+
+        const hasil = await respons.json();
+
+        if (!hasil.success) {
+          throw new Error(
+            hasil.message || 'Detail wakif gagal dimuat.'
+          );
+        }
+
+        /*
+         * Mendukung dua bentuk respons:
+         * { success: true, data: { idWakif: ... } }
+         * { success: true, data: { data: { idWakif: ... } } }
+         */
+        let detail = hasil.data;
+
+        if (
+          detail &&
+          detail.data &&
+          !detail.idWakif &&
+          !detail.id_wakif
+        ) {
+          detail = detail.data;
+        }
+
+        if (!detail || typeof detail !== 'object') {
+          throw new Error(
+            'Data detail tidak ditemukan. Pastikan ID Wakif benar.'
+          );
+        }
+
+        const idHasil = nilaiWakif(detail, 'idWakif', 'id_wakif');
+
+        if (idHasil === '-') {
+          throw new Error(
+            'Respons detail tidak berisi ID Wakif yang dikenali.'
+          );
+        }
+
+        isiTeksDetailWakif(
+          'detailNamaWakif',
+          nilaiWakif(detail, 'namaWakif', 'nama_wakif')
+        );
+
+        isiTeksDetailWakif('detailIdWakif', idHasil);
+
+        isiTeksDetailWakif(
+          'detailJenisWakifBadge',
+          nilaiWakif(detail, 'jenisWakif', 'jenis_wakif')
+        );
+
+        isiTeksDetailWakif(
+          'detailNikWakif',
+          nilaiWakif(detail, 'nik')
+        );
+
+        isiTeksDetailWakif(
+          'detailKontakWakif',
+          nilaiWakif(detail, 'kontak')
+        );
+
+        isiTeksDetailWakif(
+          'detailKabKotaWakif',
+          nilaiWakif(detail, 'kabKota', 'kab_kota')
+        );
+
+        isiTeksDetailWakif(
+          'detailKecamatanWakif',
+          nilaiWakif(detail, 'kecamatan')
+        );
+
+        isiTeksDetailWakif(
+          'detailDesaWakif',
+          nilaiWakif(detail, 'desaKelurahan', 'desa_kelurahan')
+        );
+
+        isiTeksDetailWakif(
+          'detailJumlahWakaf',
+          nilaiWakif(detail, 'jumlahWakaf', 'jumlah_wakaf', 0)
+        );
+
+        isiTeksDetailWakif(
+          'detailAlamatWakif',
+          nilaiWakif(detail, 'alamat')
+        );
+
+        isiTeksDetailWakif(
+          'detailKeteranganWakif',
+          nilaiWakif(detail, 'keterangan')
+        );
+
+        isiTeksDetailWakif(
+          'detailTanggalInputWakif',
+          tampilkanTanggalWakif(
+            nilaiWakif(detail, 'tanggalInput', 'tanggal_input')
+          )
+        );
+
+        isiTeksDetailWakif(
+          'detailTanggalUpdateWakif',
+          tampilkanTanggalWakif(
+            nilaiWakif(detail, 'tanggalUpdate', 'tanggal_update')
+          )
+        );
+
+        tampilkanDaftarWakafWakif(detail.daftarWakaf);
+
+        elWakif.loading.hidden = true;
+        elWakif.content.hidden = false;
+
+      } catch (error) {
+        console.error('Gagal memuat detail wakif:', error);
+
+        elWakif.loading.hidden = true;
+        elWakif.error.textContent =
+          'Detail wakif gagal dimuat: ' +
+          (error.message || 'Terjadi kesalahan.');
+
+        elWakif.error.hidden = false;
+      }
+    }
+
+    function tampilkanDaftarWakafWakif(daftar) {
+      elWakif.daftarWakaf.replaceChildren();
+
+      if (!Array.isArray(daftar) || daftar.length === 0) {
+        const kosong = document.createElement('div');
+        kosong.className = 'wakif-empty-list';
+        kosong.textContent =
+          'Belum ada data wakaf aktif dan publik yang terkait dengan wakif ini.';
+        elWakif.daftarWakaf.appendChild(kosong);
+        return;
+      }
+
+      daftar.forEach((wakaf, indeks) => {
+        const kartu = document.createElement('article');
+        kartu.className = 'wakif-list-card';
+
+        const judul = document.createElement('h4');
+        judul.textContent =
+          (indeks + 1) + '. ' +
+          tampilkanNilaiWakif(
+            nilaiWakif(wakaf, 'kodeWakaf', 'kode_wakaf')
+          );
+
+        kartu.appendChild(judul);
+
+        const grid = document.createElement('div');
+        grid.className = 'wakif-list-grid';
+
+        const kolom = [
+          ['ID Wakaf', nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')],
+          ['Jenis Aset', nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')],
+          [
+            'Luas',
+            [
+              nilaiWakif(wakaf, 'luas'),
+              nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas') === '-'
+                ? ''
+                : nilaiWakaf(wakaf, 'satuanLuas', 'satuan_luas')
+            ].filter(v => v !== '-' && v !== '').join(' ') || '-'
+          ],
+          ['Tahun Wakaf', nilaiWakaf(wakaf, 'tahunWakaf', 'tahun_wakaf')],
+          [
+            'ID Peruntukan',
+            nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
+          ],
+          [
+            'Nomor AIW/APAIW',
+            nilaiWakif(wakaf, 'nomorAiwApaiw', 'nomor_aiw_apaiw')
+          ],
+          [
+            'Status Sertifikasi',
+            nilaiWakif(
+              wakaf,
+              'statusSertifikasi',
+              'status_sertifikasi'
+            )
+          ],
+          [
+            'Nomor Sertifikat',
+            nilaiWakif(wakaf, 'nomorSertifikat', 'nomor_sertifikat')
+          ]
+        ];
+
+        kolom.forEach(([label, nilai]) => {
+          const item = document.createElement('div');
+          item.className = 'wakif-list-item';
+
+          const teksLabel = document.createElement('span');
+          teksLabel.textContent = label;
+
+          const teksNilai = document.createElement('strong');
+          teksNilai.textContent = tampilkanNilaiWakif(nilai);
+
+          item.appendChild(teksLabel);
+          item.appendChild(teksNilai);
+          grid.appendChild(item);
+        });
+
+        kartu.appendChild(grid);
+        elWakif.daftarWakaf.appendChild(kartu);
+      });
+    }
+
+    function tutupModalWakif() {
+      elWakif.modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* =====================================================
+       EVENT LISTENER
+       ===================================================== */
+
+    elWakif.cari.addEventListener('input', terapkanFilterWakif);
+    elWakif.kabKota.addEventListener('change', terapkanFilterWakif);
+    elWakif.jenis.addEventListener('change', terapkanFilterWakif);
+
+    elWakif.body.addEventListener('click', event => {
+      const tombol = event.target.closest('.wakif-detail-button');
+
+      if (!tombol) return;
+
+      bukaDetailWakif(tombol.dataset.idWakif);
+    });
+
+    document
+      .getElementById('tutupDetailWakif')
+      .addEventListener('click', tutupModalWakif);
+
+    elWakif.modal.addEventListener('click', event => {
+      if (event.target === elWakif.modal) {
+        tutupModalWakif();
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (
+        event.key === 'Escape' &&
+        elWakif.modal.classList.contains('open')
+      ) {
+        tutupModalWakif();
+      }
+    });
+
+    /* =====================================================
+       MULAI
+       ===================================================== */
+
+    loadDataWakif();
+  </script>
+</body>
+</html>
+
