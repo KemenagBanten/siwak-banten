@@ -276,11 +276,14 @@
         JSON.stringify(hasil.pengguna)
       );
 
-      tampilkanPesanLogin(
-        'Login berhasil. Akun admin berhasil diverifikasi. Dashboard belum diaktifkan.',
-        true
-      );
+      
+tampilkanPesanLogin(
+  'Login berhasil. Mengalihkan ke dashboard...',
+  true
+);
 
+window.location.href = 'dashboard.html';
+      
     } catch (error) {
       sessionStorage.removeItem('siwakToken');
       sessionStorage.removeItem('siwakPengguna');
