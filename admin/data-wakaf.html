@@ -6,7 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Wakaf - SIWAK Banten</title>
   <link rel="stylesheet" href="../css/style.css">
-
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+  
   <style>
     .wakaf-page {
       max-width: 1200px;
@@ -229,6 +233,68 @@
       font-size: 14px;
     }
 
+    .wakaf-detail-lengkap {
+  max-width: 900px;
+}
+
+.wakaf-detail-section {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.wakaf-detail-section h3 {
+  margin: 0 0 14px;
+  color: #285643;
+  font-size: 16px;
+}
+
+.wakaf-detail-section .wakaf-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wakaf-detail-section .wakaf-detail-item {
+  min-width: 0;
+}
+
+.wakaf-detail-section .wakaf-detail-item strong {
+  overflow-wrap: anywhere;
+}
+
+.wakaf-detail-map {
+  width: 100%;
+  height: 300px;
+  margin-top: 12px;
+  border-radius: 8px;
+  background: #edf2f7;
+}
+
+.wakaf-dokumen-list {
+  display: grid;
+  gap: 8px;
+}
+
+.wakaf-dokumen-item {
+  padding: 12px;
+  background: #f5f8f7;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+.wakaf-dokumen-item a {
+  color: #176b50;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .wakaf-detail-section .wakaf-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
     @media (max-width: 600px) {
       .wakaf-page { padding: 0 12px 24px; }
       .wakaf-panel { padding: 12px; }
@@ -298,17 +364,26 @@
     </section>
   </main>
 
-  <div class="wakaf-modal" id="modalDetailWakaf"
-       role="dialog" aria-modal="true" aria-labelledby="judulDetailWakaf">
-    <div class="wakaf-modal-content">
-      <div class="wakaf-modal-header">
-        <h2 id="judulDetailWakaf">Detail Wakaf</h2>
-        <button class="wakaf-close" id="tutupDetailWakaf"
-          aria-label="Tutup">&times;</button>
+  
+<div class="wakaf-modal" id="modalDetailWakaf"
+     role="dialog" aria-modal="true" aria-labelledby="judulDetailWakaf">
+  <div class="wakaf-modal-content wakaf-detail-lengkap">
+    <div class="wakaf-modal-header">
+      <div>
+        <h2 id="judulDetailWakaf">Detail Data Wakaf</h2>
+        <p style="margin:6px 0 0;color:#64748b;font-size:13px">
+          Informasi lengkap aset wakaf
+        </p>
       </div>
-      <div id="isiDetailWakaf" class="wakaf-detail-grid"></div>
+      <button class="wakaf-close" id="tutupDetailWakaf"
+        aria-label="Tutup">&times;</button>
+    </div>
+
+    <div id="isiDetailWakaf">
+      <div class="wakaf-message">Memuat detail wakaf...</div>
     </div>
   </div>
+</div>
 
   <script>
     const SIWAK_API_URL =
@@ -559,87 +634,234 @@ function formatNilaiDetail(nilaiData) {
         halamanWakaf === totalHalaman);
     }
 
-    async function bukaDetailWakaf(idWakaf) {
-      elemen.isiDetail.innerHTML =
-        '<div class="wakaf-message">Memuat detail...</div>';
-      elemen.modal.classList.add('show');
+    
+async function bukaDetailWakaf(idWakaf) {
+  elemen.isiDetail.innerHTML =
+    '<div class="wakaf-message">Memuat detail wakaf...</div>';
+  elemen.modal.classList.add('show');
 
-      try {
-        const url = SIWAK_API_URL + '?action=detailWakaf&idWakaf=' +
-          encodeURIComponent(idWakaf);
-        const respons = await fetch(url);
-        if (!respons.ok) throw new Error('HTTP ' + respons.status);
+  try {
+    const url = SIWAK_API_URL + '?action=detailWakaf&idWakaf=' +
+      encodeURIComponent(idWakaf);
 
-        const hasil = await respons.json();
-        if (!hasil.success) {
-          throw new Error(hasil.message || 'Detail tidak tersedia.');
-        }
+    const respons = await fetch(url);
+    if (!respons.ok) throw new Error('HTTP ' + respons.status);
 
-        const data = hasil.data?.data ?? hasil.data;
-        if (!data || typeof data !== 'object') {
-          throw new Error('Format detail tidak sesuai.');
-        }
-
-        const label = {
-          idWakaf: 'ID Wakaf',
-          kodeWakaf: 'Kode Wakaf',
-          jenisAset: 'Jenis Aset',
-          luas: 'Luas',
-          satuanLuas: 'Satuan Luas',
-          peruntukan: 'Peruntukan',
-          kabKota: 'Kabupaten/Kota',
-          kecamatan: 'Kecamatan',
-          desa: 'Desa/Kelurahan',
-          statusSertifikasi: 'Status Sertifikasi',
-          nomorSertifikat: 'Nomor Sertifikat',
-          tahunWakaf: 'Tahun Wakaf',
-          nomorAiwApaiw: 'Nomor AIW/APAIW'
-        };
-
-        const padanan = {
-          idWakaf: ['idWakaf', 'id_wakaf'],
-          kodeWakaf: ['kodeWakaf', 'kode_wakaf'],
-          jenisAset: ['jenisAset', 'jenis_aset'],
-          luas: ['luas'],
-          satuanLuas: ['satuanLuas', 'satuan_luas'],
-          peruntukan: ['peruntukan', 'id_peruntukan'],
-          kabKota: ['kabKota', 'kab_kota'],
-          kecamatan: ['kecamatan'],
-          desa: ['desa', 'desaKelurahan', 'desa_kelurahan'],
-          statusSertifikasi: ['statusSertifikasi', 'status_sertifikasi'],
-          nomorSertifikat: ['nomorSertifikat', 'nomor_sertifikat'],
-          tahunWakaf: ['tahunWakaf', 'tahun_wakaf'],
-          nomorAiwApaiw: ['nomorAiwApaiw', 'nomor_aiw_apaiw']
-        };
-
-        const isi = Object.keys(label).map(kunci => {
-          const nilaiData = formatNilaiDetail(nilai(data, ...padanan[kunci]));
-          if (nilaiData === '-') return '';
-          return `<div class="wakaf-detail-item">
-            <small>${teksAman(label[kunci])}</small>
-            <strong>${teksAman(nilaiData)}</strong>
-          </div>`;
-        }).filter(Boolean).join('');
-
-        elemen.isiDetail.innerHTML = isi ||
-          '<div class="wakaf-message">Belum ada rincian yang dapat ditampilkan.</div>';
-      } catch (error) {
-        console.error('Gagal memuat detail wakaf:', error);
-        elemen.isiDetail.innerHTML =
-          '<div class="wakaf-message">Detail gagal dimuat. Periksa respons API.</div>';
-      }
+    const hasil = await respons.json();
+    if (!hasil.success) {
+      throw new Error(hasil.message || 'Detail tidak tersedia.');
     }
 
-    elemen.cari.addEventListener('input', terapkanFilterWakaf);
-    elemen.kabKota.addEventListener('change', terapkanFilterWakaf);
-    elemen.jenisAset.addEventListener('change', terapkanFilterWakaf);
-    elemen.sertifikasi.addEventListener('change', terapkanFilterWakaf);
+    const data = hasil.data?.data ?? hasil.data;
+    if (!data || typeof data !== 'object') {
+      throw new Error('Format detail API tidak sesuai.');
+    }
 
-    elemen.body.addEventListener('click', event => {
-      const tombol = event.target.closest('[data-id]');
-      if (tombol) bukaDetailWakaf(tombol.dataset.id);
-    });
+    const identitas = data.identitas || {};
+    const peruntukan = data.peruntukan || {};
+    const lokasi = data.lokasi || {};
+    const wakif = data.wakif || {};
+    const nazhir = data.nazhir || {};
+    const dokumen = Array.isArray(data.dokumen) ? data.dokumen : [];
 
+    function ambil(objek, ...kunci) {
+      return nilai(objek, ...kunci);
+    }
+
+    function item(label, value) {
+      if (value === '-' || value === null || value === undefined) {
+        return '';
+      }
+
+      return `
+        <div class="wakaf-detail-item">
+          <small>${teksAman(label)}</small>
+          <strong>${teksAman(formatNilaiDetail(value))}</strong>
+        </div>
+      `;
+    }
+
+    function bagian(judul, isi) {
+      return `
+        <section class="wakaf-detail-section">
+          <h3>${teksAman(judul)}</h3>
+          <div class="wakaf-detail-grid">
+            ${isi || '<div class="wakaf-message">Informasi belum tersedia.</div>'}
+          </div>
+        </section>
+      `;
+    }
+
+    const isiIdentitas = [
+      item('Kode Wakaf',
+        ambil(identitas, 'kodeWakaf', 'kode_wakaf')),
+      item('Jenis Aset',
+        ambil(identitas, 'jenisAset', 'jenis_aset')),
+      item('Luas',
+        ambil(identitas, 'luas')),
+      item('Satuan Luas',
+        ambil(identitas, 'satuanLuas', 'satuan_luas')),
+      item('Tahun Wakaf',
+        ambil(identitas, 'tahunWakaf', 'tahun_wakaf')),
+      item('Nomor AIW/APAIW',
+        ambil(identitas, 'nomorAiwApaiw', 'nomor_aiw_apaiw')),
+      item('Nomor Sertifikat',
+        ambil(identitas, 'nomorSertifikat', 'nomor_sertifikat')),
+      item('Status Sertifikasi',
+        ambil(identitas, 'statusSertifikasi', 'status_sertifikasi'))
+    ].join('');
+
+    const isiPeruntukan = [
+      item('Peruntukan',
+        ambil(peruntukan, 'namaPeruntukan', 'nama_peruntukan', 'nama')),
+      item('Kategori',
+        ambil(peruntukan, 'kategori', 'namaKategori', 'nama_kategori'))
+    ].join('');
+
+    const isiLokasi = [
+      item('Provinsi',
+        ambil(lokasi, 'provinsi', 'namaProvinsi', 'nama_provinsi')),
+      item('Kabupaten/Kota',
+        ambil(lokasi, 'kabKota', 'kab_kota', 'namaKabKota')),
+      item('Kecamatan',
+        ambil(lokasi, 'kecamatan', 'namaKecamatan')),
+      item('Desa/Kelurahan',
+        ambil(lokasi, 'desa', 'desaKelurahan', 'desa_kelurahan')),
+      item('Alamat',
+        ambil(lokasi, 'alamat'))
+    ].join('');
+
+    const isiWakif = [
+      item('Nama Wakif',
+        ambil(wakif, 'namaWakif', 'nama_wakif', 'nama')),
+      item('Jenis Wakif',
+        ambil(wakif, 'jenisWakif', 'jenis_wakif'))
+    ].join('');
+
+    const isiNazhir = [
+      item('Nama Nazhir',
+        ambil(nazhir, 'namaNazhir', 'nama_nazhir', 'nama')),
+      item('Jenis Nazhir',
+        ambil(nazhir, 'jenisNazhir', 'jenis_nazhir'))
+    ].join('');
+
+    const isiDokumen = dokumen.length
+      ? `<div class="wakaf-dokumen-list">
+          ${dokumen.map((d, i) => {
+            const nama = ambil(
+              d, 'namaDokumen', 'nama_dokumen',
+              'jenisDokumen', 'jenis_dokumen', 'nama'
+            );
+            const urlDokumen = ambil(
+              d, 'url', 'urlDokumen', 'url_dokumen',
+              'link', 'fileUrl', 'file_url'
+            );
+
+            const tautan = /^https?:\/\/\S+$/i.test(urlDokumen)
+              ? `<div><a href="${teksAman(urlDokumen)}"
+                    target="_blank" rel="noopener noreferrer">
+                    Buka dokumen
+                  </a></div>`
+              : '';
+
+            return `
+              <div class="wakaf-dokumen-item">
+                <strong>${i + 1}. ${teksAman(nama)}</strong>
+                ${tautan}
+              </div>
+            `;
+          }).join('')}
+        </div>`
+      : '<div class="wakaf-message">Belum ada dokumen yang tersedia.</div>';
+
+    elemen.isiDetail.innerHTML =
+      bagian('Identitas Aset Wakaf', isiIdentitas) +
+      bagian('Peruntukan Wakaf', isiPeruntukan) +
+      bagian('Lokasi Aset', isiLokasi) +
+      bagian('Informasi Wakif', isiWakif) +
+      bagian('Informasi Nazhir', isiNazhir) +
+      `<section class="wakaf-detail-section">
+        <h3>Dokumen Wakaf (${dokumen.length})</h3>
+        ${isiDokumen}
+      </section>` +
+      `<section class="wakaf-detail-section">
+        <h3>Peta Lokasi Wakaf</h3>
+        <div id="detailWakafMap" class="wakaf-detail-map"></div>
+        <p id="detailWakafMapInfo"
+           style="font-size:13px;color:#64748b">
+          Memeriksa koordinat lokasi...
+        </p>
+      </section>`;
+
+    document.getElementById('judulDetailWakaf').textContent =
+      'Detail Wakaf — ' +
+      ambil(identitas, 'kodeWakaf', 'kode_wakaf');
+
+    tampilkanPetaAdminWakaf(lokasi);
+
+  } catch (error) {
+    console.error('Gagal memuat detail wakaf:', error);
+    elemen.isiDetail.innerHTML =
+      '<div class="wakaf-message">' +
+      'Detail gagal dimuat. Periksa respons API.' +
+      '</div>';
+  }
+}
+
+    
+let petaAdminWakaf = null;
+
+function tampilkanPetaAdminWakaf(lokasi) {
+  const wadah = document.getElementById('detailWakafMap');
+  const info = document.getElementById('detailWakafMapInfo');
+
+  if (!wadah || !info) return;
+
+  const lat = Number(nilai(lokasi, 'latitude', 'lat'));
+  const lng = Number(nilai(lokasi, 'longitude', 'lng', 'long'));
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) ||
+      nilai(lokasi, 'latitude', 'lat') === '-' ||
+      nilai(lokasi, 'longitude', 'lng', 'long') === '-' ||
+      lat < -90 || lat > 90 || lng < -180 || lng > 180 ||
+      (lat === 0 && lng === 0)) {
+    info.textContent =
+      'Koordinat lokasi belum tersedia pada data API.';
+    wadah.style.display = 'none';
+    return;
+  }
+
+  if (typeof L === 'undefined') {
+    info.textContent =
+      'Pustaka peta belum dimuat. Periksa koneksi internet.';
+    return;
+  }
+
+  wadah.style.display = 'block';
+
+  if (petaAdminWakaf) {
+    petaAdminWakaf.remove();
+    petaAdminWakaf = null;
+  }
+
+  petaAdminWakaf = L.map(wadah).setView([lat, lng], 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(petaAdminWakaf);
+
+  L.marker([lat, lng]).addTo(petaAdminWakaf)
+    .bindPopup('Lokasi aset wakaf')
+    .openPopup();
+
+  info.textContent = 'Koordinat: ' + lat + ', ' + lng;
+
+  setTimeout(() => {
+    if (petaAdminWakaf) petaAdminWakaf.invalidateSize();
+  }, 150);
+}
+
+    
     function tutupModalWakaf() {
       elemen.modal.classList.remove('show');
     }
@@ -656,6 +878,9 @@ function formatNilaiDetail(nilaiData) {
     });
 
     loadDataWakaf();
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
   </script>
 </body>
 </html>
