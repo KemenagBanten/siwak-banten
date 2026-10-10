@@ -8,7 +8,7 @@
 </head>
 <body>
   <h2>Uji API Pembuatan Akun Admin</h2>
-  <button id="ujiButton" type="button">Uji Token Kosong</button>
+  <button id="ujiButton" type="button">Verifikasi Sesi Super Admin</button>
   <pre id="hasil">Belum diuji.</pre>
 
   <script>
@@ -25,16 +25,11 @@
           headers: {
             'Content-Type': 'text/plain;charset=utf-8'
           },
-          body: JSON.stringify({
-            action: 'buatAkunAdminKabKota',
-            token: sessionStorage.getItem('siwakToken') || '',
-            dataAdmin: {
-              username: 'uji_admin_banten',
-              password: 'Tes-SIWAK-2026!',
-              kodeWilayah: '3673',
-              email: ''
-            }
-          })
+          
+body: JSON.stringify({
+  action: 'verifikasiAdmin',
+  token: sessionStorage.getItem('siwakToken') || ''
+})
         });
 
         const hasil = await response.json();
