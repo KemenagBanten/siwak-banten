@@ -1206,57 +1206,61 @@
         const grid = document.createElement('div');
         grid.className = 'wakif-list-grid';
 
-        /*
-         * Kartu hanya menampilkan alamat aset.
-         * Alamat wakif dan wilayah yang berulang dihapus.
-         */
-        const kolom = [
-          [
-            'ID Wakaf',
-            nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')
-          ],
-          [
-            'Alamat Lengkap Aset',
-            nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
-          ],
-          [
-            'Jenis Aset',
-            nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')
-          ],
-          [
-            'Luas',
-            [
-              nilaiWakif(wakaf, 'luas'),
-              nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas') === '-'
-                ? ''
-                : nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas')
-            ].filter(v => v !== '-' && v !== '').join(' ') || '-'
-          ],
-          [
-            'Tahun Wakaf',
-            nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')
-          ],
-          [
-            'ID Peruntukan',
-            nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
-          ],
-          [
-            'Nomor AIW/APAIW',
-            nilaiWakif(wakaf, 'nomorAiwApaiw', 'nomor_aiw_apaiw')
-          ],
-          [
-            'Status Sertifikasi',
-            nilaiWakif(
-              wakaf,
-              'statusSertifikasi',
-              'status_sertifikasi'
-            )
-          ],
-          [
-            'Nomor Sertifikat',
-            nilaiWakif(wakaf, 'nomorSertifikat', 'nomor_sertifikat')
-          ]
-        ];
+       const kolom = [
+  [
+    'ID Wakaf',
+    nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')
+  ],
+  [
+    'Alamat Lengkap Aset',
+    nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
+  ],
+  [
+    'Kabupaten/Kota',
+    nilaiWakif(wakaf, 'kabKota', 'kab_kota')
+  ],
+  [
+    'Kecamatan',
+    nilaiWakif(wakaf, 'kecamatan')
+  ],
+  [
+    'Desa/Kelurahan',
+    nilaiWakif(wakaf, 'desaKelurahan', 'desa_kelurahan')
+  ],
+  [
+    'Jenis Aset',
+    nilaiWakif(wakaf, 'jenisAset', 'jenis_aset')
+  ],
+  [
+    'Luas',
+    [
+      nilaiWakif(wakaf, 'luas'),
+      nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas') === '-'
+        ? ''
+        : nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas')
+    ].filter(v => v !== '-' && v !== '').join(' ') || '-'
+  ],
+  [
+    'Tahun Wakaf',
+    nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')
+  ],
+  [
+    'ID Peruntukan',
+    nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
+  ],
+  [
+    'Nomor AIW/APAIW',
+    nilaiWakif(wakaf, 'nomorAiwApaiw', 'nomor_aiw_apaiw')
+  ],
+  [
+    'Status Sertifikasi',
+    nilaiWakif(wakaf, 'statusSertifikasi', 'status_sertifikasi')
+  ],
+  [
+    'Nomor Sertifikat',
+    nilaiWakif(wakaf, 'nomorSertifikat', 'nomor_sertifikat')
+  ]
+];
 
         kolom.forEach(([label, nilai]) => {
           const item = document.createElement('div');
