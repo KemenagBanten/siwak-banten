@@ -384,7 +384,7 @@
     </div>
   </div>
 </div>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const SIWAK_API_URL =
       'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
@@ -635,6 +635,21 @@ function formatNilaiDetail(nilaiData) {
     }
 
     
+elemen.body.addEventListener('click', function(event) {
+  const tombol = event.target.closest('.wakaf-detail-button');
+
+  if (!tombol) return;
+
+  const idWakaf = tombol.dataset.id;
+
+  if (!idWakaf || idWakaf === '-') {
+    alert('ID Wakaf tidak ditemukan.');
+    return;
+  }
+
+  bukaDetailWakaf(idWakaf);
+});
+    
 async function bukaDetailWakaf(idWakaf) {
   elemen.isiDetail.innerHTML =
     '<div class="wakaf-message">Memuat detail wakaf...</div>';
@@ -881,6 +896,6 @@ function tampilkanPetaAdminWakaf(lokasi) {
 
      
   </script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
 </body>
 </html>
