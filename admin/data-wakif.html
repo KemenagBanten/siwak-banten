@@ -983,9 +983,22 @@ const respons = await fetch(SIWAK_API_URL, {
     siapkanFilterWakif();
     terapkanFilterWakif();
 
-    elemenWakif.status.textContent = 'Koneksi API berhasil.';
+   
+  elemenWakif.status.textContent = 'Koneksi API berhasil.';
   } catch (error) {
     console.error('Gagal memuat data wakif:', error);
+
+    // Hentikan spinner dan tampilkan pesan gagal di semua card
+    [
+      'summaryTotalWakif',
+      'summaryPerorangan',
+      'summaryJumlahWakaf'
+    ].forEach(id => {
+      const elemen = document.getElementById(id);
+      elemen.textContent = 'Gagal memuat';
+      elemen.style.fontSize = '14px';
+      elemen.style.color = '#b42318';
+    });
 
     elemenWakif.body.innerHTML =
       '<tr><td colspan="7" class="wakif-message">' +
