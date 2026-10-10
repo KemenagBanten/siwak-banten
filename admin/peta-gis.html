@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta GIS - SIWAK Banten</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <style>
+    :root {
+      --wakaf-primary: #176b50;
+      --wakaf-primary-dark: #104b37;
+      --wakaf-primary-light: #eaf4ed;
+      --wakaf-gold: #c49a45;
+      --wakaf-text: #24372d;
+      --wakaf-muted: #718076;
+      --wakaf-border: #e2eae4;
+      --wakaf-bg: #f3f7f4;
+      --wakaf-white: #ffffff;
+      --wakaf-shadow: 0 8px 28px rgba(23, 75, 52, .07);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--wakaf-bg);
+      color: var(--wakaf-text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .wakaf-page {
+      width: min(1320px, calc(100% - 36px));
+      margin: 28px auto 48px;
+    }
+
+    .wakaf-heading {
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(120deg, #104b37, #21815e);
+      color: white;
+      box-shadow: var(--wakaf-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .wakaf-kicker {
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: .82;
+      margin-bottom: 9px;
+    }
+
+    .wakaf-heading h1 {
+      font-size: clamp(25px, 4vw, 34px);
+      margin: 0 0 9px;
+      line-height: 1.2;
+    }
+
+    .wakaf-heading p {
+      margin: 0;
+      max-width: 700px;
+      line-height: 1.7;
+      color: rgba(255,255,255,.86);
+    }
+
+    .wakaf-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 17px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 10px;
+      background: rgba(255,255,255,.12);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .wakaf-button:hover {
+      background: rgba(255,255,255,.22);
+    }
+
+    .wakaf-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .wakaf-summary-card {
+      background: white;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 15px;
+      padding: 21px;
+      box-shadow: var(--wakaf-shadow);
+      border-left: 4px solid var(--wakaf-primary);
+    }
+
+    .wakaf-summary-label {
+      color: var(--wakaf-muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .wakaf-summary-number {
+      font-size: 29px;
+      line-height: 1.2;
+      font-weight: 750;
+      color: var(--wakaf-primary-dark);
+    }
+
+    .wakaf-panel {
+      padding: 24px;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 18px;
+      background: white;
+      box-shadow: var(--wakaf-shadow);
+    }
+
+    .wakaf-panel-heading {
+      margin-bottom: 18px;
+    }
+
+    .wakaf-panel-heading h2 {
+      font-size: 20px;
+      margin: 0 0 7px;
+    }
+
+    .wakaf-panel-heading p {
+      font-size: 13px;
+      color: var(--wakaf-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .wakaf-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .wakaf-field input,
+    .wakaf-field select {
+      width: 100%;
+      min-height: 43px;
+      padding: 10px 12px;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--wakaf-text);
+      font: inherit;
+      outline: none;
+    }
+
+    .wakaf-field input:focus,
+    .wakaf-field select:focus {
+      border-color: var(--wakaf-primary);
+      box-shadow: 0 0 0 3px rgba(23,107,80,.09);
+    }
+
+    .wakaf-map-wrap {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 14px;
+    }
+
+    #petaGIS {
+      width: 100%;
+      height: 560px;
+      background: #e8eee9;
+      z-index: 1;
+    }
+
+    .wakaf-map-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--wakaf-muted);
+    }
+
+    .wakaf-map-status strong {
+      color: var(--wakaf-primary-dark);
+    }
+
+    .wakaf-message {
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--wakaf-primary-light);
+      color: var(--wakaf-primary-dark);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .wakaf-message.error {
+      background: #fff0ef;
+      color: #a52b24;
+    }
+
+    .wakaf-popup h3 {
+      margin: 0 0 8px;
+      color: var(--wakaf-primary-dark);
+      font-size: 16px;
+    }
+
+    .wakaf-popup p {
+      margin: 5px 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .wakaf-popup strong { color: var(--wakaf-text); }
+
+    @media (max-width: 700px) {
+      .wakaf-page {
+        width: calc(100% - 22px);
+        margin-top: 12px;
+      }
+
+      .wakaf-heading { padding: 22px; }
+      .wakaf-summary { grid-template-columns: 1fr; }
+      .wakaf-panel { padding: 16px; }
+      .wakaf-toolbar { grid-template-columns: 1fr; }
+      #petaGIS { height: 450px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wakaf-page">
+
+    <header class="wakaf-heading">
+      <div>
+        <div class="wakaf-kicker">SIWAK Banten · Panel Admin</div>
+        <h1>Peta GIS Wakaf</h1>
+        <p>
+          Pemetaan lokasi tanah dan bangunan wakaf di Provinsi Banten
+          berdasarkan koordinat yang tersimpan dalam sistem.
+        </p>
+      </div>
+
+      <a class="wakaf-button" href="dashboard.html">
+        ← Kembali ke Dashboard
+      </a>
+    </header>
+
+    <section class="wakaf-summary">
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-label">Total titik pada peta</div>
+        <div class="wakaf-summary-number" id="totalTitikGIS">0</div>
+      </div>
+
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-label">Tanah wakaf</div>
+        <div class="wakaf-summary-number" id="totalTanahGIS">0</div>
+      </div>
+
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-label">Bangunan wakaf</div>
+        <div class="wakaf-summary-number" id="totalBangunanGIS">0</div>
+      </div>
+    </section>
+
+    <section class="wakaf-panel">
+      <div class="wakaf-panel-heading">
+        <h2>Lokasi Wakaf</h2>
+        <p>
+          Gunakan pencarian atau filter kabupaten/kota untuk melihat
+          lokasi yang tersedia.
+        </p>
+      </div>
+
+      <div id="pesanGIS" class="wakaf-message">
+        Memuat data lokasi wakaf...
+      </div>
+
+      <div class="wakaf-toolbar">
+        <div class="wakaf-field">
+          <input
+            type="search"
+            id="cariGIS"
+            placeholder="Cari kode wakaf, alamat, desa, atau kecamatan..."
+            aria-label="Cari lokasi wakaf"
+          >
+        </div>
+
+        <div class="wakaf-field">
+          <select id="filterKabKotaGIS" aria-label="Filter kabupaten kota">
+            <option value="">Semua Kabupaten/Kota</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="wakaf-map-wrap">
+        <div id="petaGIS"></div>
+      </div>
+
+      <div class="wakaf-map-status">
+        <span id="infoTitikGIS">Menunggu data lokasi...</span>
+        <span>Sumber peta: OpenStreetMap</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    /*
+     * PENTING:
+     * Gunakan URL Web App Apps Script SIWAK Banten yang sama
+     * dengan yang digunakan pada halaman Data Wakaf.
+     */
+    const SIWAK_API_URL = 'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+    const peta = L.map('petaGIS').setView([-6.405, 106.15], 9);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(peta);
+
+    const lapisanPenanda = L.featureGroup().addTo(peta);
+    let semuaTitikGIS = [];
+
+    function angkaFormat(nilai) {
+      return Number(nilai || 0).toLocaleString('id-ID');
+    }
+
+    function teksAman(nilai) {
+      return String(nilai ?? '-').replace(/[&<>"']/g, karakter => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[karakter]);
+    }
+
+    function tampilkanPesan(pesan, error = false) {
+      const elemen = document.getElementById('pesanGIS');
+      elemen.textContent = pesan;
+      elemen.classList.toggle('error', error);
+    }
+
+    function isiFilterKabKota(data) {
+      const select = document.getElementById('filterKabKotaGIS');
+      const pilihanLama = select.value;
+
+      const daftar = [...new Set(
+        data.map(item => item.kabKota).filter(Boolean)
+      )].sort((a, b) => a.localeCompare(b, 'id'));
+
+      select.innerHTML = '<option value="">Semua Kabupaten/Kota</option>';
+
+      daftar.forEach(nama => {
+        const option = document.createElement('option');
+        option.value = nama;
+        option.textContent = nama;
+        select.appendChild(option);
+      });
+
+      if (daftar.includes(pilihanLama)) {
+        select.value = pilihanLama;
+      }
+    }
+
+    function perbaruiRingkasan(data) {
+      document.getElementById('totalTitikGIS').textContent =
+        angkaFormat(data.length);
+
+      document.getElementById('totalTanahGIS').textContent =
+        angkaFormat(data.filter(item =>
+          String(item.jenisAset).toUpperCase() === 'TANAH'
+        ).length);
+
+      document.getElementById('totalBangunanGIS').textContent =
+        angkaFormat(data.filter(item =>
+          String(item.jenisAset).toUpperCase() === 'BANGUNAN'
+        ).length);
+    }
+
+    function buatPopup(item) {
+      return `
+        <div class="wakaf-popup">
+          <h3>${teksAman(item.kodeWakaf)}</h3>
+          <p><strong>Jenis aset:</strong> ${teksAman(item.jenisAset)}</p>
+          <p><strong>Luas:</strong> ${teksAman(angkaFormat(item.luas))} ${teksAman(item.satuanLuas)}</p>
+          <p><strong>Peruntukan:</strong> ${teksAman(item.peruntukan)}</p>
+          <p><strong>Sertifikasi:</strong> ${teksAman(item.statusSertifikasi)}</p>
+          <p><strong>Kabupaten/Kota:</strong> ${teksAman(item.kabKota)}</p>
+          <p><strong>Kecamatan:</strong> ${teksAman(item.kecamatan)}</p>
+          <p><strong>Desa/Kelurahan:</strong> ${teksAman(item.desa)}</p>
+          <p><strong>Alamat:</strong> ${teksAman(item.alamat)}</p>
+          <p><strong>Akurasi:</strong> ${teksAman(item.akurasiLokasi)}</p>
+        </div>
+      `;
+    }
+
+    function tampilkanTitik(data) {
+      lapisanPenanda.clearLayers();
+
+      data.forEach(item => {
+        const marker = L.marker([
+          Number(item.latitude),
+          Number(item.longitude)
+        ]);
+
+        marker.bindPopup(buatPopup(item));
+        marker.addTo(lapisanPenanda);
+      });
+
+      perbaruiRingkasan(data);
+
+      document.getElementById('infoTitikGIS').textContent =
+        `Menampilkan ${angkaFormat(data.length)} titik lokasi`;
+
+      if (data.length > 0) {
+        peta.fitBounds(lapisanPenanda.getBounds(), {
+          padding: [35, 35],
+          maxZoom: 15
+        });
+      } else {
+        peta.setView([-6.405, 106.15], 9);
+      }
+    }
+
+    function terapkanFilterGIS() {
+      const kata = document.getElementById('cariGIS')
+        .value.trim().toLowerCase();
+
+      const kabKota = document.getElementById('filterKabKotaGIS').value;
+
+      const hasil = semuaTitikGIS.filter(item => {
+        const teks = [
+          item.kodeWakaf,
+          item.jenisAset,
+          item.peruntukan,
+          item.kabKota,
+          item.kecamatan,
+          item.desa,
+          item.alamat
+        ].join(' ').toLowerCase();
+
+        return teks.includes(kata) &&
+          (!kabKota || item.kabKota === kabKota);
+      });
+
+      tampilkanTitik(hasil);
+    }
+
+    async function muatPetaGIS() {
+      try {
+        if (SIWAK_API_URL === 'GANTI_DENGAN_URL_WEB_APP_ANDA') {
+          throw new Error(
+            'URL Web App belum diisi. Masukkan URL API SIWAK Banten terlebih dahulu.'
+          );
+        }
+
+        const respons = await fetch(
+          SIWAK_API_URL + '?action=petaGIS'
+        );
+
+        if (!respons.ok) {
+          throw new Error('HTTP ' + respons.status);
+        }
+
+        const hasil = await respons.json();
+
+        if (!hasil.success) {
+          throw new Error(hasil.message || 'API gagal mengambil data peta.');
+        }
+
+        const isi = hasil.data;
+        semuaTitikGIS = Array.isArray(isi) ? isi : (isi.data || []);
+
+        isiFilterKabKota(semuaTitikGIS);
+        terapkanFilterGIS();
+
+        tampilkanPesan(
+          semuaTitikGIS.length
+            ? 'Data lokasi wakaf berhasil dimuat.'
+            : 'Belum ada data wakaf dengan koordinat valid dan status publikasi yang sesuai.'
+        );
+
+      } catch (error) {
+        console.error('Gagal memuat Peta GIS:', error);
+        tampilkanPesan(
+          'Peta gagal memuat data. Periksa URL API, koneksi, dan izin Web App. Detail: ' +
+          error.message,
+          true
+        );
+      }
+    }
+
+    document.getElementById('cariGIS')
+      .addEventListener('input', terapkanFilterGIS);
+
+    document.getElementById('filterKabKotaGIS')
+      .addEventListener('change', terapkanFilterGIS);
+
+    // Beri waktu agar ukuran kontainer peta selesai dihitung.
+    setTimeout(() => peta.invalidateSize(), 200);
+
+    muatPetaGIS();
+  </script>
+</body>
+</html>
