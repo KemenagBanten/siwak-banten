@@ -807,15 +807,16 @@
   gap: 8px;
 }
 
+
 .statistik-spinner {
-  width: 15px;
-  height: 15px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
   border: 2px solid #dbeafe;
   border-top-color: #2563eb;
   border-radius: 50%;
-  display: inline-block;
+  vertical-align: middle;
   animation: statistik-berputar 0.7s linear infinite;
-  flex-shrink: 0;
 }
 
 @keyframes statistik-berputar {
@@ -1175,18 +1176,15 @@
 
 
 
+
 [
   'totalWakaf',
   'totalWakif',
   'totalNazhir'
 ].forEach(function(id) {
   document.getElementById(id).innerHTML =
-    '<span class="statistik-memuat">' +
-      '<span class="statistik-spinner"></span>' +
-      '<span>Memuat...</span>' +
-    '</span>';
-});
-      
+    '<span class="statistik-spinner" aria-label="Memuat data"></span>';
+});      
       
       try {
         const response = await fetch(SIWAK_API_URL, {
