@@ -1213,10 +1213,10 @@
               nilaiWakif(wakaf, 'luas'),
               nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas') === '-'
                 ? ''
-                : nilaiWakaf(wakaf, 'satuanLuas', 'satuan_luas')
+                : nilaiWakif(wakaf, 'satuanLuas', 'satuan_luas')
             ].filter(v => v !== '-' && v !== '').join(' ') || '-'
           ],
-          ['Tahun Wakaf', nilaiWakaf(wakaf, 'tahunWakaf', 'tahun_wakaf')],
+          ['Tahun Wakaf', nilaiWakif(wakaf, 'tahunWakaf', 'tahun_wakaf')],
           [
             'ID Peruntukan',
             nilaiWakif(wakaf, 'idPeruntukan', 'id_peruntukan')
