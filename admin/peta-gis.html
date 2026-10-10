@@ -1,16 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#155b40">
   <title>Peta GIS - SIWAK Banten</title>
 
   <link rel="stylesheet" href="../css/style.css">
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <style>
     :root {
@@ -23,10 +20,12 @@
       --wakaf-border: #e2eae4;
       --wakaf-bg: #f3f7f4;
       --wakaf-white: #ffffff;
-      --wakaf-shadow: 0 8px 28px rgba(23, 75, 52, .07);
+      --wakaf-shadow: 0 8px 28px rgba(27, 67, 45, .065);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -35,494 +34,937 @@
       font-family: "Segoe UI", Arial, sans-serif;
     }
 
-    .wakaf-page {
-      width: min(1320px, calc(100% - 36px));
-      margin: 28px auto 48px;
+    button, input, select {
+      font: inherit;
     }
 
+    .wakaf-page {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      padding: 30px 24px 48px;
+    }
+
+    /* HEADER */
     .wakaf-heading {
-      padding: 30px;
-      border-radius: 20px;
-      background: linear-gradient(120deg, #104b37, #21815e);
-      color: white;
-      box-shadow: var(--wakaf-shadow);
+      position: relative;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 22px;
+      align-items: center;
       flex-wrap: wrap;
+      gap: 20px;
+      padding: 28px 30px;
       margin-bottom: 24px;
+      overflow: hidden;
+      border-radius: 18px;
+      color: white;
+      background: linear-gradient(120deg, #104b37 0%, #176b50 62%, #25815e 100%);
+      box-shadow: 0 12px 30px rgba(16, 75, 55, .17);
+    }
+
+    .wakaf-heading::after {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      right: 11%;
+      top: -150px;
+      border: 30px solid rgba(255, 255, 255, .055);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .wakaf-heading-content {
+      position: relative;
+      z-index: 1;
     }
 
     .wakaf-kicker {
-      font-size: 12px;
-      letter-spacing: 1.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #f0d89e;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      font-weight: 700;
-      opacity: .82;
-      margin-bottom: 9px;
+    }
+
+    .wakaf-kicker::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      background: var(--wakaf-gold);
     }
 
     .wakaf-heading h1 {
-      font-size: clamp(25px, 4vw, 34px);
-      margin: 0 0 9px;
-      line-height: 1.2;
+      margin: 0 0 8px;
+      font-size: clamp(25px, 3vw, 33px);
+      font-weight: 750;
+      letter-spacing: -.6px;
     }
 
     .wakaf-heading p {
+      max-width: 570px;
       margin: 0;
-      max-width: 700px;
+      color: rgba(255, 255, 255, .82);
+      font-size: 14px;
       line-height: 1.7;
-      color: rgba(255,255,255,.86);
     }
 
     .wakaf-button {
+      position: relative;
+      z-index: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 11px 17px;
-      border: 1px solid rgba(255,255,255,.35);
+      gap: 9px;
+      padding: 11px 16px;
+      border: 1px solid rgba(255, 255, 255, .25);
       border-radius: 10px;
-      background: rgba(255,255,255,.12);
+      background: rgba(255, 255, 255, .12);
       color: white;
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 650;
+      transition: .2s ease;
     }
 
     .wakaf-button:hover {
-      background: rgba(255,255,255,.22);
+      background: white;
+      color: var(--wakaf-primary-dark);
+      transform: translateY(-2px);
     }
 
+    /* RINGKASAN */
     .wakaf-summary {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 18px;
+      margin-bottom: 26px;
     }
 
     .wakaf-summary-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      min-width: 0;
+      padding: 23px;
+      overflow: hidden;
       background: white;
       border: 1px solid var(--wakaf-border);
       border-radius: 15px;
-      padding: 21px;
       box-shadow: var(--wakaf-shadow);
-      border-left: 4px solid var(--wakaf-primary);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .wakaf-summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 13px 30px rgba(27, 67, 45, .10);
+    }
+
+    .wakaf-summary-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 18px;
+      bottom: 18px;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: var(--wakaf-primary);
+    }
+
+    .wakaf-summary-card:nth-child(2)::after {
+      background: var(--wakaf-gold);
+    }
+
+    .wakaf-summary-card:nth-child(3)::after {
+      background: #4288a5;
+    }
+
+    .wakaf-summary-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 55px;
+      width: 55px;
+      height: 55px;
+      border-radius: 14px;
+      background: var(--wakaf-primary-light);
+      color: var(--wakaf-primary);
+      font-size: 27px;
+    }
+
+    .wakaf-summary-card:nth-child(2) .wakaf-summary-icon {
+      background: #fbf3e3;
+      color: #a77b24;
+    }
+
+    .wakaf-summary-card:nth-child(3) .wakaf-summary-icon {
+      background: #eaf3f8;
+      color: #347695;
     }
 
     .wakaf-summary-label {
+      margin: 0 0 7px;
       color: var(--wakaf-muted);
-      font-size: 13px;
-      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.5;
     }
 
     .wakaf-summary-number {
-      font-size: 29px;
-      line-height: 1.2;
-      font-weight: 750;
+      margin: 0;
       color: var(--wakaf-primary-dark);
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
     }
 
+    /* PANEL DAN FILTER */
     .wakaf-panel {
+      min-width: 0;
       padding: 24px;
-      border: 1px solid var(--wakaf-border);
-      border-radius: 18px;
       background: white;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 16px;
       box-shadow: var(--wakaf-shadow);
     }
 
     .wakaf-panel-heading {
-      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    .wakaf-panel-heading h2 {
-      font-size: 20px;
-      margin: 0 0 7px;
+    .wakaf-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .wakaf-panel-heading p {
-      font-size: 13px;
-      color: var(--wakaf-muted);
+    .wakaf-panel-title-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      border-radius: 12px;
+      background: var(--wakaf-primary-light);
+      color: var(--wakaf-primary);
+      font-size: 21px;
+    }
+
+    .wakaf-panel-title h2 {
+      margin: 0 0 4px;
+      color: var(--wakaf-text);
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .wakaf-panel-title p {
       margin: 0;
-      line-height: 1.6;
+      color: var(--wakaf-muted);
+      font-size: 12px;
     }
 
     .wakaf-toolbar {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+      grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(155px, 1fr));
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 22px;
+    }
+
+    .wakaf-field {
+      position: relative;
+      min-width: 0;
+    }
+
+    .wakaf-field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #53675a;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .wakaf-field input,
     .wakaf-field select {
       width: 100%;
-      min-height: 43px;
+      min-width: 0;
+      min-height: 44px;
       padding: 10px 12px;
-      border: 1px solid var(--wakaf-border);
+      border: 1px solid #d9e3dc;
       border-radius: 9px;
-      background: #fff;
-      color: var(--wakaf-text);
-      font: inherit;
       outline: none;
+      background: #fbfdfb;
+      color: var(--wakaf-text);
+      font-size: 13px;
+      transition: border-color .2s, box-shadow .2s;
     }
 
     .wakaf-field input:focus,
     .wakaf-field select:focus {
       border-color: var(--wakaf-primary);
-      box-shadow: 0 0 0 3px rgba(23,107,80,.09);
+      box-shadow: 0 0 0 3px rgba(23, 107, 80, .10);
+      background: white;
     }
 
+    .wakaf-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 11px;
+    }
+
+    .wakaf-table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+    }
+
+    .wakaf-table th,
+    .wakaf-table td {
+      padding: 14px 13px;
+      border-bottom: 1px solid #edf1ed;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .wakaf-table th {
+      background: #edf5ef;
+      color: #24573c;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .35px;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .wakaf-table tbody tr {
+      transition: background .15s;
+    }
+
+    .wakaf-table tbody tr:hover {
+      background: #f3faf5;
+    }
+
+    .wakaf-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .wakaf-detail-button {
+      padding: 8px 12px;
+      border: 1px solid #b9d8c4;
+      border-radius: 8px;
+      background: #eff8f1;
+      color: #176b50;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+      transition: .2s;
+    }
+
+    .wakaf-detail-button:hover {
+      border-color: var(--wakaf-primary);
+      background: var(--wakaf-primary);
+      color: white;
+    }
+
+    .wakaf-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      color: var(--wakaf-muted);
+      font-size: 12px;
+    }
+
+    #statusWakaf {
+      font-weight: 650;
+    }
+
+    .wakaf-pagination {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .wakaf-pagination button {
+      min-width: 37px;
+      min-height: 36px;
+      padding: 7px 10px;
+      border: 1px solid #dbe5dd;
+      border-radius: 8px;
+      background: white;
+      color: #344c3b;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+      transition: .15s;
+    }
+
+    .wakaf-pagination button:hover:not(:disabled) {
+      border-color: var(--wakaf-primary);
+      color: var(--wakaf-primary);
+    }
+
+    .wakaf-pagination button.active {
+      border-color: var(--wakaf-primary);
+      background: var(--wakaf-primary);
+      color: white;
+    }
+
+    .wakaf-pagination button:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .wakaf-message {
+      padding: 26px 12px;
+      text-align: center;
+      color: var(--wakaf-muted);
+      line-height: 1.7;
+    }
+
+    /* MODAL DETAIL */
+    .wakaf-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(11, 35, 24, .63);
+      backdrop-filter: blur(4px);
+    }
+
+    .wakaf-modal.show {
+      display: flex;
+    }
+
+    .wakaf-modal-content {
+      width: 100%;
+      max-width: 650px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, .6);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+    }
+
+    .wakaf-detail-lengkap {
+      max-width: 900px;
+    }
+
+    .wakaf-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--wakaf-border);
+    }
+
+    .wakaf-modal-header h2 {
+      margin: 0;
+      color: var(--wakaf-primary-dark);
+      font-size: 21px;
+    }
+
+    .wakaf-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border: 0;
+      border-radius: 10px;
+      background: #edf4ef;
+      color: var(--wakaf-primary-dark);
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .wakaf-close:hover {
+      background: #dcece0;
+    }
+
+    .wakaf-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .wakaf-detail-item {
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #edf1ed;
+      border-radius: 10px;
+      background: #f8faf8;
+      overflow-wrap: anywhere;
+    }
+
+    .wakaf-detail-item small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--wakaf-muted);
+      font-size: 11px;
+    }
+
+    .wakaf-detail-item strong {
+      color: #294a35;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .wakaf-detail-section {
+      margin-top: 20px;
+      padding: 17px;
+      border: 1px solid var(--wakaf-border);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .wakaf-detail-section h3 {
+      margin: 0 0 14px;
+      padding-left: 11px;
+      border-left: 3px solid var(--wakaf-gold);
+      color: var(--wakaf-primary-dark);
+      font-size: 15px;
+    }
+
+    .wakaf-detail-section .wakaf-detail-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .wakaf-detail-map {
+      width: 100%;
+      height: 300px;
+      margin-top: 12px;
+      border-radius: 10px;
+      background: #edf2f7;
+    }
+
+    .wakaf-dokumen-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .wakaf-dokumen-item {
+      padding: 13px;
+      border: 1px solid #e7eee8;
+      border-radius: 9px;
+      background: #f8faf8;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+
+    .wakaf-dokumen-item a {
+      display: inline-block;
+      margin-top: 7px;
+      color: var(--wakaf-primary);
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1050px) {
+      .wakaf-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .wakaf-page {
+        padding: 20px 14px 32px;
+      }
+
+      .wakaf-heading {
+        padding: 23px 20px;
+        border-radius: 14px;
+      }
+
+      .wakaf-summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .wakaf-summary-card {
+        padding: 18px;
+      }
+
+      .wakaf-summary-number {
+        font-size: 27px;
+      }
+
+      .wakaf-panel {
+        padding: 17px 13px;
+      }
+
+      .wakaf-toolbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .wakaf-panel-title h2 {
+        font-size: 16px;
+      }
+
+      .wakaf-modal {
+        padding: 10px;
+      }
+
+      .wakaf-modal-content {
+        padding: 17px;
+      }
+
+      .wakaf-detail-grid,
+      .wakaf-detail-section .wakaf-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+
+    /* KHUSUS PETA GIS: tambahan tanpa mengubah gaya master */
     .wakaf-map-wrap {
-      position: relative;
+      width: 100%;
       overflow: hidden;
       border: 1px solid var(--wakaf-border);
-      border-radius: 14px;
+      border-radius: 11px;
+      background: #edf2f7;
     }
 
     #petaGIS {
       width: 100%;
-      height: 560px;
-      background: #e8eee9;
+      height: 620px;
+      min-height: 420px;
+      background: #edf2f7;
       z-index: 1;
     }
 
     .wakaf-map-status {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      align-items: center;
       flex-wrap: wrap;
-      margin-top: 14px;
-      font-size: 13px;
+      gap: 10px;
+      margin-top: 15px;
       color: var(--wakaf-muted);
+      font-size: 12px;
     }
 
-    .wakaf-map-status strong {
-      color: var(--wakaf-primary-dark);
-    }
+    .wakaf-map-status strong { color: var(--wakaf-primary-dark); }
 
-    .wakaf-message {
-      padding: 16px;
+    .wakaf-map-message {
+      margin-bottom: 16px;
+      padding: 13px 15px;
+      border: 1px solid #d9e9dd;
       border-radius: 10px;
-      background: var(--wakaf-primary-light);
+      background: #f0f8f2;
       color: var(--wakaf-primary-dark);
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.6;
-      margin-bottom: 15px;
     }
 
-    .wakaf-message.error {
-      background: #fff0ef;
+    .wakaf-map-message.error {
+      border-color: #f1d3d0;
+      background: #fff3f1;
       color: #a52b24;
     }
 
     .wakaf-popup h3 {
       margin: 0 0 8px;
       color: var(--wakaf-primary-dark);
-      font-size: 16px;
+      font-size: 15px;
     }
 
     .wakaf-popup p {
       margin: 5px 0;
-      font-size: 13px;
+      color: var(--wakaf-text);
+      font-size: 12px;
       line-height: 1.5;
     }
 
-    .wakaf-popup strong { color: var(--wakaf-text); }
+    .wakaf-popup strong { color: var(--wakaf-primary-dark); }
 
-    @media (max-width: 700px) {
-      .wakaf-page {
-        width: calc(100% - 22px);
-        margin-top: 12px;
-      }
-
-      .wakaf-heading { padding: 22px; }
-      .wakaf-summary { grid-template-columns: 1fr; }
-      .wakaf-panel { padding: 16px; }
-      .wakaf-toolbar { grid-template-columns: 1fr; }
-      #petaGIS { height: 450px; }
+    @media (max-width: 760px) {
+      #petaGIS { height: 470px; min-height: 360px; }
     }
+
   </style>
 </head>
-
 <body>
-  <main class="wakaf-page">
+<main class="wakaf-page">
 
-    <header class="wakaf-heading">
+  <!-- HEADER: mengikuti master admin/data-wakaf.html -->
+  <header class="wakaf-heading">
+    <div class="wakaf-heading-content">
+      <div class="wakaf-kicker">SIWAK Banten · Panel Admin</div>
+      <h1>Peta GIS Wakaf</h1>
+      <p>Pemetaan lokasi aset wakaf di Provinsi Banten berdasarkan koordinat yang tersimpan dalam sistem.</p>
+    </div>
+    <a class="wakaf-button" href="dashboard.html">
+      <span aria-hidden="true">←</span>
+      Kembali ke Dashboard
+    </a>
+  </header>
+
+  <!-- KARTU RINGKASAN: struktur dan gaya master -->
+  <section class="wakaf-summary" aria-label="Ringkasan Peta GIS">
+    <div class="wakaf-summary-card">
+      <div class="wakaf-summary-icon" aria-hidden="true">⌖</div>
       <div>
-        <div class="wakaf-kicker">SIWAK Banten · Panel Admin</div>
-        <h1>Peta GIS Wakaf</h1>
-        <p>
-          Pemetaan lokasi tanah dan bangunan wakaf di Provinsi Banten
-          berdasarkan koordinat yang tersimpan dalam sistem.
-        </p>
+        <p class="wakaf-summary-label">Total Titik pada Peta</p>
+        <p class="wakaf-summary-number" id="totalTitikGIS">—</p>
       </div>
-
-      <a class="wakaf-button" href="dashboard.html">
-        ← Kembali ke Dashboard
-      </a>
-    </header>
-
-    <section class="wakaf-summary">
-      <div class="wakaf-summary-card">
-        <div class="wakaf-summary-label">Total titik pada peta</div>
-        <div class="wakaf-summary-number" id="totalTitikGIS">0</div>
+    </div>
+    <div class="wakaf-summary-card">
+      <div class="wakaf-summary-icon" aria-hidden="true">⌂</div>
+      <div>
+        <p class="wakaf-summary-label">Tanah Wakaf</p>
+        <p class="wakaf-summary-number" id="totalTanahGIS">—</p>
       </div>
-
-      <div class="wakaf-summary-card">
-        <div class="wakaf-summary-label">Tanah wakaf</div>
-        <div class="wakaf-summary-number" id="totalTanahGIS">0</div>
+    </div>
+    <div class="wakaf-summary-card">
+      <div class="wakaf-summary-icon" aria-hidden="true">▦</div>
+      <div>
+        <p class="wakaf-summary-label">Bangunan Wakaf</p>
+        <p class="wakaf-summary-number" id="totalBangunanGIS">—</p>
       </div>
+    </div>
+  </section>
 
-      <div class="wakaf-summary-card">
-        <div class="wakaf-summary-label">Bangunan wakaf</div>
-        <div class="wakaf-summary-number" id="totalBangunanGIS">0</div>
-      </div>
-    </section>
-
-    <section class="wakaf-panel">
-      <div class="wakaf-panel-heading">
-        <h2>Lokasi Wakaf</h2>
-        <p>
-          Gunakan pencarian atau filter kabupaten/kota untuk melihat
-          lokasi yang tersedia.
-        </p>
-      </div>
-
-      <div id="pesanGIS" class="wakaf-message">
-        Memuat data lokasi wakaf...
-      </div>
-
-      <div class="wakaf-toolbar">
-        <div class="wakaf-field">
-          <input
-            type="search"
-            id="cariGIS"
-            placeholder="Cari kode wakaf, alamat, desa, atau kecamatan..."
-            aria-label="Cari lokasi wakaf"
-          >
-        </div>
-
-        <div class="wakaf-field">
-          <select id="filterKabKotaGIS" aria-label="Filter kabupaten kota">
-            <option value="">Semua Kabupaten/Kota</option>
-          </select>
+  <!-- PANEL PETA DAN FILTER: gaya master Data Wakaf -->
+  <section class="wakaf-panel">
+    <div class="wakaf-panel-heading">
+      <div class="wakaf-panel-title">
+        <div class="wakaf-panel-title-icon" aria-hidden="true">⌖</div>
+        <div>
+          <h2>Peta Lokasi Wakaf</h2>
+          <p>Gunakan pencarian dan filter untuk menemukan lokasi aset wakaf.</p>
         </div>
       </div>
+    </div>
 
-      <div class="wakaf-map-wrap">
-        <div id="petaGIS"></div>
+    <div class="wakaf-toolbar">
+      <div class="wakaf-field">
+        <label for="cariGIS">Pencarian</label>
+        <input type="search" id="cariGIS" placeholder="Cari kode, alamat, desa, kecamatan...">
       </div>
-
-      <div class="wakaf-map-status">
-        <span id="infoTitikGIS">Menunggu data lokasi...</span>
-        <span>Sumber peta: OpenStreetMap</span>
+      <div class="wakaf-field">
+        <label for="filterKabKotaGIS">Kabupaten/Kota</label>
+        <select id="filterKabKotaGIS">
+          <option value="">Semua Kabupaten/Kota</option>
+        </select>
       </div>
-    </section>
-  </main>
+      <div class="wakaf-field">
+        <label for="filterJenisAsetGIS">Jenis Aset</label>
+        <select id="filterJenisAsetGIS">
+          <option value="">Semua Jenis Aset</option>
+        </select>
+      </div>
+      <div class="wakaf-field">
+        <label for="filterSertifikasiGIS">Status Sertifikasi</label>
+        <select id="filterSertifikasiGIS">
+          <option value="">Semua Status Sertifikasi</option>
+        </select>
+      </div>
+    </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div id="pesanGIS" class="wakaf-map-message">Memuat data lokasi wakaf...</div>
+    <div class="wakaf-map-wrap">
+      <div id="petaGIS" aria-label="Peta interaktif lokasi wakaf"></div>
+    </div>
+    <div class="wakaf-map-status">
+      <span id="infoTitikGIS">Menyiapkan data lokasi...</span>
+      <span id="statusGIS"></span>
+    </div>
+  </section>
+</main>
 
-  <script>
-    /*
-     * PENTING:
-     * Gunakan URL Web App Apps Script SIWAK Banten yang sama
-     * dengan yang digunakan pada halaman Data Wakaf.
-     */
-    const SIWAK_API_URL = 'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+'use strict';
 
-    const peta = L.map('petaGIS').setView([-6.405, 106.15], 9);
+const SIWAK_API_URL = 'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19
-    }).addTo(peta);
+let semuaTitikGIS = [];
+let petaGIS = null;
+const lapisanPenandaGIS = L.featureGroup();
 
-    const lapisanPenanda = L.featureGroup().addTo(peta);
-    let semuaTitikGIS = [];
+const elGIS = {
+  cari: document.getElementById('cariGIS'),
+  kabKota: document.getElementById('filterKabKotaGIS'),
+  jenisAset: document.getElementById('filterJenisAsetGIS'),
+  sertifikasi: document.getElementById('filterSertifikasiGIS'),
+  pesan: document.getElementById('pesanGIS'),
+  info: document.getElementById('infoTitikGIS'),
+  status: document.getElementById('statusGIS')
+};
 
-    function angkaFormat(nilai) {
-      return Number(nilai || 0).toLocaleString('id-ID');
-    }
+function teksAmanGIS(teks) {
+  return String(teks ?? '-').replace(/[&<>"']/g, karakter => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[karakter]);
+}
 
-    function teksAman(nilai) {
-      return String(nilai ?? '-').replace(/[&<>"']/g, karakter => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[karakter]);
-    }
+function nilaiGIS(objek, ...kunci) {
+  for (const k of kunci) {
+    if (objek && objek[k] !== undefined && objek[k] !== null && objek[k] !== '') return objek[k];
+  }
+  return '-';
+}
 
-    function tampilkanPesan(pesan, error = false) {
-      const elemen = document.getElementById('pesanGIS');
-      elemen.textContent = pesan;
-      elemen.classList.toggle('error', error);
-    }
+function angkaGIS(nilai) {
+  return Number(nilai || 0).toLocaleString('id-ID');
+}
 
-    function isiFilterKabKota(data) {
-      const select = document.getElementById('filterKabKotaGIS');
-      const pilihanLama = select.value;
+function tampilkanPesanGIS(pesan, error = false) {
+  elGIS.pesan.textContent = pesan;
+  elGIS.pesan.classList.toggle('error', error);
+}
 
-      const daftar = [...new Set(
-        data.map(item => item.kabKota).filter(Boolean)
-      )].sort((a, b) => a.localeCompare(b, 'id'));
+function isiFilterGIS(select, daftar, label) {
+  const lama = select.value;
+  select.replaceChildren();
+  const awal = document.createElement('option');
+  awal.value = '';
+  awal.textContent = label;
+  select.appendChild(awal);
+  daftar.forEach(item => {
+    const opsi = document.createElement('option');
+    opsi.value = item;
+    opsi.textContent = item;
+    select.appendChild(opsi);
+  });
+  if (daftar.includes(lama)) select.value = lama;
+}
 
-      select.innerHTML = '<option value="">Semua Kabupaten/Kota</option>';
+function siapkanFilterGIS() {
+  const unik = campo => [...new Set(semuaTitikGIS.map(d => nilaiGIS(d, campo)).filter(v => v !== '-'))].sort((a, b) => String(a).localeCompare(String(b), 'id'));
+  isiFilterGIS(elGIS.kabKota, unik('kabKota'), 'Semua Kabupaten/Kota');
+  isiFilterGIS(elGIS.jenisAset, unik('jenisAset'), 'Semua Jenis Aset');
+  isiFilterGIS(elGIS.sertifikasi, unik('statusSertifikasi'), 'Semua Status Sertifikasi');
+}
 
-      daftar.forEach(nama => {
-        const option = document.createElement('option');
-        option.value = nama;
-        option.textContent = nama;
-        select.appendChild(option);
-      });
+function perbaruiRingkasanGIS(data) {
+  document.getElementById('totalTitikGIS').textContent = angkaGIS(data.length);
+  document.getElementById('totalTanahGIS').textContent = angkaGIS(data.filter(d => String(d.jenisAset).trim().toUpperCase() === 'TANAH').length);
+  document.getElementById('totalBangunanGIS').textContent = angkaGIS(data.filter(d => String(d.jenisAset).trim().toUpperCase() !== 'TANAH').length);
+}
 
-      if (daftar.includes(pilihanLama)) {
-        select.value = pilihanLama;
-      }
-    }
+function popupGIS(item) {
+  return `<div class="wakaf-popup">
+    <h3>${teksAmanGIS(nilaiGIS(item, 'kodeWakaf', 'idWakaf'))}</h3>
+    <p><strong>Jenis aset:</strong> ${teksAmanGIS(nilaiGIS(item, 'jenisAset'))}</p>
+    <p><strong>Luas:</strong> ${teksAmanGIS(angkaGIS(nilaiGIS(item, 'luas', 0)))} ${teksAmanGIS(nilaiGIS(item, 'satuanLuas'))}</p>
+    <p><strong>Peruntukan:</strong> ${teksAmanGIS(nilaiGIS(item, 'peruntukan'))}</p>
+    <p><strong>Sertifikasi:</strong> ${teksAmanGIS(nilaiGIS(item, 'statusSertifikasi'))}</p>
+    <p><strong>Kabupaten/Kota:</strong> ${teksAmanGIS(nilaiGIS(item, 'kabKota'))}</p>
+    <p><strong>Kecamatan:</strong> ${teksAmanGIS(nilaiGIS(item, 'kecamatan'))}</p>
+    <p><strong>Desa/Kelurahan:</strong> ${teksAmanGIS(nilaiGIS(item, 'desa'))}</p>
+    <p><strong>Alamat:</strong> ${teksAmanGIS(nilaiGIS(item, 'alamat'))}</p>
+    <p><strong>Akurasi:</strong> ${teksAmanGIS(nilaiGIS(item, 'akurasiLokasi'))}</p>
+  </div>`;
+}
 
-    function perbaruiRingkasan(data) {
-      document.getElementById('totalTitikGIS').textContent =
-        angkaFormat(data.length);
+function tampilkanTitikGIS(data) {
+  lapisanPenandaGIS.clearLayers();
+  data.forEach(item => {
+    const lat = Number(item.latitude);
+    const lng = Number(item.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) return;
+    L.marker([lat, lng]).bindPopup(popupGIS(item)).addTo(lapisanPenandaGIS);
+  });
+  perbaruiRingkasanGIS(data);
+  const jumlahTampil = lapisanPenandaGIS.getLayers().length;
+  elGIS.info.textContent = `Menampilkan ${angkaGIS(jumlahTampil)} titik lokasi`;
+  if (jumlahTampil) petaGIS.fitBounds(lapisanPenandaGIS.getBounds(), { padding: [30, 30], maxZoom: 15 });
+  else petaGIS.setView([-6.405, 106.15], 9);
+}
 
-      document.getElementById('totalTanahGIS').textContent =
-        angkaFormat(data.filter(item =>
-          String(item.jenisAset).toUpperCase() === 'TANAH'
-        ).length);
+function terapkanFilterGIS() {
+  const kata = elGIS.cari.value.trim().toLowerCase();
+  const kab = elGIS.kabKota.value;
+  const jenis = elGIS.jenisAset.value;
+  const sertifikasi = elGIS.sertifikasi.value;
+  const hasil = semuaTitikGIS.filter(item => {
+    const gabungan = [
+      nilaiGIS(item, 'idWakaf'), nilaiGIS(item, 'kodeWakaf'),
+      nilaiGIS(item, 'jenisAset'), nilaiGIS(item, 'peruntukan'),
+      nilaiGIS(item, 'kabKota'), nilaiGIS(item, 'kecamatan'),
+      nilaiGIS(item, 'desa'), nilaiGIS(item, 'alamat'),
+      nilaiGIS(item, 'statusSertifikasi')
+    ].join(' ').toLowerCase();
+    return gabungan.includes(kata) &&
+      (!kab || nilaiGIS(item, 'kabKota') === kab) &&
+      (!jenis || nilaiGIS(item, 'jenisAset') === jenis) &&
+      (!sertifikasi || nilaiGIS(item, 'statusSertifikasi') === sertifikasi);
+  });
+  tampilkanTitikGIS(hasil);
+}
 
-      document.getElementById('totalBangunanGIS').textContent =
-        angkaFormat(data.filter(item =>
-          String(item.jenisAset).toUpperCase() === 'BANGUNAN'
-        ).length);
-    }
+async function muatPetaGIS() {
+  elGIS.status.textContent = 'Menghubungkan ke API...';
+  try {
+    const respons = await fetch(SIWAK_API_URL + '?action=petaGIS');
+    if (!respons.ok) throw new Error('HTTP ' + respons.status);
+    const hasil = await respons.json();
+    if (!hasil.success) throw new Error(hasil.message || 'API menolak permintaan.');
+    const data = hasil.data?.data;
+    if (!Array.isArray(data)) throw new Error('Format data API tidak sesuai.');
+    semuaTitikGIS = data.filter(d => {
+      const lat = Number(d.latitude), lng = Number(d.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+    });
+    siapkanFilterGIS();
+    terapkanFilterGIS();
+    tampilkanPesanGIS(semuaTitikGIS.length
+      ? 'Data lokasi wakaf berhasil dimuat.'
+      : 'Belum ada data wakaf dengan koordinat valid dan status publikasi yang sesuai.');
+    elGIS.status.textContent = 'Koneksi API berhasil.';
+  } catch (error) {
+    console.error('Gagal memuat Peta GIS:', error);
+    tampilkanPesanGIS('Data peta gagal dimuat. Periksa koneksi API. ' + error.message, true);
+    elGIS.info.textContent = 'Data belum dapat ditampilkan.';
+    elGIS.status.textContent = 'Koneksi API gagal.';
+  }
+}
 
-    function buatPopup(item) {
-      return `
-        <div class="wakaf-popup">
-          <h3>${teksAman(item.kodeWakaf)}</h3>
-          <p><strong>Jenis aset:</strong> ${teksAman(item.jenisAset)}</p>
-          <p><strong>Luas:</strong> ${teksAman(angkaFormat(item.luas))} ${teksAman(item.satuanLuas)}</p>
-          <p><strong>Peruntukan:</strong> ${teksAman(item.peruntukan)}</p>
-          <p><strong>Sertifikasi:</strong> ${teksAman(item.statusSertifikasi)}</p>
-          <p><strong>Kabupaten/Kota:</strong> ${teksAman(item.kabKota)}</p>
-          <p><strong>Kecamatan:</strong> ${teksAman(item.kecamatan)}</p>
-          <p><strong>Desa/Kelurahan:</strong> ${teksAman(item.desa)}</p>
-          <p><strong>Alamat:</strong> ${teksAman(item.alamat)}</p>
-          <p><strong>Akurasi:</strong> ${teksAman(item.akurasiLokasi)}</p>
-        </div>
-      `;
-    }
+petaGIS = L.map('petaGIS', { scrollWheelZoom: true }).setView([-6.405, 106.15], 9);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 19
+}).addTo(petaGIS);
+lapisanPenandaGIS.addTo(petaGIS);
 
-    function tampilkanTitik(data) {
-      lapisanPenanda.clearLayers();
+elGIS.cari.addEventListener('input', terapkanFilterGIS);
+elGIS.kabKota.addEventListener('change', terapkanFilterGIS);
+elGIS.jenisAset.addEventListener('change', terapkanFilterGIS);
+elGIS.sertifikasi.addEventListener('change', terapkanFilterGIS);
 
-      data.forEach(item => {
-        const marker = L.marker([
-          Number(item.latitude),
-          Number(item.longitude)
-        ]);
-
-        marker.bindPopup(buatPopup(item));
-        marker.addTo(lapisanPenanda);
-      });
-
-      perbaruiRingkasan(data);
-
-      document.getElementById('infoTitikGIS').textContent =
-        `Menampilkan ${angkaFormat(data.length)} titik lokasi`;
-
-      if (data.length > 0) {
-        peta.fitBounds(lapisanPenanda.getBounds(), {
-          padding: [35, 35],
-          maxZoom: 15
-        });
-      } else {
-        peta.setView([-6.405, 106.15], 9);
-      }
-    }
-
-    function terapkanFilterGIS() {
-      const kata = document.getElementById('cariGIS')
-        .value.trim().toLowerCase();
-
-      const kabKota = document.getElementById('filterKabKotaGIS').value;
-
-      const hasil = semuaTitikGIS.filter(item => {
-        const teks = [
-          item.kodeWakaf,
-          item.jenisAset,
-          item.peruntukan,
-          item.kabKota,
-          item.kecamatan,
-          item.desa,
-          item.alamat
-        ].join(' ').toLowerCase();
-
-        return teks.includes(kata) &&
-          (!kabKota || item.kabKota === kabKota);
-      });
-
-      tampilkanTitik(hasil);
-    }
-
-    async function muatPetaGIS() {
-      try {
-        if (SIWAK_API_URL === 'GANTI_DENGAN_URL_WEB_APP_ANDA') {
-          throw new Error(
-            'URL Web App belum diisi. Masukkan URL API SIWAK Banten terlebih dahulu.'
-          );
-        }
-
-        const respons = await fetch(
-          SIWAK_API_URL + '?action=petaGIS'
-        );
-
-        if (!respons.ok) {
-          throw new Error('HTTP ' + respons.status);
-        }
-
-        const hasil = await respons.json();
-
-        if (!hasil.success) {
-          throw new Error(hasil.message || 'API gagal mengambil data peta.');
-        }
-
-        const isi = hasil.data;
-        semuaTitikGIS = Array.isArray(isi) ? isi : (isi.data || []);
-
-        isiFilterKabKota(semuaTitikGIS);
-        terapkanFilterGIS();
-
-        tampilkanPesan(
-          semuaTitikGIS.length
-            ? 'Data lokasi wakaf berhasil dimuat.'
-            : 'Belum ada data wakaf dengan koordinat valid dan status publikasi yang sesuai.'
-        );
-
-      } catch (error) {
-        console.error('Gagal memuat Peta GIS:', error);
-        tampilkanPesan(
-          'Peta gagal memuat data. Periksa URL API, koneksi, dan izin Web App. Detail: ' +
-          error.message,
-          true
-        );
-      }
-    }
-
-    document.getElementById('cariGIS')
-      .addEventListener('input', terapkanFilterGIS);
-
-    document.getElementById('filterKabKotaGIS')
-      .addEventListener('change', terapkanFilterGIS);
-
-    // Beri waktu agar ukuran kontainer peta selesai dihitung.
-    setTimeout(() => peta.invalidateSize(), 200);
-
-    muatPetaGIS();
-  </script>
+muatPetaGIS();
+setTimeout(() => petaGIS.invalidateSize(), 200);
+</script>
 </body>
 </html>
