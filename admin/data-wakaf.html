@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Wakaf - SIWAK Banten</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .wakaf-page {
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 0 20px 36px;
+      color: #203047;
+    }
+
+    .wakaf-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .wakaf-heading h1 {
+      margin: 0 0 6px;
+      font-size: 25px;
+    }
+
+    .wakaf-heading p {
+      margin: 0;
+      color: #64748b;
+    }
+
+    .wakaf-button {
+      display: inline-block;
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 8px;
+      background: #176b50;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .wakaf-button.secondary {
+      background: #e8eef3;
+      color: #203047;
+    }
+
+    .wakaf-panel {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(15, 23, 42, .04);
+    }
+
+    .wakaf-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .wakaf-toolbar input,
+    .wakaf-toolbar select {
+      min-width: 180px;
+      flex: 1;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: white;
+      color: #203047;
+      font-size: 14px;
+    }
+
+    .wakaf-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .wakaf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .wakaf-table th,
+    .wakaf-table td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #e8edf2;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .wakaf-table th {
+      background: #f1f6f4;
+      color: #285643;
+      white-space: nowrap;
+    }
+
+    .wakaf-table tbody tr:hover {
+      background: #f8fbf9;
+    }
+
+    .wakaf-detail-button {
+      padding: 7px 10px;
+      border: 1px solid #176b50;
+      border-radius: 6px;
+      background: white;
+      color: #176b50;
+      cursor: pointer;
+    }
+
+    .wakaf-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .wakaf-pagination {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .wakaf-pagination button {
+      min-width: 36px;
+      padding: 8px 10px;
+      border: 1px solid #d5dee7;
+      border-radius: 6px;
+      background: white;
+      color: #203047;
+      cursor: pointer;
+    }
+
+    .wakaf-pagination button.active {
+      background: #176b50;
+      border-color: #176b50;
+      color: white;
+    }
+
+    .wakaf-pagination button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .wakaf-message {
+      padding: 22px 12px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .wakaf-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(15, 23, 42, .55);
+    }
+
+    .wakaf-modal.show {
+      display: flex;
+    }
+
+    .wakaf-modal-content {
+      width: 100%;
+      max-width: 650px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 22px;
+      border-radius: 12px;
+      background: white;
+    }
+
+    .wakaf-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .wakaf-modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .wakaf-close {
+      border: 0;
+      background: transparent;
+      font-size: 27px;
+      cursor: pointer;
+    }
+
+    .wakaf-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .wakaf-detail-item {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f5f8f7;
+      overflow-wrap: anywhere;
+    }
+
+    .wakaf-detail-item small {
+      display: block;
+      margin-bottom: 5px;
+      color: #64748b;
+    }
+
+    .wakaf-detail-item strong {
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .wakaf-page { padding: 0 12px 24px; }
+      .wakaf-panel { padding: 12px; }
+      .wakaf-detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wakaf-page">
+    <div class="wakaf-heading">
+      <div>
+        <h1>Data Wakaf</h1>
+        <p>Informasi dan pengelolaan data aset wakaf.</p>
+      </div>
+      <a class="wakaf-button secondary" href="dashboard.html">
+        ← Kembali ke Dashboard
+      </a>
+    </div>
+
+    <section class="wakaf-panel">
+      <div class="wakaf-toolbar">
+        <input id="searchWakaf" type="search"
+          placeholder="Cari kode, jenis aset, peruntukan, lokasi...">
+
+        <select id="filterKabKota">
+          <option value="">Semua Kabupaten/Kota</option>
+        </select>
+
+        <select id="filterJenisAset">
+          <option value="">Semua Jenis Aset</option>
+        </select>
+
+        <select id="filterSertifikasi">
+          <option value="">Semua Status Sertifikasi</option>
+        </select>
+      </div>
+
+      <div class="wakaf-table-wrap">
+        <table class="wakaf-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Kode Wakaf</th>
+              <th>Jenis Aset</th>
+              <th>Luas</th>
+              <th>Peruntukan</th>
+              <th>Kabupaten/Kota</th>
+              <th>Status Sertifikasi</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dataWakafBody">
+            <tr>
+              <td colspan="8" class="wakaf-message">Memuat data wakaf...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="wakaf-info">
+        <span id="resultInfo">Menyiapkan data...</span>
+        <span id="statusWakaf"></span>
+      </div>
+
+      <div id="paginationWakaf" class="wakaf-pagination"></div>
+    </section>
+  </main>
+
+  <div class="wakaf-modal" id="modalDetailWakaf"
+       role="dialog" aria-modal="true" aria-labelledby="judulDetailWakaf">
+    <div class="wakaf-modal-content">
+      <div class="wakaf-modal-header">
+        <h2 id="judulDetailWakaf">Detail Wakaf</h2>
+        <button class="wakaf-close" id="tutupDetailWakaf"
+          aria-label="Tutup">&times;</button>
+      </div>
+      <div id="isiDetailWakaf" class="wakaf-detail-grid"></div>
+    </div>
+  </div>
+
+  <script>
+    const SIWAK_API_URL =
+      'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+    const JUMLAH_PER_HALAMAN = 10;
+
+    let semuaDataWakaf = [];
+    let dataTerfilterWakaf = [];
+    let halamanWakaf = 1;
+
+    const elemen = {
+      body: document.getElementById('dataWakafBody'),
+      cari: document.getElementById('searchWakaf'),
+      kabKota: document.getElementById('filterKabKota'),
+      jenisAset: document.getElementById('filterJenisAset'),
+      sertifikasi: document.getElementById('filterSertifikasi'),
+      info: document.getElementById('resultInfo'),
+      status: document.getElementById('statusWakaf'),
+      pagination: document.getElementById('paginationWakaf'),
+      modal: document.getElementById('modalDetailWakaf'),
+      isiDetail: document.getElementById('isiDetailWakaf')
+    };
+
+    function nilai(objek, ...kunci) {
+      for (const kunciObjek of kunci) {
+        if (objek[kunciObjek] !== undefined &&
+            objek[kunciObjek] !== null &&
+            objek[kunciObjek] !== '') {
+          return objek[kunciObjek];
+        }
+      }
+      return '-';
+    }
+
+    function teksAman(teks) {
+      return String(teks ?? '-').replace(/[&<>"']/g, karakter => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[karakter]);
+    }
+
+    function isiPilihan(select, daftar, labelAwal) {
+      const pilihanLama = select.value;
+      select.replaceChildren();
+
+      const awal = document.createElement('option');
+      awal.value = '';
+      awal.textContent = labelAwal;
+      select.appendChild(awal);
+
+      daftar.forEach(item => {
+        const opsi = document.createElement('option');
+        opsi.value = item;
+        opsi.textContent = item;
+        select.appendChild(opsi);
+      });
+
+      if (daftar.includes(pilihanLama)) {
+        select.value = pilihanLama;
+      }
+    }
+
+    function siapkanFilterWakaf() {
+      isiPilihan(
+        elemen.kabKota,
+        [...new Set(semuaDataWakaf.map(d =>
+          nilai(d, 'kabKota', 'kab_kota')
+        ).filter(v => v !== '-'))].sort(),
+        'Semua Kabupaten/Kota'
+      );
+
+      isiPilihan(
+        elemen.jenisAset,
+        [...new Set(semuaDataWakaf.map(d =>
+          nilai(d, 'jenisAset', 'jenis_aset')
+        ).filter(v => v !== '-'))].sort(),
+        'Semua Jenis Aset'
+      );
+
+      isiPilihan(
+        elemen.sertifikasi,
+        [...new Set(semuaDataWakaf.map(d =>
+          nilai(d, 'statusSertifikasi', 'status_sertifikasi')
+        ).filter(v => v !== '-'))].sort(),
+        'Semua Status Sertifikasi'
+      );
+    }
+
+    async function loadDataWakaf() {
+      elemen.status.textContent = 'Menghubungkan ke API...';
+
+      try {
+        const respons = await fetch(SIWAK_API_URL + '?action=dataWakaf');
+        if (!respons.ok) throw new Error('HTTP ' + respons.status);
+
+        const hasil = await respons.json();
+        if (!hasil.success) {
+          throw new Error(hasil.message || 'API menolak permintaan.');
+        }
+
+        const data = hasil.data?.data;
+        if (!Array.isArray(data)) {
+          throw new Error('Format data API tidak sesuai.');
+        }
+
+        semuaDataWakaf = data;
+        siapkanFilterWakaf();
+        terapkanFilterWakaf();
+
+        elemen.status.textContent = 'Koneksi API berhasil.';
+      } catch (error) {
+        console.error('Gagal memuat data wakaf:', error);
+        elemen.body.innerHTML =
+          '<tr><td colspan="8" class="wakaf-message">' +
+          'Data gagal dimuat. Periksa koneksi API dan struktur responsnya.' +
+          '</td></tr>';
+        elemen.info.textContent = 'Data belum dapat ditampilkan.';
+        elemen.status.textContent = 'Koneksi API gagal.';
+      }
+    }
+
+    function terapkanFilterWakaf() {
+      const kata = elemen.cari.value.trim().toLowerCase();
+      const kab = elemen.kabKota.value;
+      const jenis = elemen.jenisAset.value;
+      const sertifikat = elemen.sertifikasi.value;
+
+      dataTerfilterWakaf = semuaDataWakaf.filter(d => {
+        const gabungan = [
+          nilai(d, 'idWakaf', 'id_wakaf'),
+          nilai(d, 'kodeWakaf', 'kode_wakaf'),
+          nilai(d, 'jenisAset', 'jenis_aset'),
+          nilai(d, 'peruntukan', 'id_peruntukan'),
+          nilai(d, 'kabKota', 'kab_kota'),
+          nilai(d, 'statusSertifikasi', 'status_sertifikasi')
+        ].join(' ').toLowerCase();
+
+        return gabungan.includes(kata) &&
+          (!kab || nilai(d, 'kabKota', 'kab_kota') === kab) &&
+          (!jenis || nilai(d, 'jenisAset', 'jenis_aset') === jenis) &&
+          (!sertifikat ||
+            nilai(d, 'statusSertifikasi', 'status_sertifikasi') === sertifikat);
+      });
+
+      halamanWakaf = 1;
+      tampilkanTabelWakaf();
+    }
+
+    function tampilkanTabelWakaf() {
+      const total = dataTerfilterWakaf.length;
+      const totalHalaman = Math.ceil(total / JUMLAH_PER_HALAMAN);
+      if (totalHalaman && halamanWakaf > totalHalaman) {
+        halamanWakaf = totalHalaman;
+      }
+
+      const mulai = (halamanWakaf - 1) * JUMLAH_PER_HALAMAN;
+      const halamanData = dataTerfilterWakaf.slice(
+        mulai, mulai + JUMLAH_PER_HALAMAN
+      );
+
+      if (!halamanData.length) {
+        elemen.body.innerHTML =
+          '<tr><td colspan="8" class="wakaf-message">' +
+          'Tidak ada data wakaf yang sesuai.' +
+          '</td></tr>';
+      } else {
+        elemen.body.innerHTML = halamanData.map((d, indeks) => `
+          <tr>
+            <td>${mulai + indeks + 1}</td>
+            <td>${teksAman(nilai(d, 'kodeWakaf', 'kode_wakaf'))}</td>
+            <td>${teksAman(nilai(d, 'jenisAset', 'jenis_aset'))}</td>
+            <td>${teksAman(nilai(d, 'luas'))}
+                ${teksAman(nilai(d, 'satuanLuas', 'satuan_luas') === '-'
+                  ? '' : nilai(d, 'satuanLuas', 'satuan_luas'))}</td>
+            <td>${teksAman(nilai(d, 'peruntukan', 'id_peruntukan'))}</td>
+            <td>${teksAman(nilai(d, 'kabKota', 'kab_kota'))}</td>
+            <td>${teksAman(nilai(d, 'statusSertifikasi', 'status_sertifikasi'))}</td>
+            <td>
+              <button class="wakaf-detail-button"
+                data-id="${teksAman(nilai(d, 'idWakaf', 'id_wakaf'))}">
+                Detail
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      elemen.info.textContent = total
+        ? `Menampilkan ${mulai + 1}–${Math.min(mulai + halamanData.length, total)} dari ${total} data`
+        : 'Menampilkan 0 data';
+
+      tampilkanPaginationWakaf(totalHalaman);
+    }
+
+    function tampilkanPaginationWakaf(totalHalaman) {
+      elemen.pagination.replaceChildren();
+
+      if (totalHalaman <= 1) return;
+
+      function buatTombol(label, tujuan, aktif = false, nonaktif = false) {
+        const tombol = document.createElement('button');
+        tombol.textContent = label;
+        tombol.disabled = nonaktif;
+        if (aktif) tombol.classList.add('active');
+        tombol.addEventListener('click', () => {
+          halamanWakaf = tujuan;
+          tampilkanTabelWakaf();
+        });
+        elemen.pagination.appendChild(tombol);
+      }
+
+      buatTombol('‹', halamanWakaf - 1, false, halamanWakaf === 1);
+
+      for (let i = 1; i <= totalHalaman; i++) {
+        buatTombol(String(i), i, i === halamanWakaf);
+      }
+
+      buatTombol('›', halamanWakaf + 1, false,
+        halamanWakaf === totalHalaman);
+    }
+
+    async function bukaDetailWakaf(idWakaf) {
+      elemen.isiDetail.innerHTML =
+        '<div class="wakaf-message">Memuat detail...</div>';
+      elemen.modal.classList.add('show');
+
+      try {
+        const url = SIWAK_API_URL + '?action=detailWakaf&idWakaf=' +
+          encodeURIComponent(idWakaf);
+        const respons = await fetch(url);
+        if (!respons.ok) throw new Error('HTTP ' + respons.status);
+
+        const hasil = await respons.json();
+        if (!hasil.success) {
+          throw new Error(hasil.message || 'Detail tidak tersedia.');
+        }
+
+        const data = hasil.data?.data ?? hasil.data;
+        if (!data || typeof data !== 'object') {
+          throw new Error('Format detail tidak sesuai.');
+        }
+
+        const label = {
+          idWakaf: 'ID Wakaf',
+          kodeWakaf: 'Kode Wakaf',
+          jenisAset: 'Jenis Aset',
+          luas: 'Luas',
+          satuanLuas: 'Satuan Luas',
+          peruntukan: 'Peruntukan',
+          kabKota: 'Kabupaten/Kota',
+          kecamatan: 'Kecamatan',
+          desa: 'Desa/Kelurahan',
+          statusSertifikasi: 'Status Sertifikasi',
+          nomorSertifikat: 'Nomor Sertifikat',
+          tahunWakaf: 'Tahun Wakaf',
+          nomorAiwApaiw: 'Nomor AIW/APAIW'
+        };
+
+        const padanan = {
+          idWakaf: ['idWakaf', 'id_wakaf'],
+          kodeWakaf: ['kodeWakaf', 'kode_wakaf'],
+          jenisAset: ['jenisAset', 'jenis_aset'],
+          luas: ['luas'],
+          satuanLuas: ['satuanLuas', 'satuan_luas'],
+          peruntukan: ['peruntukan', 'id_peruntukan'],
+          kabKota: ['kabKota', 'kab_kota'],
+          kecamatan: ['kecamatan'],
+          desa: ['desa', 'desaKelurahan', 'desa_kelurahan'],
+          statusSertifikasi: ['statusSertifikasi', 'status_sertifikasi'],
+          nomorSertifikat: ['nomorSertifikat', 'nomor_sertifikat'],
+          tahunWakaf: ['tahunWakaf', 'tahun_wakaf'],
+          nomorAiwApaiw: ['nomorAiwApaiw', 'nomor_aiw_apaiw']
+        };
+
+        const isi = Object.keys(label).map(kunci => {
+          const nilaiData = nilai(data, ...padanan[kunci]);
+          if (nilaiData === '-') return '';
+          return `<div class="wakaf-detail-item">
+            <small>${teksAman(label[kunci])}</small>
+            <strong>${teksAman(nilaiData)}</strong>
+          </div>`;
+        }).filter(Boolean).join('');
+
+        elemen.isiDetail.innerHTML = isi ||
+          '<div class="wakaf-message">Belum ada rincian yang dapat ditampilkan.</div>';
+      } catch (error) {
+        console.error('Gagal memuat detail wakaf:', error);
+        elemen.isiDetail.innerHTML =
+          '<div class="wakaf-message">Detail gagal dimuat. Periksa respons API.</div>';
+      }
+    }
+
+    elemen.cari.addEventListener('input', terapkanFilterWakaf);
+    elemen.kabKota.addEventListener('change', terapkanFilterWakaf);
+    elemen.jenisAset.addEventListener('change', terapkanFilterWakaf);
+    elemen.sertifikasi.addEventListener('change', terapkanFilterWakaf);
+
+    elemen.body.addEventListener('click', event => {
+      const tombol = event.target.closest('[data-id]');
+      if (tombol) bukaDetailWakaf(tombol.dataset.id);
+    });
+
+    function tutupModalWakaf() {
+      elemen.modal.classList.remove('show');
+    }
+
+    document.getElementById('tutupDetailWakaf')
+      .addEventListener('click', tutupModalWakaf);
+
+    elemen.modal.addEventListener('click', event => {
+      if (event.target === elemen.modal) tutupModalWakaf();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') tutupModalWakaf();
+    });
+
+    loadDataWakaf();
+  </script>
+</body>
+</html>
