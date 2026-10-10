@@ -396,143 +396,82 @@ select {
       box-shadow: 0 0 0 3px rgba(39,131,98,.12);
     }
 
-    .wakif-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      border: 1px solid #e3ebe6;
-      border-radius: 12px;
-      scrollbar-width: thin;
-    }
+    
+/* TABEL — DISESUAIKAN DENGAN DATA WAKAF */
+.wakif-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--wakif-border);
+  border-radius: 11px;
+}
 
-    .wakif-table {
-      width: 100%;
-      min-width: 980px;
-      border-collapse: separate;
-      border-spacing: 0;
-      font-size: 12px;
-    }
+.wakif-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
 
-    .wakif-table th,
-    .wakif-table td {
-      padding: 14px 13px;
-      border-bottom: 1px solid #eaf0ec;
-      text-align: left;
-      vertical-align: middle;
-    }
+.wakif-table th,
+.wakif-table td {
+  padding: 14px 13px;
+  border-bottom: 1px solid #edf1ed;
+  text-align: left;
+  vertical-align: middle;
+}
 
-    .wakif-table th {
-      background: #edf5ef;
-      color: #285b45;
-      font-size: 11px;
-      font-weight: 750;
-      letter-spacing: .25px;
-      white-space: nowrap;
-    }
+.wakif-table th {
+  background: #edf5ef;
+  color: #24573c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .35px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
 
-    .wakif-table tbody tr { transition: background .15s; }
-    .wakif-table tbody tr:hover { background: #f5faf6; }
-    .wakif-table tbody tr:last-child td { border-bottom: 0; }
+.wakif-table tbody tr {
+  transition: background .15s;
+}
 
-    .wakif-table td { line-height: 1.55; }
+.wakif-table tbody tr:hover {
+  background: #f3faf5;
+}
 
-    .wakif-table td:first-child {
-      color: #82918a;
-      font-variant-numeric: tabular-nums;
-    }
+.wakif-table tbody tr:last-child td {
+  border-bottom: 0;
+}
 
-    .wakif-id {
-      color: var(--wakif-green);
-      font-weight: 750;
-      white-space: nowrap;
-    }
+.wakif-table td {
+  line-height: normal;
+}
 
-    .wakif-detail-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      min-height: 32px;
-      padding: 7px 12px;
-      border: 1px solid #c9e2d3;
-      border-radius: 8px;
-      background: #edf7f0;
-      color: #176446;
-      font-size: 11px;
-      font-weight: 750;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background .2s, border-color .2s;
-    }
+.wakif-detail-button {
+  padding: 8px 12px;
+  border: 1px solid #b9d8c4;
+  border-radius: 8px;
+  background: #eff8f1;
+  color: #176b50;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+  transition: .2s;
+}
 
-    .wakif-detail-button:hover {
-      border-color: #93c7aa;
-      background: #dcefe3;
-    }
+.wakif-detail-button:hover {
+  border-color: var(--wakif-green);
+  background: var(--wakif-green);
+  color: white;
+}
 
-    .wakif-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 17px;
-      color: var(--wakif-muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .wakif-status {
-      color: #52806a;
-      font-size: 11px;
-    }
-
-    .wakif-pagination {
-      display: flex;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 17px;
-    }
-
-    .wakif-pagination button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 35px;
-      padding: 7px 11px;
-      border: 1px solid #dbe5df;
-      border-radius: 8px;
-      background: #fff;
-      color: #41534a;
-      font-size: 12px;
-      font-weight: 650;
-      cursor: pointer;
-      transition: background .15s, border-color .15s;
-    }
-
-    .wakif-pagination button:hover:not(:disabled):not(.active) {
-      border-color: #a9cdb8;
-      background: #f1f8f3;
-    }
-
-    .wakif-pagination button.active {
-      border-color: var(--wakif-green);
-      background: var(--wakif-green);
-      color: #fff;
-      box-shadow: 0 3px 8px rgba(20,91,67,.15);
-    }
-
-    .wakif-pagination button:disabled {
-      opacity: .4;
-      cursor: not-allowed;
-    }
-
-    .wakif-message {
-      padding: 32px 14px !important;
-      color: var(--wakif-muted);
-      text-align: center !important;
-    }
+.wakif-message {
+  padding: 26px 12px !important;
+  text-align: center !important;
+  color: var(--wakif-muted);
+  line-height: 1.7;
+}
 
     /* DETAIL MODAL */
     .wakif-modal {
