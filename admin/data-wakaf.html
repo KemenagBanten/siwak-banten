@@ -344,6 +344,31 @@
       return '-';
     }
 
+    
+function formatNilaiDetail(nilaiData) {
+  if (nilaiData === null || nilaiData === undefined || nilaiData === '') {
+    return '-';
+  }
+
+  if (typeof nilaiData === 'object') {
+    if (Array.isArray(nilaiData)) {
+      return nilaiData.map(item => formatNilaiDetail(item)).join(', ');
+    }
+
+    // Coba ambil nama peruntukan dari objek API
+    return nilaiData.namaPeruntukan
+      ?? nilaiData.nama_peruntukan
+      ?? nilaiData.nama
+      ?? nilaiData.label
+      ?? nilaiData.value
+      ?? nilaiData.idPeruntukan
+      ?? nilaiData.id_peruntukan
+      ?? JSON.stringify(nilaiData);
+  }
+
+  return String(nilaiData);
+}
+    
     function teksAman(teks) {
       return String(teks ?? '-').replace(/[&<>"']/g, karakter => ({
         '&': '&amp;',
@@ -588,7 +613,7 @@
         };
 
         const isi = Object.keys(label).map(kunci => {
-          const nilaiData = nilai(data, ...padanan[kunci]);
+          const nilaiData = formatNilaiDetail(nilai(data, ...padanan[kunci]));
           if (nilaiData === '-') return '';
           return `<div class="wakaf-detail-item">
             <small>${teksAman(label[kunci])}</small>
