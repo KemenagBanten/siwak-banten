@@ -951,7 +951,7 @@ async function muatPetaGIS() {
   }
 }
 
-petaGIS = L.map('petaGIS', { scrollWheelZoom: true }).setView([-6.405, 106.15], 9);
+petaGIS = L.map('petaGIS', { scrollWheelZoom: false }).setView([-6.405, 106.15], 9);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors',
   maxZoom: 19
