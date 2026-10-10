@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uji API Admin SIWAK</title>
+</head>
+<body>
+  <h2>Uji API Pembuatan Akun Admin</h2>
+  <button id="ujiButton" type="button">Uji Token Kosong</button>
+  <pre id="hasil">Belum diuji.</pre>
+
+  <script>
+    const SIWAK_API_URL =
+      'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
+
+    document.getElementById('ujiButton').addEventListener('click', async function() {
+      const areaHasil = document.getElementById('hasil');
+      areaHasil.textContent = 'Mengirim permintaan...';
+
+      try {
+        const response = await fetch(SIWAK_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify({
+            action: 'buatAkunAdminKabKota',
+            token: '',
+            dataAdmin: {
+              username: 'uji_admin_banten',
+              password: 'Tes-SIWAK-2026!',
+              kodeWilayah: '3673',
+              email: ''
+            }
+          })
+        });
+
+        const hasil = await response.json();
+        areaHasil.textContent = JSON.stringify(hasil, null, 2);
+      } catch (error) {
+        areaHasil.textContent =
+          'Permintaan gagal: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
