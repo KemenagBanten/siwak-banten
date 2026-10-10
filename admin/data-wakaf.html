@@ -1031,25 +1031,37 @@ const respons = await fetch(SIWAK_API_URL, {
     terapkanFilterWakaf();
 
     elemen.status.textContent = 'Koneksi API berhasil.';
+ 
   } catch (error) {
     console.error('Gagal memuat data wakaf:', error);
 
-    
-[
-  'summaryTotalWakaf',
-  'summaryBersertifikat',
-  'summaryBelumSertifikat'
-].forEach(function(id) {
-  document.getElementById(id).textContent = 'Gagal';
-});
+    // Hentikan tampilan spinner pada semua kartu ringkasan.
+    [
+      'summaryTotalWakaf',
+      'summaryBersertifikat',
+      'summaryBelumSertifikat'
+    ].forEach(function(id) {
+      document.getElementById(id).textContent =
+        'Gagal dimuat';
+    });
 
+    // Tampilkan pesan gagal pada tabel.
     elemen.body.innerHTML =
       '<tr><td colspan="8" class="wakaf-message">' +
-      'Data gagal dimuat. Periksa koneksi API dan struktur responsnya.' +
+      '<strong>Data wakaf gagal dimuat.</strong><br>' +
+      'Periksa koneksi internet atau sesi login Anda, ' +
+      'kemudian muat ulang halaman.' +
       '</td></tr>';
 
-    elemen.info.textContent = 'Data belum dapat ditampilkan.';
-    elemen.status.textContent = 'Koneksi API gagal.';
+    // Bersihkan informasi dan tombol pagination lama.
+    elemen.info.textContent =
+      'Data belum dapat ditampilkan.';
+
+    elemen.pagination.replaceChildren();
+
+    // Status koneksi tetap menunjukkan kegagalan.
+    elemen.status.textContent =
+      'Koneksi API gagal.';
   }
 }
 
@@ -1094,10 +1106,12 @@ function tampilkanTabelWakaf() {
   );
 
   if (!halamanData.length) {
-    elemen.body.innerHTML =
-      '<tr><td colspan="8" class="wakaf-message">' +
-      'Tidak ada data wakaf yang sesuai.' +
-      '</td></tr>';
+   
+elemen.body.innerHTML =
+  '<tr><td colspan="8" class="wakaf-message">' +
+  'Memuat data wakaf...' +
+  '</td></tr>';
+    
   } else {
     elemen.body.innerHTML = halamanData.map((d, indeks) => `
       <tr>
