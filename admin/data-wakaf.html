@@ -300,6 +300,160 @@
       .wakaf-panel { padding: 12px; }
       .wakaf-detail-grid { grid-template-columns: 1fr; }
     }
+
+    
+/* ===== TEMA BARU SIWAK BANTEN ===== */
+body {
+  background: #f4f7f5;
+}
+
+.wakaf-page {
+  max-width: 1280px;
+  color: #24352d;
+}
+
+.wakaf-heading h1 {
+  color: #155b40;
+  font-size: 27px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+.wakaf-heading p {
+  line-height: 1.6;
+}
+
+.wakaf-button {
+  background: #176b50;
+  border-radius: 9px;
+  font-weight: 600;
+  transition: background .2s, transform .2s;
+}
+
+.wakaf-button:hover {
+  background: #10563e;
+  transform: translateY(-1px);
+}
+
+.wakaf-panel {
+  border: 1px solid #e5ece7;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(24, 65, 44, .055);
+}
+
+.wakaf-table th {
+  background: #edf5ef;
+  color: #205a3e;
+}
+
+.wakaf-table tbody tr:hover {
+  background: #f4faf5;
+}
+
+.wakaf-detail-button {
+  border-color: #176b50;
+  color: #176b50;
+  font-weight: 600;
+}
+
+.wakaf-detail-button:hover {
+  background: #176b50;
+  color: #fff;
+}
+
+/* Kartu ringkasan */
+.wakaf-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.wakaf-summary-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+  padding: 22px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5ece7;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(24, 65, 44, .045);
+}
+
+.wakaf-summary-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #176b50;
+}
+
+.wakaf-summary-card:nth-child(2)::after {
+  background: #c39a43;
+}
+
+.wakaf-summary-card:nth-child(3)::after {
+  background: #3e83a5;
+}
+
+.wakaf-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #eaf4ed;
+  color: #176b50;
+  font-size: 25px;
+}
+
+.wakaf-summary-card:nth-child(2) .wakaf-summary-icon {
+  background: #fbf4e5;
+  color: #a77b24;
+}
+
+.wakaf-summary-card:nth-child(3) .wakaf-summary-icon {
+  background: #eaf3f8;
+  color: #347695;
+}
+
+.wakaf-summary-label {
+  margin: 0 0 6px;
+  color: #647568;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.wakaf-summary-number {
+  margin: 0;
+  color: #204b35;
+  font-size: 27px;
+  font-weight: 750;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .wakaf-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .wakaf-summary-card {
+    padding: 17px;
+  }
+
+  .wakaf-heading h1 {
+    font-size: 23px;
+  }
+}
   </style>
 </head>
 
@@ -331,6 +485,34 @@
         <select id="filterSertifikasi">
           <option value="">Semua Status Sertifikasi</option>
         </select>
+
+        
+    <section class="wakaf-summary" aria-label="Ringkasan data wakaf">
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-icon" aria-hidden="true">▤</div>
+        <div>
+          <p class="wakaf-summary-label">Total Aset Wakaf</p>
+          <p class="wakaf-summary-number" id="summaryTotalWakaf">—</p>
+        </div>
+      </div>
+
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-icon" aria-hidden="true">✓</div>
+        <div>
+          <p class="wakaf-summary-label">Sudah Bersertifikat</p>
+          <p class="wakaf-summary-number" id="summaryBersertifikat">—</p>
+        </div>
+      </div>
+
+      <div class="wakaf-summary-card">
+        <div class="wakaf-summary-icon" aria-hidden="true">◷</div>
+        <div>
+          <p class="wakaf-summary-label">Belum Bersertifikat / Proses</p>
+          <p class="wakaf-summary-number" id="summaryBelumSertifikat">—</p>
+        </div>
+      </div>
+    </section>
+        
       </div>
 
       <div class="wakaf-table-wrap">
@@ -419,6 +601,41 @@
       return '-';
     }
 
+    
+function perbaruiRingkasanWakaf() {
+  const total = semuaDataWakaf.length;
+
+  const statusSertifikat = semuaDataWakaf.map(d =>
+    String(nilai(d, 'statusSertifikasi', 'status_sertifikasi'))
+      .trim()
+      .toUpperCase()
+      .replace(/[\s-]+/g, '_')
+  );
+
+  const sudah = statusSertifikat.filter(status =>
+    status === 'BERSERTIFIKAT' ||
+    status === 'SUDAH_BERSERTIFIKAT' ||
+    status === 'SUDAH_BERSERTIFIKASI' ||
+    status === 'BERSERTIFIKASI'
+  ).length;
+
+  const belumAtauProses = statusSertifikat.filter(status =>
+    status !== '-' &&
+    status !== 'BERSERTIFIKAT' &&
+    status !== 'SUDAH_BERSERTIFIKAT' &&
+    status !== 'SUDAH_BERSERTIFIKASI' &&
+    status !== 'BERSERTIFIKASI'
+  ).length;
+
+  document.getElementById('summaryTotalWakaf').textContent =
+    total.toLocaleString('id-ID');
+
+  document.getElementById('summaryBersertifikat').textContent =
+    sudah.toLocaleString('id-ID');
+
+  document.getElementById('summaryBelumSertifikat').textContent =
+    belumAtauProses.toLocaleString('id-ID');
+}
     
 function formatNilaiDetail(nilaiData) {
   if (nilaiData === null || nilaiData === undefined || nilaiData === '') {
@@ -519,8 +736,9 @@ function formatNilaiDetail(nilaiData) {
         }
 
         semuaDataWakaf = data;
-        siapkanFilterWakaf();
-        terapkanFilterWakaf();
+perbaruiRingkasanWakaf();
+siapkanFilterWakaf();
+terapkanFilterWakaf();
 
         elemen.status.textContent = 'Koneksi API berhasil.';
       } catch (error) {
