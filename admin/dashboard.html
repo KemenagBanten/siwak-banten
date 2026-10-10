@@ -1148,6 +1148,11 @@
         return;
       }
 
+
+document.getElementById('totalWakaf').textContent = 'Memuat...';
+document.getElementById('totalWakif').textContent = 'Memuat...';
+document.getElementById('totalNazhir').textContent = 'Memuat...';
+      
       try {
         const response = await fetch(SIWAK_API_URL, {
           method: 'POST',
@@ -1189,6 +1194,11 @@
           'Gagal memuat statistik dashboard:',
           error
         );
+
+        
+document.getElementById('totalWakaf').textContent = 'Gagal';
+document.getElementById('totalWakif').textContent = 'Gagal';
+document.getElementById('totalNazhir').textContent = 'Gagal';
 
         tampilkanStatus(
           'Sesi login valid, tetapi statistik belum dapat dimuat. Periksa endpoint statistikDashboardAdmin pada API.'
