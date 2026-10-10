@@ -1,0 +1,1360 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Nazhir - SIWAK Banten</title>
+
+  <!-- CSS UTAMA -->
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- LEAFLET -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- =====================================================
+       STYLE DATA NAZHIR
+       Mengikuti desain master Data Wakaf
+  ====================================================== -->
+  <style>
+    :root {
+      --nazhir-primary: #176b50;
+      --nazhir-primary-dark: #104b37;
+      --nazhir-primary-light: #eaf4ed;
+      --nazhir-gold: #c49a45;
+      --nazhir-text: #24372d;
+      --nazhir-muted: #718076;
+      --nazhir-border: #e2eae4;
+      --nazhir-bg: #f3f7f4;
+      --nazhir-white: #ffffff;
+      --nazhir-shadow: 0 8px 28px rgba(27, 67, 45, .065);
+    }
+
+    /* DASAR HALAMAN */
+
+    body {
+      margin: 0;
+      background: var(--nazhir-bg);
+      color: var(--nazhir-text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 30px 32px 48px;
+      box-sizing: border-box;
+    }
+
+    .data-wakaf-page {
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* HEADER INTRO */
+
+    .data-wakaf-intro {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      padding: 30px;
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(
+        120deg,
+        #104b37 0%,
+        #176b50 62%,
+        #25815e 100%
+      );
+      box-shadow: 0 12px 30px rgba(16, 75, 55, .17);
+      isolation: isolate;
+    }
+
+    .data-wakaf-intro::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 290px;
+      height: 290px;
+      top: -155px;
+      right: -55px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 28px rgba(255, 255, 255, .035),
+        0 0 0 58px rgba(255, 255, 255, .025);
+      pointer-events: none;
+    }
+
+    .page-kicker {
+      margin-bottom: 9px;
+      color: var(--nazhir-gold);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .data-wakaf-intro h1 {
+      position: relative;
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: clamp(25px, 3vw, 34px);
+      font-weight: 750;
+      letter-spacing: -.6px;
+      line-height: 1.25;
+    }
+
+    .data-wakaf-intro p {
+      position: relative;
+      max-width: 680px;
+      margin: 0;
+      color: rgba(255, 255, 255, .82);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* RINGKASAN */
+
+    .data-wakaf-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .data-summary-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      min-width: 0;
+      padding: 23px;
+      overflow: hidden;
+      background: var(--nazhir-white);
+      border: 1px solid var(--nazhir-border);
+      border-radius: 15px;
+      box-shadow: var(--nazhir-shadow);
+      box-sizing: border-box;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .data-summary-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 4px;
+      background: var(--nazhir-primary);
+    }
+
+    .data-summary-card:nth-child(2)::before {
+      background: var(--nazhir-gold);
+    }
+
+    .data-summary-card:nth-child(3)::before {
+      background: #6485a5;
+    }
+
+    .data-summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(27, 67, 45, .09);
+    }
+
+    .data-summary-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 52px;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      color: var(--nazhir-primary);
+      background: var(--nazhir-primary-light);
+    }
+
+    .data-summary-icon.gold {
+      color: #9b752d;
+      background: #faf2df;
+    }
+
+    .data-summary-icon.blue {
+      color: #52799d;
+      background: #edf3f9;
+    }
+
+    .data-summary-icon svg {
+      display: block;
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .data-summary-card > div:last-child {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .data-summary-card strong {
+      color: var(--nazhir-text);
+      font-size: 27px;
+      font-weight: 750;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .data-summary-card span {
+      color: var(--nazhir-muted);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* FILTER */
+
+    .data-filter-card {
+      margin-bottom: 32px;
+      padding: 25px;
+      background: var(--nazhir-white);
+      border: 1px solid var(--nazhir-border);
+      border-radius: 16px;
+      box-shadow: var(--nazhir-shadow);
+      box-sizing: border-box;
+    }
+
+    .data-filter-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 23px;
+      padding-bottom: 19px;
+      border-bottom: 1px solid var(--nazhir-border);
+    }
+
+    .data-filter-heading .page-kicker,
+    .data-result-header .page-kicker {
+      color: var(--nazhir-primary);
+    }
+
+    .data-filter-heading h2,
+    .data-result-header h2 {
+      margin: 0;
+      color: var(--nazhir-text);
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: -.3px;
+      line-height: 1.4;
+    }
+
+    .data-filter-heading > p {
+      max-width: 420px;
+      margin: 0;
+      color: var(--nazhir-muted);
+      font-size: 12px;
+      line-height: 1.8;
+      text-align: right;
+    }
+
+    .data-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .data-filter-field {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 9px;
+    }
+
+    .data-filter-field label {
+      color: #405348;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .data-filter-field select,
+    .data-filter-field input {
+      width: 100%;
+      min-width: 0;
+      height: 44px;
+      padding: 0 13px;
+      color: var(--nazhir-text);
+      background: #fff;
+      border: 1px solid #dce6de;
+      border-radius: 9px;
+      outline: none;
+      font: inherit;
+      font-size: 12px;
+      box-sizing: border-box;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .data-filter-field select:focus,
+    .data-filter-field input:focus {
+      border-color: var(--nazhir-primary);
+      box-shadow: 0 0 0 3px rgba(23, 107, 80, .09);
+    }
+
+    .data-filter-field input::placeholder {
+      color: #9aa69e;
+    }
+
+    .data-search {
+      position: relative;
+      min-width: 0;
+    }
+
+    .data-search svg {
+      position: absolute;
+      top: 13px;
+      left: 12px;
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--nazhir-muted);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      pointer-events: none;
+    }
+
+    .data-search input {
+      padding-left: 38px;
+    }
+
+    /* JUDUL HASIL */
+
+    .data-result-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+
+    .data-result-header .page-kicker {
+      margin-bottom: 5px;
+    }
+
+    #resultInfoNazhir {
+      padding: 7px 12px;
+      color: var(--nazhir-primary-dark);
+      background: var(--nazhir-primary-light);
+      border: 1px solid #d9e9dd;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* TABEL */
+
+    .data-table-card {
+      overflow: hidden;
+      background: var(--nazhir-white);
+      border: 1px solid var(--nazhir-border);
+      border-radius: 16px;
+      box-shadow: var(--nazhir-shadow);
+    }
+
+    .data-table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table {
+      width: 100%;
+      min-width: 1050px;
+      border-collapse: separate;
+      border-spacing: 0;
+      text-align: left;
+    }
+
+    .data-table thead th {
+      padding: 16px 15px;
+      color: #f7fbf8;
+      background: var(--nazhir-primary-dark);
+      border-bottom: 1px solid var(--nazhir-primary);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .25px;
+      white-space: nowrap;
+    }
+
+    .data-table thead th:first-child {
+      padding-left: 20px;
+    }
+
+    .data-table tbody td {
+      padding: 15px;
+      color: #405348;
+      background: #fff;
+      border-bottom: 1px solid #edf1ed;
+      font-size: 12px;
+      line-height: 1.65;
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tbody tr:hover td {
+      background: #f8fbf8;
+    }
+
+    .data-table tbody td:first-child {
+      padding-left: 20px;
+    }
+
+    /* PESAN DATA KOSONG */
+
+    .data-empty {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 45px 20px;
+      text-align: center;
+    }
+
+    .data-empty-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      margin-bottom: 15px;
+      color: var(--nazhir-primary);
+      background: var(--nazhir-primary-light);
+      border-radius: 16px;
+      font-size: 27px;
+    }
+
+    .data-empty strong {
+      margin-bottom: 7px;
+      color: var(--nazhir-text);
+      font-size: 14px;
+    }
+
+    .data-empty p {
+      max-width: 420px;
+      margin: 0;
+      color: var(--nazhir-muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    /* PAGINATION */
+
+    .data-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 17px 18px;
+      background: #fff;
+      border-top: 1px solid var(--nazhir-border);
+    }
+
+    .data-pagination button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 35px;
+      min-height: 35px;
+      padding: 7px 11px;
+      color: var(--nazhir-primary-dark);
+      background: #fff;
+      border: 1px solid var(--nazhir-border);
+      border-radius: 8px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background .18s, color .18s, border-color .18s;
+    }
+
+    .data-pagination button:hover:not(:disabled) {
+      color: #fff;
+      background: var(--nazhir-primary);
+      border-color: var(--nazhir-primary);
+    }
+
+    .data-pagination button.active,
+    .data-pagination button[aria-current="page"] {
+      color: #fff;
+      background: var(--nazhir-primary);
+      border-color: var(--nazhir-primary);
+    }
+
+    .data-pagination button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    /* BADGE STATUS */
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      max-width: 100%;
+      padding: 5px 10px;
+      color: var(--nazhir-primary-dark);
+      background: var(--nazhir-primary-light);
+      border: 1px solid #d9e9dd;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1.5;
+    }
+
+    .status-badge.status-aktif,
+    .status-badge.aktif {
+      color: #176b50;
+      background: #eaf4ed;
+      border-color: #d3e7d8;
+    }
+
+    .status-badge.status-proses,
+    .status-badge.dalam-proses {
+      color: #8c6925;
+      background: #faf2df;
+      border-color: #f0e1bd;
+    }
+
+    /* MODAL DETAIL */
+
+    .detail-wakif-modal {
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      box-sizing: border-box;
+    }
+
+    .detail-wakif-modal.show,
+    .detail-wakif-modal.active,
+    .detail-wakif-modal[aria-hidden="false"] {
+      display: flex;
+    }
+
+    .detail-wakif-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(12, 35, 25, .62);
+      backdrop-filter: blur(3px);
+    }
+
+    .detail-wakif-dialog {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 850px;
+      max-height: min(88vh, 900px);
+      overflow-y: auto;
+      background: var(--nazhir-bg);
+      border: 1px solid rgba(255, 255, 255, .65);
+      border-radius: 18px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, .24);
+    }
+
+    .detail-modal-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 24px 27px;
+      color: #fff;
+      background: linear-gradient(
+        120deg,
+        #104b37 0%,
+        #176b50 62%,
+        #25815e 100%
+      );
+    }
+
+    .detail-modal-header .detail-card-kicker {
+      margin-bottom: 6px;
+      color: #e3c47d;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .detail-modal-header h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 23px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    .detail-modal-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 38px;
+      width: 38px;
+      height: 38px;
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 10px;
+      font-size: 25px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .detail-modal-close:hover {
+      background: rgba(255, 255, 255, .23);
+    }
+
+    .detail-modal-loading,
+    .detail-modal-error {
+      margin: 22px;
+      padding: 28px;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--nazhir-border);
+      border-radius: 14px;
+    }
+
+    .detail-loading-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      margin: 0 auto 12px;
+      color: var(--nazhir-primary);
+      background: var(--nazhir-primary-light);
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .detail-modal-loading strong,
+    .detail-modal-error strong {
+      display: block;
+      color: var(--nazhir-text);
+      font-size: 14px;
+    }
+
+    .detail-modal-loading p,
+    .detail-modal-error p {
+      margin: 7px 0 0;
+      color: var(--nazhir-muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .detail-modal-error {
+      border-color: #f0d9d6;
+      background: #fffafa;
+    }
+
+    .detail-modal-error strong {
+      color: #9c4037;
+    }
+
+    .detail-modal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 22px;
+    }
+
+    .detail-modal-section {
+      padding: 21px;
+      background: #fff;
+      border: 1px solid var(--nazhir-border);
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(27, 67, 45, .035);
+    }
+
+    .detail-card-kicker {
+      margin-bottom: 13px;
+      color: var(--nazhir-primary);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.35px;
+    }
+
+    .detail-modal-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--nazhir-border);
+    }
+
+    .detail-modal-title-row h3 {
+      margin: 0;
+      color: var(--nazhir-text);
+      font-size: 20px;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .detail-modal-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      padding: 13px 14px;
+      background: #f8faf8;
+      border: 1px solid #edf1ed;
+      border-radius: 10px;
+    }
+
+    .detail-modal-item span,
+    .detail-modal-address span {
+      color: var(--nazhir-muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .detail-modal-item strong,
+    .detail-modal-address strong {
+      color: var(--nazhir-text);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .detail-modal-address {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      background: #f8faf8;
+      border: 1px solid #edf1ed;
+      border-radius: 10px;
+    }
+
+    .detail-modal-highlight {
+      padding: 16px;
+      color: var(--nazhir-text);
+      background: #faf6eb;
+      border: 1px solid #efe3c6;
+      border-left: 4px solid var(--nazhir-gold);
+      border-radius: 9px;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-modal-highlight strong {
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+
+    #site-footer {
+      color: var(--nazhir-muted);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .data-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .data-filter-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .data-filter-heading > p {
+        max-width: 620px;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .main-content {
+        padding: 20px 16px 35px;
+      }
+
+      .data-wakaf-intro {
+        padding: 25px 22px;
+        border-radius: 15px;
+      }
+
+      .data-wakaf-summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .data-summary-card {
+        padding: 19px;
+      }
+
+      .data-filter-card {
+        padding: 20px 17px;
+        border-radius: 14px;
+      }
+
+      .data-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .data-result-header h2,
+      .data-filter-heading h2 {
+        font-size: 19px;
+      }
+
+      .detail-wakif-modal {
+        padding: 10px;
+      }
+
+      .detail-wakif-dialog {
+        max-height: 94vh;
+        border-radius: 14px;
+      }
+
+      .detail-modal-header {
+        padding: 20px;
+      }
+
+      .detail-modal-header h2 {
+        font-size: 20px;
+      }
+
+      .detail-modal-content {
+        padding: 12px;
+      }
+
+      .detail-modal-section {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .data-filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-modal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .data-wakaf-intro h1 {
+        font-size: 25px;
+      }
+
+      .data-summary-card strong {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="site-header"></div>
+
+  <!-- KONTEN UTAMA -->
+  <main class="main-content">
+
+    <section class="data-wakaf-page">
+
+      <!-- PAGE INTRO -->
+      <div class="data-wakaf-intro">
+
+        <div class="page-kicker">
+          DATA NAZHIR BANTEN
+        </div>
+
+        <h1>Data Nazhir Banten</h1>
+
+        <p>
+          Informasi Nazhir yang telah tercatat dalam Sistem Informasi Wakaf Banten.
+        </p>
+
+      </div>
+
+      <!-- RINGKASAN DATA -->
+      <div class="data-wakaf-summary">
+
+        <!-- TOTAL NAZHIR -->
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+            </svg>
+          </div>
+
+          <div>
+            <strong id="totalDataNazhir">—</strong>
+            <span>Nazhir Terdata</span>
+          </div>
+
+        </div>
+
+        <!-- NAZHIR AKTIF -->
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon gold">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v18"></path>
+              <path d="M5 8h14"></path>
+              <path d="M7 8c0 4 2 6 5 6s5-2 5-6"></path>
+            </svg>
+          </div>
+
+          <div>
+            <strong id="totalNazhirAktif">—</strong>
+            <span>Nazhir Aktif</span>
+          </div>
+
+        </div>
+
+        <!-- WAKAF DIKELOLA -->
+        <div class="data-summary-card">
+
+          <div class="data-summary-icon blue">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 20V10"></path>
+              <path d="M10 20V4"></path>
+              <path d="M16 20v-7"></path>
+              <path d="M22 20H2"></path>
+            </svg>
+          </div>
+
+          <div>
+            <strong id="totalWakafDikelola">—</strong>
+            <span>Wakaf Dikelola</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FILTER DATA -->
+      <div class="data-filter-card">
+
+        <div class="data-filter-heading">
+
+          <div>
+            <div class="page-kicker">FILTER DATA</div>
+            <h2>Jelajahi Data Nazhir</h2>
+          </div>
+
+          <p>
+            Gunakan filter untuk melihat data Nazhir berdasarkan
+            wilayah, jenis, dan status Nazhir.
+          </p>
+
+        </div>
+
+        <div class="data-filter-grid">
+
+          <!-- KABUPATEN / KOTA -->
+          <div class="data-filter-field">
+
+            <label for="filterKabKotaNazhir">
+              Kabupaten / Kota
+            </label>
+
+            <select id="filterKabKotaNazhir">
+              <option value="">Semua Kabupaten / Kota</option>
+            </select>
+
+          </div>
+
+          <!-- JENIS NAZHIR -->
+          <div class="data-filter-field">
+
+            <label for="filterJenisNazhir">
+              Jenis Nazhir
+            </label>
+
+            <select id="filterJenisNazhir">
+              <option value="">Semua Jenis Nazhir</option>
+              <option value="PERORANGAN">Perorangan</option>
+              <option value="BADAN_HUKUM">Badan Hukum</option>
+              <option value="LAINNYA">Lainnya</option>
+            </select>
+
+          </div>
+
+          <!-- STATUS NAZHIR -->
+          <div class="data-filter-field">
+
+            <label for="filterStatusNazhir">
+              Status Nazhir
+            </label>
+
+            <select id="filterStatusNazhir">
+              <option value="">Semua Status</option>
+              <option value="AKTIF">Aktif</option>
+              <option value="DALAM_PROSES">Dalam Proses</option>
+            </select>
+
+          </div>
+
+          <!-- PENCARIAN -->
+          <div class="data-filter-field">
+
+            <label for="searchNazhir">Pencarian</label>
+
+            <div class="data-search">
+
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+
+              <input
+                type="search"
+                id="searchNazhir"
+                placeholder="Cari ID, nama, atau nomor registrasi..."
+                autocomplete="off"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- JUDUL HASIL -->
+      <div class="data-result-header">
+
+        <div>
+          <div class="page-kicker">DATA TERDAFTAR</div>
+          <h2>Daftar Data Nazhir</h2>
+        </div>
+
+        <span id="resultInfoNazhir">
+          Menampilkan data
+        </span>
+
+      </div>
+
+      <!-- TABEL DATA NAZHIR -->
+      <div class="data-table-card">
+
+        <div class="data-table-scroll">
+
+          <table class="data-table siwak-data-table">
+
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>ID Nazhir</th>
+                <th>Nama Nazhir</th>
+                <th>Jenis Nazhir</th>
+                <th>Kabupaten / Kota</th>
+                <th>Kecamatan</th>
+                <th>Desa / Kelurahan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+
+            <tbody id="dataNazhirBody">
+
+              <tr>
+                <td colspan="9">
+
+                  <div class="data-empty">
+
+                    <div class="data-empty-icon">♙</div>
+
+                    <strong>Data Nazhir belum tersedia</strong>
+
+                    <p>
+                      Data Nazhir akan ditampilkan setelah
+                      terhubung dengan sistem SIWAK Banten.
+                    </p>
+
+                  </div>
+
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- PAGINATION -->
+          <div
+            id="paginationNazhir"
+            class="data-pagination">
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <div id="site-footer"></div>
+
+  <!-- LEAFLET -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- =====================================================
+       MODAL DETAIL NAZHIR
+  ====================================================== -->
+  <div
+    id="detailNazhirModal"
+    class="detail-wakif-modal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="detail-wakif-overlay"
+      onclick="tutupDetailNazhir()">
+    </div>
+
+    <div
+      class="detail-wakif-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detailNazhirModalTitle"
+    >
+
+      <!-- HEADER MODAL -->
+      <div class="detail-modal-header">
+
+        <div>
+          <div class="detail-card-kicker">
+            DETAIL DATA NAZHIR
+          </div>
+
+          <h2 id="detailNazhirModalTitle">Detail Nazhir</h2>
+        </div>
+
+        <button
+          type="button"
+          class="detail-modal-close"
+          onclick="tutupDetailNazhir()"
+          aria-label="Tutup"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <!-- LOADING -->
+      <div
+        id="detailNazhirModalLoading"
+        class="detail-modal-loading"
+      >
+        <div class="detail-loading-icon">...</div>
+        <strong>Memuat detail Nazhir...</strong>
+        <p>Mohon tunggu sebentar.</p>
+      </div>
+
+      <!-- ERROR -->
+      <div
+        id="detailNazhirModalError"
+        class="detail-modal-error"
+        style="display:none;"
+      >
+        <strong>Detail tidak dapat dimuat</strong>
+        <p id="detailNazhirModalErrorMessage">
+          Terjadi kesalahan.
+        </p>
+      </div>
+
+      <!-- KONTEN DETAIL -->
+      <div
+        id="detailNazhirModalContent"
+        class="detail-modal-content"
+        style="display:none;"
+      >
+
+        <!-- IDENTITAS NAZHIR -->
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            IDENTITAS NAZHIR
+          </div>
+
+          <div class="detail-modal-title-row">
+
+            <h3 id="detailNazhirId">-</h3>
+
+            <span
+              id="detailNazhirStatus"
+              class="status-badge">
+              -
+            </span>
+
+          </div>
+
+          <div class="detail-modal-grid">
+
+            <div class="detail-modal-item">
+              <span>Nama Nazhir</span>
+              <strong id="detailNazhirNama">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Jenis Nazhir</span>
+              <strong id="detailNazhirJenis">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Nomor Registrasi</span>
+              <strong id="detailNazhirRegistrasi">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Kabupaten / Kota</span>
+              <strong id="detailNazhirKabKota">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Kecamatan</span>
+              <strong id="detailNazhirKecamatan">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Desa / Kelurahan</span>
+              <strong id="detailNazhirDesa">-</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ALAMAT -->
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">ALAMAT</div>
+
+          <div class="detail-modal-address">
+            <span>Alamat Nazhir</span>
+            <strong id="detailNazhirAlamat">-</strong>
+          </div>
+
+        </section>
+
+        <!-- KONTAK -->
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            INFORMASI KONTAK
+          </div>
+
+          <div class="detail-modal-grid">
+
+            <div class="detail-modal-item">
+              <span>Nomor Kontak</span>
+              <strong id="detailNazhirKontak">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Email</span>
+              <strong id="detailNazhirEmail">-</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- KETERANGAN -->
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">KETERANGAN</div>
+
+          <div class="detail-modal-highlight">
+            <strong id="detailNazhirKeterangan">-</strong>
+          </div>
+
+        </section>
+
+        <!-- RIWAYAT PENCATATAN -->
+        <section class="detail-modal-section">
+
+          <div class="detail-card-kicker">
+            RIWAYAT PENCATATAN
+          </div>
+
+          <div class="detail-modal-grid">
+
+            <div class="detail-modal-item">
+              <span>Tanggal Input</span>
+              <strong id="detailNazhirTanggalInput">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>Tanggal Update</span>
+              <strong id="detailNazhirTanggalUpdate">-</strong>
+            </div>
+
+            <div class="detail-modal-item">
+              <span>ID Operator</span>
+              <strong id="detailNazhirOperator">-</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- COMPONENT -->
+  <script src="../js/components.js"></script>
+
+  <!-- APP -->
+  <script src="../js/app.js"></script>
+
+</body>
+</html>
