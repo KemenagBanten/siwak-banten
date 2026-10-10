@@ -971,7 +971,17 @@ function siapkanFilterWakaf() {
 }
 
 async function loadDataWakaf() {
-  elemen.status.textContent = 'Menghubungkan ke API...';
+  
+elemen.status.textContent = 'Memuat data wakaf...';
+
+elemen.body.innerHTML =
+  '<tr><td colspan="8" class="wakaf-message">' +
+  '<span class="wakaf-loading">' +
+  '<span class="wakaf-spinner" aria-label="Memuat data"></span>' +
+  '</span>' +
+  '</td></tr>';
+
+elemen.info.textContent = '';
 
   try {
    const token = sessionStorage.getItem('siwakToken');
