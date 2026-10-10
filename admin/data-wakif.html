@@ -1093,11 +1093,6 @@
           );
         }
 
-        isiTeksDetailWakif(
-          'detailNamaWakif',
-          nilaiWakif(detail, 'namaWakif', 'nama_wakif')
-        );
-
         isiTeksDetailWakif('detailIdWakif', idHasil);
 
         isiTeksDetailWakif(
@@ -1133,11 +1128,6 @@
         isiTeksDetailWakif(
           'detailJumlahWakaf',
           nilaiWakif(detail, 'jumlahWakaf', 'jumlah_wakaf', 0)
-        );
-
-        isiTeksDetailWakif(
-          'detailAlamatWakif',
-          nilaiWakif(detail, 'alamat')
         );
 
         isiTeksDetailWakif(
@@ -1209,6 +1199,10 @@
 
         const kolom = [
   ['ID Wakaf', nilaiWakif(wakaf, 'idWakaf', 'id_wakaf')],
+          [
+  'Alamat Lengkap Aset',
+  nilaiWakif(wakaf, 'alamatWakaf', 'alamat_wakaf')
+],
   ['Alamat Wakif', alamatWakif],
           [
   'Desa/Kelurahan',
