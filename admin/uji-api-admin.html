@@ -27,7 +27,7 @@
           },
           body: JSON.stringify({
             action: 'buatAkunAdminKabKota',
-            token: '',
+            token: sessionStorage.getItem('siwakToken') || '',
             dataAdmin: {
               username: 'uji_admin_banten',
               password: 'Tes-SIWAK-2026!',
