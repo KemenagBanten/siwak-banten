@@ -1204,16 +1204,22 @@ async function bukaDetailWakaf(idWakaf) {
   elemen.modal.classList.add('show');
 
   try {
-    const url = SIWAK_API_URL + '?action=detailWakaf&idWakaf=' +
-      encodeURIComponent(idWakaf);
-
-    const respons = await fetch(url);
+    
+    const respons = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'detailWakafAdmin',
+        token: token,
+        idWakaf: idWakaf
+      })
+    });
 
     if (!respons.ok) {
       throw new Error('HTTP ' + respons.status);
     }
 
     const hasil = await respons.json();
+
 
     if (!hasil.success) {
       throw new Error(hasil.message || 'Detail tidak tersedia.');
