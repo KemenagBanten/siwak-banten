@@ -587,6 +587,47 @@
       overflow-wrap: anywhere;
     }
 
+    
+/* LOADING SPINNER PETA GIS */
+.gis-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #245c3a;
+  border-radius: 12px;
+}
+
+.gis-loading[hidden] {
+  display: none;
+}
+
+.gis-spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #dce9df;
+  border-top-color: #287447;
+  border-radius: 50%;
+  animation: gisSpin 0.8s linear infinite;
+}
+
+.gis-loading-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@keyframes gisSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
     @media (max-width: 1050px) {
       .wakaf-toolbar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -794,6 +835,12 @@
     <div id="pesanGIS" class="wakaf-map-message">Memuat data lokasi wakaf...</div>
     <div class="wakaf-map-wrap">
       <div id="petaGIS" aria-label="Peta interaktif lokasi wakaf"></div>
+      
+<div id="gisLoading" class="gis-loading" hidden>
+  <div class="gis-spinner"></div>
+  <div class="gis-loading-text">Memuat data peta...</div>
+</div>
+
     </div>
     <div class="wakaf-map-status">
       <span id="infoTitikGIS">Menyiapkan data lokasi...</span>
@@ -924,8 +971,14 @@ function terapkanFilterGIS() {
   tampilkanTitikGIS(hasil);
 }
 
+
 async function muatPetaGIS() {
+  const gisLoading = document.getElementById('gisLoading');
+
+  if (gisLoading) gisLoading.hidden = false;
+
   elGIS.status.textContent = 'Menghubungkan ke API...';
+
   try {
     
 const token = sessionStorage.getItem('siwakToken');
@@ -957,13 +1010,24 @@ const respons = await fetch(SIWAK_API_URL, {
       ? 'Data lokasi wakaf berhasil dimuat.'
       : 'Belum ada data wakaf dengan koordinat valid dan status publikasi yang sesuai.');
     elGIS.status.textContent = 'Koneksi API berhasil.';
+ 
   } catch (error) {
     console.error('Gagal memuat Peta GIS:', error);
-    tampilkanPesanGIS('Data peta gagal dimuat. Periksa koneksi API. ' + error.message, true);
+    tampilkanPesanGIS(
+      'Data peta gagal dimuat. Periksa koneksi API. ' + error.message,
+      true
+    );
     elGIS.info.textContent = 'Data belum dapat ditampilkan.';
     elGIS.status.textContent = 'Koneksi API gagal.';
+  } finally {
+    const gisLoading = document.getElementById('gisLoading');
+
+    if (gisLoading) {
+      gisLoading.hidden = true;
+    }
   }
 }
+
 
 petaGIS = L.map('petaGIS', { scrollWheelZoom: false }).setView([-6.405, 106.15], 9);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
