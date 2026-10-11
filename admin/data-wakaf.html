@@ -1104,14 +1104,20 @@ function tampilkanTabelWakaf() {
     mulai, mulai + JUMLAH_PER_HALAMAN
   );
 
+
   if (!halamanData.length) {
-   
-elemen.body.innerHTML =
-  '<tr><td colspan="8" class="wakaf-message">' +
-  'Memuat data wakaf...' +
-  '</td></tr>';
-    
+
+    const pesanKosong = total === 0
+      ? 'Belum ada data wakaf untuk wilayah Anda.'
+      : 'Data tidak ditemukan sesuai pencarian atau filter.';
+
+    elemen.body.innerHTML =
+      '<tr><td colspan="8" class="wakaf-message">' +
+      pesanKosong +
+      '</td></tr>';
+
   } else {
+
     elemen.body.innerHTML = halamanData.map((d, indeks) => `
       <tr>
         <td>${mulai + indeks + 1}</td>
