@@ -583,6 +583,7 @@ async function loadDataNazhir() {
     const result = await response.json();
 
     console.log('DATA NAZHIR API:', result);
+     console.log('CONTOH DATA NAZHIR:', result.data.data[0]);
 
     if (
       !result.success ||
@@ -615,14 +616,7 @@ const dataNazhir = semuaDataNazhir;
       }).length;
     }
 
-     // Menghitung total wakaf yang dikelola seluruh Nazhir
-const totalWakafElement = document.getElementById('totalWakafDikelola');
-
-if (totalWakafElement) {
-  totalWakafElement.textContent = 'Memuat...';
-}
-
-    const resultInfo = document.getElementById('resultInfoNazhir');
+        const resultInfo = document.getElementById('resultInfoNazhir');
 
     if (resultInfo) {
       resultInfo.textContent = 'Menampilkan ' + dataNazhir.length + ' data';
