@@ -1205,6 +1205,15 @@ async function bukaDetailWakaf(idWakaf) {
 
   try {
     
+    
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error(
+        'Sesi login tidak ditemukan. Silakan login kembali.'
+      );
+    }
+
     const respons = await fetch(SIWAK_API_URL, {
       method: 'POST',
       body: JSON.stringify({
@@ -1213,6 +1222,7 @@ async function bukaDetailWakaf(idWakaf) {
         idWakaf: idWakaf
       })
     });
+
 
     if (!respons.ok) {
       throw new Error('HTTP ' + respons.status);
