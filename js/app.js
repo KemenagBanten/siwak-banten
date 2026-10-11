@@ -602,6 +602,37 @@ halamanNazhir = 1;
      
 const dataNazhir = semuaDataNazhir;
 
+     
+    // Ambil jumlah wakaf sesuai wilayah admin yang login
+    const token = sessionStorage.getItem('siwakToken');
+
+    const responsWakaf = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'dataWakafAdmin',
+        token: token
+      })
+    });
+
+    const hasilWakaf = await responsWakaf.json();
+
+    if (
+      !responsWakaf.ok ||
+      !hasilWakaf.success ||
+      !hasilWakaf.data
+    ) {
+      throw new Error('Gagal memuat jumlah wakaf.');
+    }
+
+    const totalWakafElement =
+      document.getElementById('totalWakafDikelola');
+
+    if (totalWakafElement) {
+      totalWakafElement.textContent =
+        hasilWakaf.data.total;
+    }
+
+
     const totalElement = document.getElementById('totalDataNazhir');
 
     if (totalElement) {
