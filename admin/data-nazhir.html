@@ -720,6 +720,31 @@
       overflow-wrap: anywhere;
     }
 
+/* SPINNER DI DALAM CARD RINGKASAN NAZHIR */
+.nazhir-card-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+.nazhir-spinner {
+  width: 27px;
+  height: 27px;
+  border: 3px solid #dcebe0;
+  border-top-color: var(--nazhir-primary);
+  border-radius: 50%;
+  animation: nazhir-spin .8s linear infinite;
+}
+
+@keyframes nazhir-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+    
     /* RESPONSIVE */
 
     @media (max-width: 1050px) {
