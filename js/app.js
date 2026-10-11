@@ -576,9 +576,21 @@ async function loadDataNazhir() {
   `;
 
   try {
-    const response = await fetch(
-      SIWAK_API_URL + '?action=dataNazhir'
-    );
+   
+const token = sessionStorage.getItem('siwakToken');
+
+if (!token) {
+  throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
+}
+
+const response = await fetch(SIWAK_API_URL, {
+  method: 'POST',
+  body: JSON.stringify({
+    action: 'dataNazhir',
+    token: token
+  })
+});
+
 
     const result = await response.json();
 
