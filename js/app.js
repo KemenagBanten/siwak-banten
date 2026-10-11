@@ -637,9 +637,26 @@ const dataNazhir = semuaDataNazhir;
 
    renderDataNazhir();
 
+  
   } catch (error) {
     console.error('ERROR DATA NAZHIR:', error);
 
+    // Tampilkan pesan gagal pada ketiga kartu ringkasan
+    [
+      'totalDataNazhir',
+      'totalNazhirAktif',
+      'totalWakafDikelola'
+    ].forEach(function(id) {
+      const elemen = document.getElementById(id);
+
+      if (elemen) {
+        elemen.textContent = 'Gagal memuat';
+        elemen.style.fontSize = '14px';
+        elemen.style.color = '#b42318';
+      }
+    });
+
+    // Tampilkan pesan gagal pada tabel
     tbody.innerHTML = `
       <tr>
         <td colspan="9">
@@ -652,6 +669,7 @@ const dataNazhir = semuaDataNazhir;
     `;
   }
 }
+
 
 
 function terapkanFilterNazhir() {
