@@ -577,8 +577,6 @@ async function loadDataNazhir() {
 
   try {
    
-const token = sessionStorage.getItem('siwakToken');
-
 if (!token) {
   throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
 }
