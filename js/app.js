@@ -576,10 +576,12 @@ async function loadDataNazhir() {
   `;
 
   try {
-   
-if (!token) {
-  throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
-}
+
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
+    }
 
 const response = await fetch(SIWAK_API_URL, {
   method: 'POST',
@@ -613,10 +615,7 @@ halamanNazhir = 1;
 const dataNazhir = semuaDataNazhir;
 
      
-    // Ambil jumlah wakaf sesuai wilayah admin yang login
-    const token = sessionStorage.getItem('siwakToken');
-
-    const responsWakaf = await fetch(SIWAK_API_URL, {
+   const responsWakaf = await fetch(SIWAK_API_URL, {
       method: 'POST',
       body: JSON.stringify({
         action: 'dataWakafAdmin',
