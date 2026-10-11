@@ -615,6 +615,13 @@ const dataNazhir = semuaDataNazhir;
       }).length;
     }
 
+     // Menghitung total wakaf yang dikelola seluruh Nazhir
+const totalWakafElement = document.getElementById('totalWakafDikelola');
+
+if (totalWakafElement) {
+  totalWakafElement.textContent = 'Memuat...';
+}
+
     const resultInfo = document.getElementById('resultInfoNazhir');
 
     if (resultInfo) {
