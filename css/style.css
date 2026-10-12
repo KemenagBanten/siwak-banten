@@ -3258,3 +3258,180 @@ textarea {
   }
 
 }
+
+/* =========================================
+   MODAL TAMBAH DATA WAKAF
+   ========================================= */
+
+#modalTambahWakaf {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(15, 35, 25, 0.65);
+  backdrop-filter: blur(3px);
+}
+
+#modalTambahWakaf .wakaf-modal-content {
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 28px;
+  background: #ffffff;
+  color: #24372d;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+#modalTambahWakaf .wakaf-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #eaf4ed;
+}
+
+#modalTambahWakaf .wakaf-modal-header h2 {
+  margin: 0 0 8px;
+  color: #176b50;
+  font-size: 24px;
+}
+
+#modalTambahWakaf .wakaf-modal-header p {
+  margin: 0;
+  color: #718076;
+}
+
+#modalTambahWakaf .wakaf-close {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 9px;
+  background: #eaf4ed;
+  color: #176b50;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+#modalTambahWakaf .wakaf-close:hover {
+  background: #d6e9dc;
+}
+
+#modalTambahWakaf h3 {
+  margin: 26px 0 16px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid #e2eae4;
+  color: #176b50;
+  font-size: 17px;
+}
+
+#modalTambahWakaf .wakaf-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+#modalTambahWakaf .wakaf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+#modalTambahWakaf .wakaf-form-group label {
+  font-weight: 600;
+  color: #34483b;
+  font-size: 14px;
+}
+
+#modalTambahWakaf .wakaf-form-group input,
+#modalTambahWakaf .wakaf-form-group select,
+#modalTambahWakaf .wakaf-form-group textarea {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #d1ddd4;
+  border-radius: 8px;
+  background: #fff;
+  color: #24372d;
+  font: inherit;
+}
+
+#modalTambahWakaf .wakaf-form-group textarea {
+  resize: vertical;
+}
+
+#modalTambahWakaf .wakaf-form-group input:focus,
+#modalTambahWakaf .wakaf-form-group select:focus,
+#modalTambahWakaf .wakaf-form-group textarea:focus {
+  outline: none;
+  border-color: #176b50;
+  box-shadow: 0 0 0 3px rgba(23, 107, 80, 0.12);
+}
+
+#modalTambahWakaf .wakaf-form-group small {
+  color: #718076;
+  font-size: 12px;
+}
+
+#modalTambahWakaf .wakaf-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #e2eae4;
+}
+
+#modalTambahWakaf .wakaf-button {
+  padding: 11px 20px;
+  border: 1px solid #176b50;
+  border-radius: 8px;
+  background: #176b50;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#modalTambahWakaf #batalTambahWakaf {
+  background: #fff;
+  color: #176b50;
+}
+
+#modalTambahWakaf .wakaf-button:hover {
+  background: #104b37;
+  color: #fff;
+}
+
+#modalTambahWakaf #pesanTambahWakaf {
+  margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+  #modalTambahWakaf {
+    padding: 10px;
+  }
+
+  #modalTambahWakaf .wakaf-modal-content {
+    padding: 18px;
+    max-height: 94vh;
+  }
+
+  #modalTambahWakaf .wakaf-modal-header h2 {
+    font-size: 20px;
+  }
+
+  #modalTambahWakaf .wakaf-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
