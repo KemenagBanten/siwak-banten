@@ -672,6 +672,85 @@
         grid-template-columns: 1fr;
       }
     }
+
+  
+/* FORM TAMBAH DATA WAKAF */
+#modalTambahWakaf .wakaf-modal-content {
+  width: min(900px, 94%);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#modalTambahWakaf .wakaf-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+#modalTambahWakaf h3 {
+  margin: 24px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wakaf-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.wakaf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.wakaf-form-group label {
+  font-weight: 600;
+}
+
+.wakaf-form-group input,
+.wakaf-form-group select,
+.wakaf-form-group textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.wakaf-form-group small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.wakaf-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+#pesanTambahWakaf {
+  margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+  .wakaf-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #modalTambahWakaf .wakaf-modal-content {
+    width: 94%;
+    padding: 18px;
+  }
+}
+    
   </style>
 </head>
 
@@ -806,24 +885,167 @@
   </section>
 </main>
 
-<!-- MODAL DETAIL -->
-<div class="wakaf-modal" id="modalDetailWakaf"
-     role="dialog" aria-modal="true" aria-labelledby="judulDetailWakaf">
-  <div class="wakaf-modal-content wakaf-detail-lengkap">
+<!-- MODAL TAMBAH DATA WAKAF -->
+<div class="wakaf-modal" id="modalTambahWakaf"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="judulTambahWakaf">
+
+  <div class="wakaf-modal-content">
     <div class="wakaf-modal-header">
       <div>
-        <h2 id="judulDetailWakaf">Detail Data Wakaf</h2>
-        <p style="margin:6px 0 0;color:#718076;font-size:12px">
-          Informasi lengkap aset wakaf
-        </p>
+        <h2 id="judulTambahWakaf">Tambah Data Wakaf</h2>
+        <p>Lengkapi informasi aset wakaf berikut.</p>
       </div>
-      <button class="wakaf-close" id="tutupDetailWakaf"
-        aria-label="Tutup" type="button">&times;</button>
+
+      <button class="wakaf-close"
+              id="tutupTambahWakaf"
+              type="button"
+              aria-label="Tutup">&times;</button>
     </div>
 
-    <div id="isiDetailWakaf">
-      <div class="wakaf-message">Memuat detail wakaf...</div>
-    </div>
+    <form id="formTambahWakaf">
+
+      <h3>1. Informasi Wakaf</h3>
+
+      <div class="wakaf-form-grid">
+        <div class="wakaf-form-group">
+          <label for="inputJenisAset">Jenis Aset *</label>
+          <select id="inputJenisAset" name="jenis_aset" required>
+            <option value="">Pilih jenis aset</option>
+            <option value="TANAH">Tanah</option>
+            <option value="BANGUNAN">Bangunan</option>
+            <option value="TANAH_DAN_BANGUNAN">Tanah dan Bangunan</option>
+            <option value="LAINNYA">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputLuas">Luas *</label>
+          <input id="inputLuas" name="luas"
+                 type="number" min="0" step="any" required>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputSatuanLuas">Satuan Luas *</label>
+          <select id="inputSatuanLuas" name="satuan_luas" required>
+            <option value="m2">Meter persegi (m²)</option>
+            <option value="ha">Hektare (ha)</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputTahunWakaf">Tahun Wakaf</label>
+          <input id="inputTahunWakaf" name="tahun_wakaf"
+                 type="number" min="1900" max="2100">
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputNomorAIW">Nomor AIW/APAIW</label>
+          <input id="inputNomorAIW" name="nomor_aiw_apaiw" type="text">
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputPeruntukan">Peruntukan *</label>
+          <select id="inputPeruntukan" name="id_peruntukan" required>
+            <option value="">Pilih peruntukan</option>
+          </select>
+        </div>
+      </div>
+
+      <h3>2. Wakif dan Nazhir</h3>
+
+      <div class="wakaf-form-grid">
+        <div class="wakaf-form-group">
+          <label for="inputWakif">Wakif *</label>
+          <select id="inputWakif" name="id_wakif" required>
+            <option value="">Pilih wakif</option>
+          </select>
+          <small>Daftar wakif akan dihubungkan ke API.</small>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputNazhir">Nazhir *</label>
+          <select id="inputNazhir" name="id_nazhir" required>
+            <option value="">Pilih nazhir</option>
+          </select>
+          <small>Daftar nazhir akan dihubungkan ke API.</small>
+        </div>
+      </div>
+
+      <h3>3. Sertifikasi dan Status</h3>
+
+      <div class="wakaf-form-grid">
+        <div class="wakaf-form-group">
+          <label for="inputStatusSertifikasi">Status Sertifikasi *</label>
+          <select id="inputStatusSertifikasi"
+                  name="status_sertifikasi" required>
+            <option value="">Pilih status</option>
+            <option value="SUDAH">Sudah Bersertifikat</option>
+            <option value="BELUM">Belum Bersertifikat</option>
+            <option value="PROSES">Dalam Proses</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputNomorSertifikat">Nomor Sertifikat</label>
+          <input id="inputNomorSertifikat"
+                 name="nomor_sertifikat" type="text">
+        </div>
+      </div>
+
+      <h3>4. Lokasi Wakaf</h3>
+
+      <div class="wakaf-form-grid">
+        <div class="wakaf-form-group">
+          <label for="inputKabKota">Kabupaten/Kota *</label>
+          <select id="inputKabKota" name="kab_kota" required>
+            <option value="">Pilih kabupaten/kota</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputKecamatan">Kecamatan *</label>
+          <select id="inputKecamatan" name="kecamatan" required>
+            <option value="">Pilih kecamatan</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputDesa">Desa/Kelurahan *</label>
+          <select id="inputDesa" name="desa_kelurahan" required>
+            <option value="">Pilih desa/kelurahan</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputAlamatLokasi">Alamat Lengkap *</label>
+          <textarea id="inputAlamatLokasi"
+                    name="alamat_lengkap" rows="3" required></textarea>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputLatitude">Latitude</label>
+          <input id="inputLatitude" name="latitude"
+                 type="number" step="any">
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputLongitude">Longitude</label>
+          <input id="inputLongitude" name="longitude"
+                 type="number" step="any">
+        </div>
+      </div>
+
+      <div class="wakaf-form-actions">
+        <button type="button" class="wakaf-button"
+                id="batalTambahWakaf">Batal</button>
+        <button type="submit" class="wakaf-button"
+                id="simpanTambahWakaf">Simpan Data</button>
+      </div>
+
+      <p id="pesanTambahWakaf" role="status" aria-live="polite"></p>
+    </form>
   </div>
 </div>
 
