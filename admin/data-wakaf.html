@@ -1693,8 +1693,11 @@ function tampilkanPetaAdminWakaf(lokasi) {
   }, 150);
 }
 
+
 function tutupModalWakaf() {
-  elemen.modal.classList.remove('show');
+  if (elemen.modal) {
+    elemen.modal.classList.remove('show');
+  }
 }
 
 const tombolTutupDetailWakaf =
@@ -1706,12 +1709,14 @@ if (tombolTutupDetailWakaf) {
     tutupModalWakaf
   );
 }
-  
-elemen.modal.addEventListener('click', event => {
-  if (event.target === elemen.modal) {
-    tutupModalWakaf();
-  }
-});
+
+if (elemen.modal) {
+  elemen.modal.addEventListener('click', event => {
+    if (event.target === elemen.modal) {
+      tutupModalWakaf();
+    }
+  });
+}
 
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
