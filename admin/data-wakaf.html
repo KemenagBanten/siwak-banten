@@ -1724,6 +1724,50 @@ document.addEventListener('keydown', event => {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const modalTambah = document.getElementById('modalTambahWakaf');
+  const tombolTutup = document.getElementById('tutupTambahWakaf');
+  const tombolBatal = document.getElementById('batalTambahWakaf');
+
+  // Membuka modal tambah wakaf
+  // Delegasi klik agar tetap bekerja jika tombol dibuat dinamis.
+  document.addEventListener('click', function (event) {
+    const tombol = event.target.closest('button');
+
+    if (!tombol || !modalTambah) return;
+
+    if (
+      tombol.textContent.trim().includes('Tambah Data Wakaf') &&
+      !modalTambah.contains(tombol)
+    ) {
+      modalTambah.style.display = 'flex';
+    }
+  });
+
+  // Menutup modal
+  function tutupModalTambah() {
+    if (modalTambah) {
+      modalTambah.style.display = 'none';
+    }
+  }
+
+  if (tombolTutup) {
+    tombolTutup.addEventListener('click', tutupModalTambah);
+  }
+
+  if (tombolBatal) {
+    tombolBatal.addEventListener('click', tutupModalTambah);
+  }
+
+  if (modalTambah) {
+    modalTambah.addEventListener('click', function (event) {
+      if (event.target === modalTambah) {
+        tutupModalTambah();
+      }
+    });
+  }
+});
+
 /* MULAI MEMUAT DATA */
 loadDataWakaf();
 </script>
