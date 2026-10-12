@@ -1697,9 +1697,16 @@ function tutupModalWakaf() {
   elemen.modal.classList.remove('show');
 }
 
-document.getElementById('tutupDetailWakaf')
-  .addEventListener('click', tutupModalWakaf);
+const tombolTutupDetailWakaf =
+  document.getElementById('tutupDetailWakaf');
 
+if (tombolTutupDetailWakaf) {
+  tombolTutupDetailWakaf.addEventListener(
+    'click',
+    tutupModalWakaf
+  );
+}
+  
 elemen.modal.addEventListener('click', event => {
   if (event.target === elemen.modal) {
     tutupModalWakaf();
