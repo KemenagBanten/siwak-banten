@@ -1579,13 +1579,7 @@ console.table(
       kabKota.appendChild(opsi);
     });
 
-    // Jika hanya tersedia satu Kabupaten/Kota, pilih otomatis
-    if (daftarKabKota.length === 1) {
-      kabKota.value = daftarKabKota[0].kodeWilayah;
-      kabKota.dispatchEvent(new Event('change'));
-    }
-
-    // Ketika Kabupaten/Kota berubah, isi Kecamatan
+        // Ketika Kabupaten/Kota berubah, isi Kecamatan
     kabKota.addEventListener('change', function() {
       const kodeKabKota = kabKota.value;
 
@@ -1634,6 +1628,12 @@ console.table(
       });
     });
 
+    // Pilih otomatis jika admin hanya memiliki satu kabupaten/kota
+if (daftarKabKota.length === 1) {
+  kabKota.value = daftarKabKota[0].kodeWilayah;
+  kabKota.dispatchEvent(new Event('change'));
+}
+    
   } catch (error) {
     console.error('ERROR DROPDOWN WILAYAH:', error);
 
