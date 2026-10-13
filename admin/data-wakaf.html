@@ -1300,6 +1300,69 @@ const respons = await fetch(SIWAK_API_URL, {
   }
 }
 
+  
+async function muatDropdownWakif() {
+  const dropdown = document.getElementById('inputWakif');
+
+  if (!dropdown) return;
+
+  dropdown.innerHTML =
+    '<option value="">Memuat data Wakif...</option>';
+
+  try {
+    const response = await fetch(
+      SIWAK_API_URL + '?action=dataWakif'
+    );
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data Wakif.');
+    }
+
+    const result = await response.json();
+
+    console.log('DATA WAKIF UNTUK FORM:', result);
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(
+        result.message || 'Format data Wakif tidak sesuai.'
+      );
+    }
+
+    const daftarWakif = result.data.data;
+
+    dropdown.innerHTML =
+      '<option value="">Pilih wakif</option>';
+
+    daftarWakif.forEach(function (wakif) {
+      const id = wakif.idWakif || wakif.id_wakif;
+      const nama = wakif.namaWakif || wakif.nama_wakif;
+
+      if (!id || !nama) return;
+
+      const opsi = document.createElement('option');
+      opsi.value = id;
+      opsi.textContent = nama;
+
+      dropdown.appendChild(opsi);
+    });
+
+    if (dropdown.options.length === 1) {
+      dropdown.innerHTML =
+        '<option value="">Belum ada data Wakif</option>';
+    }
+  } catch (error) {
+    console.error('ERROR DROPDOWN WAKIF:', error);
+
+    dropdown.innerHTML =
+      '<option value="">Gagal memuat data Wakif</option>';
+  }
+}
+muatDropdownWakif();
+
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
   const kab = elemen.kabKota.value;
