@@ -1361,9 +1361,6 @@ async function muatDropdownWakif() {
       '<option value="">Gagal memuat data Wakif</option>';
   }
 }
-muatDropdownWakif();
-  muatDropdownNazhir();
-
   
 async function muatDropdownNazhir() {
   const dropdown = document.getElementById('inputNazhir');
@@ -1426,6 +1423,8 @@ async function muatDropdownNazhir() {
   }
 }
 
+  muatDropdownWakif();
+  muatDropdownNazhir();
 
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
