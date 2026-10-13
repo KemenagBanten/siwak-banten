@@ -1362,6 +1362,70 @@ async function muatDropdownWakif() {
   }
 }
 muatDropdownWakif();
+  muatDropdownNazhir();
+
+  
+async function muatDropdownNazhir() {
+  const dropdown = document.getElementById('inputNazhir');
+
+  if (!dropdown) return;
+
+  dropdown.innerHTML =
+    '<option value="">Memuat data Nazhir...</option>';
+
+  try {
+    const response = await fetch(
+      SIWAK_API_URL + '?action=dataNazhir'
+    );
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data Nazhir.');
+    }
+
+    const result = await response.json();
+
+    console.log('DATA NAZHIR UNTUK FORM:', result);
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(
+        result.message || 'Format data Nazhir tidak sesuai.'
+      );
+    }
+
+    const daftarNazhir = result.data.data;
+
+    dropdown.innerHTML =
+      '<option value="">Pilih nazhir</option>';
+
+    daftarNazhir.forEach(function (nazhir) {
+      const id = nazhir.idNazhir || nazhir.id_nazhir;
+      const nama = nazhir.namaNazhir || nazhir.nama_nazhir;
+
+      if (!id || !nama) return;
+
+      const opsi = document.createElement('option');
+      opsi.value = id;
+      opsi.textContent = nama;
+
+      dropdown.appendChild(opsi);
+    });
+
+    if (dropdown.options.length === 1) {
+      dropdown.innerHTML =
+        '<option value="">Belum ada data Nazhir</option>';
+    }
+  } catch (error) {
+    console.error('ERROR DROPDOWN NAZHIR:', error);
+
+    dropdown.innerHTML =
+      '<option value="">Gagal memuat data Nazhir</option>';
+  }
+}
+
 
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
