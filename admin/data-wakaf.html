@@ -1510,9 +1510,133 @@ async function muatDropdownPeruntukan() {
   }
 }
 
+async function muatDropdownWilayah() {
+  const kabKota = document.getElementById('inputKabKota');
+  const kecamatan = document.getElementById('inputKecamatan');
+  const desa = document.getElementById('inputDesa');
+
+  if (!kabKota || !kecamatan || !desa) return;
+
+  kabKota.innerHTML = '<option value="">Memuat Kabupaten/Kota...</option>';
+  kecamatan.innerHTML = '<option value="">Pilih Kecamatan</option>';
+  desa.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+
+  try {
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error('Sesi login tidak ditemukan. Silakan login kembali.');
+    }
+
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'dataWilayahAdmin',
+        token: token
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data wilayah.');
+    }
+
+    const result = await response.json();
+
+    console.log('DATA WILAYAH UNTUK FORM:', result);
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(result.message || 'Format data wilayah tidak sesuai.');
+    }
+
+    const semuaWilayah = result.data.data;
+
+    // Isi dropdown Kabupaten/Kota
+    const daftarKabKota = semuaWilayah.filter(function(wilayah) {
+      return wilayah.jenisWilayah === 'KAB_KOTA';
+    });
+
+    kabKota.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+
+    daftarKabKota.forEach(function(wilayah) {
+      const opsi = document.createElement('option');
+      opsi.value = wilayah.kodeWilayah;
+      opsi.textContent = wilayah.namaWilayah;
+      kabKota.appendChild(opsi);
+    });
+
+    // Jika hanya tersedia satu Kabupaten/Kota, pilih otomatis
+    if (daftarKabKota.length === 1) {
+      kabKota.value = daftarKabKota[0].kodeWilayah;
+      kabKota.dispatchEvent(new Event('change'));
+    }
+
+    // Ketika Kabupaten/Kota berubah, isi Kecamatan
+    kabKota.addEventListener('change', function() {
+      const kodeKabKota = kabKota.value;
+
+      kecamatan.innerHTML = '<option value="">Pilih Kecamatan</option>';
+      desa.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+
+      if (!kodeKabKota) return;
+
+      const daftarKecamatan = semuaWilayah.filter(function(wilayah) {
+        return (
+          wilayah.jenisWilayah === 'KECAMATAN' &&
+          wilayah.parentId === kodeKabKota
+        );
+      });
+
+      daftarKecamatan.forEach(function(wilayah) {
+        const opsi = document.createElement('option');
+        opsi.value = wilayah.kodeWilayah;
+        opsi.textContent = wilayah.namaWilayah;
+        kecamatan.appendChild(opsi);
+      });
+    });
+
+    // Ketika Kecamatan berubah, isi Desa/Kelurahan
+    kecamatan.addEventListener('change', function() {
+      const kodeKecamatan = kecamatan.value;
+
+      desa.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+
+      if (!kodeKecamatan) return;
+
+      const daftarDesa = semuaWilayah.filter(function(wilayah) {
+        return (
+          (wilayah.jenisWilayah === 'DESA' ||
+           wilayah.jenisWilayah === 'KELURAHAN' ||
+           wilayah.jenisWilayah === 'DESA_KELURAHAN') &&
+          wilayah.parentId === kodeKecamatan
+        );
+      });
+
+      daftarDesa.forEach(function(wilayah) {
+        const opsi = document.createElement('option');
+        opsi.value = wilayah.kodeWilayah;
+        opsi.textContent = wilayah.namaWilayah;
+        desa.appendChild(opsi);
+      });
+    });
+
+  } catch (error) {
+    console.error('ERROR DROPDOWN WILAYAH:', error);
+
+    kabKota.innerHTML = '<option value="">Gagal memuat Kabupaten/Kota</option>';
+    kecamatan.innerHTML = '<option value="">Gagal memuat Kecamatan</option>';
+    desa.innerHTML = '<option value="">Gagal memuat Desa/Kelurahan</option>';
+  }
+}
+
+
   muatDropdownWakif();
 muatDropdownNazhir();
 muatDropdownPeruntukan();
+  muatDropdownWilayah();
 
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
