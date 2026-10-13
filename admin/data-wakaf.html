@@ -1433,8 +1433,86 @@ async function muatDropdownNazhir() {
   }
 }
 
+async function muatDropdownPeruntukan() {
+  const dropdown = document.getElementById('inputPeruntukan');
+  if (!dropdown) return;
+
+  dropdown.innerHTML =
+    '<option value="">Memuat data Peruntukan...</option>';
+
+  try {
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error(
+        'Sesi login tidak ditemukan. Silakan login kembali.'
+      );
+    }
+
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'dataPeruntukan',
+        token: token
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data Peruntukan.');
+    }
+
+    const result = await response.json();
+
+    console.log('DATA PERUNTUKAN UNTUK FORM:', result);
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(
+        result.message || 'Format data Peruntukan tidak sesuai.'
+      );
+    }
+
+    const daftarPeruntukan = result.data.data;
+
+    dropdown.innerHTML =
+      '<option value="">Pilih Peruntukan</option>';
+
+    daftarPeruntukan.forEach(function(peruntukan) {
+      const id = peruntukan.idPeruntukan;
+      const nama = peruntukan.namaPeruntukan;
+
+      if (!id || !nama) return;
+
+      const opsi = document.createElement('option');
+
+      // Nilai yang disimpan adalah ID Peruntukan
+      opsi.value = id;
+
+      // Teks yang terlihat adalah nama Peruntukan
+      opsi.textContent = nama;
+
+      dropdown.appendChild(opsi);
+    });
+
+    if (dropdown.options.length === 1) {
+      dropdown.innerHTML =
+        '<option value="">Belum ada Peruntukan aktif</option>';
+    }
+
+  } catch (error) {
+    console.error('ERROR DROPDOWN PERUNTUKAN:', error);
+
+    dropdown.innerHTML =
+      '<option value="">Gagal memuat Peruntukan</option>';
+  }
+}
+
   muatDropdownWakif();
-  muatDropdownNazhir();
+muatDropdownNazhir();
+muatDropdownPeruntukan();
 
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
