@@ -1543,6 +1543,17 @@ async function muatDropdownWilayah() {
     const result = await response.json();
 
     console.log('DATA WILAYAH UNTUK FORM:', result);
+    console.log(
+  'JENIS WILAYAH:',
+  [...new Set(result.data.data.map(w => w.jenisWilayah))]
+);
+
+console.table(
+  result.data.data.filter(w =>
+    ['KECAMATAN', 'DESA', 'KELURAHAN', 'DESA_KELURAHAN']
+      .includes(w.jenisWilayah)
+  ).slice(0, 10)
+);
 
     if (
       !result.success ||
