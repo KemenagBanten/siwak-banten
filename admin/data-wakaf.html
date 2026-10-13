@@ -1364,16 +1364,26 @@ async function muatDropdownWakif() {
   
 async function muatDropdownNazhir() {
   const dropdown = document.getElementById('inputNazhir');
-
   if (!dropdown) return;
 
-  dropdown.innerHTML =
-    '<option value="">Memuat data Nazhir...</option>';
+  dropdown.innerHTML = '<option value="">Memuat data Nazhir...</option>';
 
   try {
-    const response = await fetch(
-      SIWAK_API_URL + '?action=dataNazhir'
-    );
+    // Ambil token sesi admin
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error('Sesi login tidak ditemukan. Silakan login kembali.');
+    }
+
+    // Ambil data Nazhir melalui POST dengan token admin
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'dataNazhir',
+        token: token
+      })
+    });
 
     if (!response.ok) {
       throw new Error('Gagal mengambil data Nazhir.');
@@ -1395,10 +1405,9 @@ async function muatDropdownNazhir() {
 
     const daftarNazhir = result.data.data;
 
-    dropdown.innerHTML =
-      '<option value="">Pilih nazhir</option>';
+    dropdown.innerHTML = '<option value="">Pilih Nazhir</option>';
 
-    daftarNazhir.forEach(function (nazhir) {
+    daftarNazhir.forEach(function(nazhir) {
       const id = nazhir.idNazhir || nazhir.id_nazhir;
       const nama = nazhir.namaNazhir || nazhir.nama_nazhir;
 
@@ -1413,8 +1422,9 @@ async function muatDropdownNazhir() {
 
     if (dropdown.options.length === 1) {
       dropdown.innerHTML =
-        '<option value="">Belum ada data Nazhir</option>';
+        '<option value="">Belum ada data Nazhir di wilayah Anda</option>';
     }
+
   } catch (error) {
     console.error('ERROR DROPDOWN NAZHIR:', error);
 
