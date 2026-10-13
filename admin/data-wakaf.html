@@ -2002,7 +2002,8 @@ async function bukaDetailWakaf(idWakaf) {
     document.getElementById('judulDetailWakaf').textContent =
       'Detail Wakaf — ' +
       ambil(identitas, 'kodeWakaf', 'kode_wakaf');
-
+    
+console.log('LOKASI DETAIL API:', lokasi);
     tampilkanPetaAdminWakaf(lokasi);
 
   } catch (error) {
