@@ -2863,6 +2863,46 @@ alert(
 
 /* MULAI MEMUAT DATA */
 loadDataWakaf();
+  
+/* ===== BUKA DAN TUTUP POPUP TAMBAH WAKIF ===== */
+(function () {
+  const tombolBuka = document.getElementById('tombolTambahWakifCepat');
+  const modalWakif = document.getElementById('modalTambahWakifCepat');
+  const tombolTutup = document.getElementById('tutupTambahWakifCepat');
+  const tombolBatal = document.getElementById('batalTambahWakifCepat');
+  const formWakif = document.getElementById('formTambahWakifCepat');
+
+  if (!tombolBuka || !modalWakif || !tombolTutup || !tombolBatal || !formWakif) {
+    console.error('Elemen popup Tambah Wakif belum ditemukan.');
+    return;
+  }
+
+  function bukaPopupWakif() {
+    modalWakif.style.display = 'flex';
+  }
+
+  function tutupPopupWakif() {
+    modalWakif.style.display = 'none';
+    formWakif.reset();
+
+    const pesan = document.getElementById('pesanTambahWakifCepat');
+    if (pesan) {
+      pesan.textContent = '';
+    }
+  }
+
+  tombolBuka.addEventListener('click', bukaPopupWakif);
+  tombolTutup.addEventListener('click', tutupPopupWakif);
+  tombolBatal.addEventListener('click', tutupPopupWakif);
+
+  // Klik area gelap di luar kotak popup untuk menutupnya.
+  modalWakif.addEventListener('click', function (event) {
+    if (event.target === modalWakif) {
+      tutupPopupWakif();
+    }
+  });
+})();
+
 </script>
 </body>
 </html>
