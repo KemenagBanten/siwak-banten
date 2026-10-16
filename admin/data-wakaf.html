@@ -2728,15 +2728,17 @@ document.addEventListener('DOMContentLoaded', function () {
     tombolBatal.addEventListener('click', tutupModalTambah);
   }
 
+  
   if (modalTambah) {
     modalTambah.addEventListener('click', function (event) {
       if (event.target === modalTambah) {
         tutupModalTambah();
       }
     });
+  }
 
-    
   // Menyimpan data wakaf baru
+
   const formTambahWakaf = document.getElementById('formTambahWakaf');
   const pesanTambahWakaf = document.getElementById('pesanTambahWakaf');
   const tombolSimpanWakaf = document.getElementById('simpanTambahWakaf');
@@ -2889,13 +2891,7 @@ loadDataWakaf();
   modalWakif.hidden = true;
   formWakif.reset();
 
-  const pesan = document.getElementById('pesanTambahWakifCepat');
-  if (pesan) {
-    pesan.textContent = '';
-  }
-}
-
-    const pesan = document.getElementById('pesanTambahWakifCepat');
+      const pesan = document.getElementById('pesanTambahWakifCepat');
     if (pesan) {
       pesan.textContent = '';
     }
