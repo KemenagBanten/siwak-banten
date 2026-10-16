@@ -1851,6 +1851,7 @@ async function bukaDetailWakaf(idWakaf) {
     }
 
     const hasil = await respons.json();
+    console.log('HASIL API DETAIL WAKAF:', JSON.stringify(hasil));
 
 
     if (!hasil.success) {
