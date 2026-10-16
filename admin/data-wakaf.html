@@ -2667,36 +2667,40 @@ document.addEventListener('DOMContentLoaded', function () {
   const tombolTutup = document.getElementById('tutupTambahWakaf');
   const tombolBatal = document.getElementById('batalTambahWakaf');
 
-    // Membuka modal tambah wakaf hanya melalui tombol pembuka.
+    
   // Membuka modal Tambah Data Wakaf saja.
-document.addEventListener('click', function (event) {
-  const tombol = event.target.closest('button');
+  document.addEventListener('click', function (event) {
+    const tombol = event.target.closest('button');
 
-  if (!tombol || !modalTambah) return;
+    if (!tombol || !modalTambah) return;
 
-  // Abaikan tombol di dalam modal atau popup.
-  if (tombol.closest('#modalTambahWakaf')) return;
-  if (tombol.closest('#modalTambahWakifCepat')) return;
+    // Jangan bereaksi terhadap tombol di dalam modal Wakaf.
+    if (tombol.closest('#modalTambahWakaf')) return;
 
-  // Abaikan tombol Tambah Wakif.
-  if (tombol.id === 'tombolTambahWakifCepat') return;
+    // Jangan bereaksi terhadap tombol di dalam popup Wakif.
+    if (tombol.closest('#modalTambahWakifCepat')) return;
 
-  // Buka hanya ketika tombol Tambah Data Wakaf diklik.
-  if (
-    tombol.textContent.trim().includes('Tambah Data Wakaf')
-  ) {
-    const popupWakif = document.getElementById(
-      'modalTambahWakifCepat'
-    );
+    // Abaikan tombol pembuka popup Wakif.
+    if (tombol.id === 'tombolTambahWakifCepat') return;
 
-    if (popupWakif) {
-      popupWakif.style.display = 'none';
-      popupWakif.hidden = true;
+    // Buka modal Wakaf hanya melalui tombol yang sesuai.
+    if (tombol.textContent.trim().includes('Tambah Data Wakaf')) {
+      event.preventDefault();
+
+      const popupWakif = document.getElementById(
+        'modalTambahWakifCepat'
+      );
+
+      // Pastikan popup Wakif tertutup.
+      if (popupWakif) {
+        popupWakif.style.display = 'none';
+        popupWakif.hidden = true;
+      }
+
+      modalTambah.style.display = 'flex';
     }
+  });
 
-    modalTambah.style.display = 'flex';
-  }
-});
 
   
   // Menutup modal dan mengembalikan formulir ke mode Tambah.
