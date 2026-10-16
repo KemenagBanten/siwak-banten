@@ -1820,10 +1820,11 @@ elemen.kabKota.addEventListener('change', terapkanFilterWakaf);
 elemen.jenisAset.addEventListener('change', terapkanFilterWakaf);
 elemen.sertifikasi.addEventListener('change', terapkanFilterWakaf);
 
-/* TOMBOL DETAIL */
+
+/* TOMBOL DETAIL, EDIT, DAN HAPUS */
 
 elemen.body.addEventListener('click', function(event) {
-  // Periksa apakah tombol Edit yang diklik.
+  // 1. Tombol Edit
   const tombolEdit = event.target.closest('.wakaf-edit-button');
 
   if (tombolEdit) {
@@ -1834,24 +1835,49 @@ elemen.body.addEventListener('click', function(event) {
       return;
     }
 
-    // Tahap berikutnya: membuka formulir edit.
     bukaEditWakaf(idWakaf);
     return;
   }
 
-  // Penanganan tombol Lihat Detail tetap seperti sebelumnya.
+  // 2. Tombol Lihat Detail
   const tombolDetail = event.target.closest('.wakaf-detail-button');
 
-  if (!tombolDetail) return;
+  if (tombolDetail) {
+    const idWakaf = tombolDetail.dataset.id;
 
-  const idWakaf = tombolDetail.dataset.id;
+    if (!idWakaf || idWakaf === '-') {
+      alert('ID Wakaf tidak ditemukan.');
+      return;
+    }
 
-  if (!idWakaf || idWakaf === '-') {
-    alert('ID Wakaf tidak ditemukan.');
+    bukaDetailWakaf(idWakaf);
     return;
   }
 
-  bukaDetailWakaf(idWakaf);
+  // 3. Tombol Hapus
+  const tombolHapus = event.target.closest('.wakaf-delete-button');
+
+  if (tombolHapus) {
+    const idWakaf = tombolHapus.dataset.id;
+
+    if (!idWakaf || idWakaf === '-') {
+      alert('ID Wakaf tidak ditemukan.');
+      return;
+    }
+
+    const yakin = confirm(
+      'Apakah Anda yakin ingin menghapus data wakaf ini?\n\n' +
+      'ID Wakaf: ' + idWakaf +
+      '\n\nData yang dihapus tidak dapat ditampilkan kembali melalui tabel.'
+    );
+
+    if (!yakin) {
+      return;
+    }
+
+    // API penghapusan akan kita sambungkan setelah backend siap.
+    alert('Konfirmasi berhasil. Fungsi API Hapus belum dipasang.');
+  }
 });
 
 
