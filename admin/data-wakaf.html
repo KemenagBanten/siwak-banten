@@ -1243,8 +1243,7 @@
 
 <!-- POPUP TAMBAH WAKIF -->
   
-<!-- POPUP TAMBAH WAKIF -->
-<div id="modalTambahWakifCepat" class="wakif-cepat-overlay" style="display: none;">
+<div id="modalTambahWakifCepat" class="wakif-cepat-overlay" hidden>
   <div class="wakif-cepat-modal" role="dialog" aria-modal="true" aria-labelledby="judulTambahWakifCepat">
 
     <div class="wakif-cepat-header">
@@ -2882,12 +2881,20 @@ loadDataWakaf();
   }
 
   function bukaPopupWakif() {
-    modalWakif.style.display = 'flex';
-  }
+  modalWakif.hidden = false;
+  modalWakif.style.display = 'flex';
+}
 
   function tutupPopupWakif() {
-    modalWakif.style.display = 'none';
-    formWakif.reset();
+  modalWakif.style.display = 'none';
+  modalWakif.hidden = true;
+  formWakif.reset();
+
+  const pesan = document.getElementById('pesanTambahWakifCepat');
+  if (pesan) {
+    pesan.textContent = '';
+  }
+}
 
     const pesan = document.getElementById('pesanTambahWakifCepat');
     if (pesan) {
