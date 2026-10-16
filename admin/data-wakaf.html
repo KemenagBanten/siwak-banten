@@ -906,6 +906,8 @@
 
     <form id="formTambahWakaf">
 
+       <input type="hidden" id="editIdWakaf" value="">
+      
       <h3>1. Informasi Wakaf</h3>
 
       <div class="wakaf-form-grid">
@@ -1810,12 +1812,30 @@ elemen.jenisAset.addEventListener('change', terapkanFilterWakaf);
 elemen.sertifikasi.addEventListener('change', terapkanFilterWakaf);
 
 /* TOMBOL DETAIL */
+
 elemen.body.addEventListener('click', function(event) {
-  const tombol = event.target.closest('.wakaf-detail-button');
+  // Periksa apakah tombol Edit yang diklik.
+  const tombolEdit = event.target.closest('.wakaf-edit-button');
 
-  if (!tombol) return;
+  if (tombolEdit) {
+    const idWakaf = tombolEdit.dataset.id;
 
-  const idWakaf = tombol.dataset.id;
+    if (!idWakaf || idWakaf === '-') {
+      alert('ID Wakaf tidak ditemukan.');
+      return;
+    }
+
+    // Tahap berikutnya: membuka formulir edit.
+    bukaEditWakaf(idWakaf);
+    return;
+  }
+
+  // Penanganan tombol Lihat Detail tetap seperti sebelumnya.
+  const tombolDetail = event.target.closest('.wakaf-detail-button');
+
+  if (!tombolDetail) return;
+
+  const idWakaf = tombolDetail.dataset.id;
 
   if (!idWakaf || idWakaf === '-') {
     alert('ID Wakaf tidak ditemukan.');
@@ -1824,6 +1844,7 @@ elemen.body.addEventListener('click', function(event) {
 
   bukaDetailWakaf(idWakaf);
 });
+
 
 async function bukaDetailWakaf(idWakaf) {
   console.log('FUNGSI DETAIL WAKAF DIJALANKAN:', idWakaf);
