@@ -750,6 +750,153 @@
     padding: 18px;
   }
 }
+
+    
+/* ===== POPUP TAMBAH WAKIF CEPAT ===== */
+.wakif-cepat-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow-y: auto;
+}
+
+.wakif-cepat-modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  color: #263238;
+}
+
+.wakif-cepat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wakif-cepat-header h3 {
+  margin: 0;
+  font-size: 21px;
+}
+
+#tutupTambahWakifCepat {
+  border: none;
+  background: transparent;
+  color: #555;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wakif-cepat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.wakif-cepat-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.wakif-cepat-lebar {
+  grid-column: 1 / -1;
+}
+
+.wakif-cepat-group label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wakif-cepat-group input,
+.wakif-cepat-group select,
+.wakif-cepat-group textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #263238;
+  font: inherit;
+}
+
+.wakif-cepat-group input:focus,
+.wakif-cepat-group select:focus,
+.wakif-cepat-group textarea:focus {
+  outline: 2px solid rgba(22, 101, 52, 0.18);
+  border-color: #166534;
+}
+
+.wakif-cepat-group small {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.wakif-cepat-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.wakif-cepat-actions button {
+  padding: 10px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#simpanTambahWakifCepat {
+  border-color: #166534;
+  background: #166534;
+  color: #fff;
+}
+
+#pesanTambahWakifCepat {
+  margin-top: 14px;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .wakif-cepat-overlay {
+    padding: 10px;
+  }
+
+  .wakif-cepat-modal {
+    padding: 18px;
+    max-height: 94vh;
+  }
+
+  .wakif-cepat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wakif-cepat-lebar {
+    grid-column: auto;
+  }
+}
+
     
   </style>
 </head>
@@ -1089,6 +1236,91 @@
       <p class="wakaf-message">Memuat detail wakaf...</p>
     </div>
   </div>
+  
+<!-- POPUP TAMBAH WAKIF -->
+<div id="modalTambahWakifCepat" class="wakif-cepat-overlay" style="display: none;">
+  <div class="wakif-cepat-modal" role="dialog" aria-modal="true" aria-labelledby="judulTambahWakifCepat">
+
+    <div class="wakif-cepat-header">
+      <h3 id="judulTambahWakifCepat">Tambah Wakif</h3>
+      <button type="button" id="tutupTambahWakifCepat" aria-label="Tutup popup">&times;</button>
+    </div>
+
+    <form id="formTambahWakifCepat">
+      <div class="wakif-cepat-grid">
+
+        <div class="wakif-cepat-group">
+          <label for="cepatNamaWakif">Nama Wakif *</label>
+          <input type="text" id="cepatNamaWakif" required>
+        </div>
+
+        <div class="wakif-cepat-group">
+          <label for="cepatJenisWakif">Jenis Wakif *</label>
+          <select id="cepatJenisWakif" required>
+            <option value="">Pilih jenis Wakif</option>
+            <option value="PERORANGAN">PERORANGAN</option>
+            <option value="BADAN_HUKUM">BADAN HUKUM</option>
+            <option value="ORGANISASI">ORGANISASI</option>
+            <option value="LEMBAGA_PEMERINTAH">LEMBAGA PEMERINTAH</option>
+            <option value="LAINNYA">LAINNYA</option>
+          </select>
+        </div>
+
+        <div class="wakif-cepat-group" id="grupNIKWakifCepat">
+          <label for="cepatNikWakif">NIK</label>
+          <input type="text" id="cepatNikWakif" inputmode="numeric" maxlength="16">
+          <small>Wajib diisi untuk Wakif perorangan.</small>
+        </div>
+
+        <div class="wakif-cepat-group">
+          <label for="cepatKontakWakif">Kontak</label>
+          <input type="text" id="cepatKontakWakif">
+        </div>
+
+        <div class="wakif-cepat-group wakif-cepat-lebar">
+          <label for="cepatAlamatWakif">Alamat</label>
+          <textarea id="cepatAlamatWakif" rows="2"></textarea>
+        </div>
+
+        <div class="wakif-cepat-group">
+          <label for="cepatKabKotaWakif">Kabupaten/Kota *</label>
+          <select id="cepatKabKotaWakif" required>
+            <option value="">Memuat wilayah...</option>
+          </select>
+        </div>
+
+        <div class="wakif-cepat-group">
+          <label for="cepatKecamatanWakif">Kecamatan</label>
+          <select id="cepatKecamatanWakif">
+            <option value="">Pilih kecamatan</option>
+          </select>
+        </div>
+
+        <div class="wakif-cepat-group">
+          <label for="cepatDesaWakif">Desa/Kelurahan</label>
+          <select id="cepatDesaWakif">
+            <option value="">Pilih desa/kelurahan</option>
+          </select>
+        </div>
+
+        <div class="wakif-cepat-group wakif-cepat-lebar">
+          <label for="cepatKeteranganWakif">Keterangan</label>
+          <textarea id="cepatKeteranganWakif" rows="2"></textarea>
+        </div>
+
+      </div>
+
+      <div id="pesanTambahWakifCepat" role="status"></div>
+
+      <div class="wakif-cepat-actions">
+        <button type="button" id="batalTambahWakifCepat">Batal</button>
+        <button type="submit" id="simpanTambahWakifCepat">Simpan Wakif</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
