@@ -2851,15 +2851,17 @@ alert(
           alert(error.message);
         }
 
+     
       } finally {
         if (tombolSimpanWakaf) {
           tombolSimpanWakaf.disabled = false;
           tombolSimpanWakaf.textContent = 'Simpan Data';
-       
+        }
       }
     });
   }
 });
+
 
 /* MULAI MEMUAT DATA */
 loadDataWakaf();
