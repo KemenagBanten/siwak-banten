@@ -1748,12 +1748,19 @@ function tampilkanTabelWakaf() {
         <td>${teksAman(nilai(d, 'peruntukan', 'id_peruntukan'))}</td>
         <td>${teksAman(nilai(d, 'kabKota', 'kab_kota'))}</td>
         <td>${teksAman(nilai(d, 'statusSertifikasi', 'status_sertifikasi'))}</td>
-        <td>
-          <button class="wakaf-detail-button" type="button"
-            data-id="${teksAman(nilai(d, 'idWakaf', 'id_wakaf'))}">
-            Lihat Detail
-          </button>
-        </td>
+        
+<td>
+  <button class="wakaf-detail-button" type="button"
+    data-id="${teksAman(nilai(d, 'idWakaf', 'id_wakaf'))}">
+    Lihat Detail
+  </button>
+
+  <button class="wakaf-edit-button" type="button"
+    data-id="${teksAman(nilai(d, 'idWakaf', 'id_wakaf'))}">
+    Edit
+  </button>
+</td>
+
       </tr>
     `).join('');
   }
