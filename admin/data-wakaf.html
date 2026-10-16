@@ -2320,12 +2320,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Menutup modal
+  
+  // Menutup modal dan mengembalikan formulir ke mode Tambah.
   function tutupModalTambah() {
     if (modalTambah) {
       modalTambah.style.display = 'none';
     }
+
+    const form = document.getElementById('formTambahWakaf');
+    const idEdit = document.getElementById('editIdWakaf');
+    const judul = modalTambah
+      ? modalTambah.querySelector('.wakaf-modal-header h2')
+      : null;
+    const tombolSimpan = document.getElementById('simpanTambahWakaf');
+    const pesan = document.getElementById('pesanTambahWakaf');
+
+    if (form) {
+      form.reset();
+    }
+
+    if (idEdit) {
+      idEdit.value = '';
+    }
+
+    if (judul) {
+      judul.textContent = 'Tambah Data Wakaf';
+    }
+
+    if (tombolSimpan) {
+      tombolSimpan.textContent = 'Simpan Data';
+      tombolSimpan.disabled = false;
+    }
+
+    if (pesan) {
+      pesan.textContent = '';
+    }
   }
+
 
   if (tombolTutup) {
     tombolTutup.addEventListener('click', tutupModalTambah);
@@ -2424,16 +2455,22 @@ body: JSON.stringify({
           throw new Error(hasil.message || 'Data wakaf gagal disimpan.');
         }
 
-        if (pesanTambahWakaf) {
-          pesanTambahWakaf.textContent =
-            'Berhasil menyimpan data wakaf: ' +
-            hasil.data.kodeWakaf;
-        }
+        
+const sedangEdit = Boolean(nilaiInput('editIdWakaf'));
 
-        alert(
-          'Data wakaf berhasil disimpan.\n' +
-          'Kode Wakaf: ' + hasil.data.kodeWakaf
-        );
+const pesanSukses = sedangEdit
+  ? 'Data wakaf berhasil diperbarui.'
+  : 'Data wakaf berhasil ditambahkan.';
+
+if (pesanTambahWakaf) {
+  pesanTambahWakaf.textContent =
+    pesanSukses + '\nKode Wakaf: ' + hasil.data.kodeWakaf;
+}
+
+alert(
+  pesanSukses + '\nKode Wakaf: ' + hasil.data.kodeWakaf
+);
+
 
         formTambahWakaf.reset();
         tutupModalTambah();
