@@ -3435,3 +3435,61 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   TOMBOL AKSI TABEL DATA WAKAF
+========================================================= */
+
+.wakaf-detail-button,
+.wakaf-edit-button,
+.wakaf-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  margin: 2px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Tombol Lihat Detail */
+.wakaf-detail-button {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #bbf7d0;
+}
+
+.wakaf-detail-button:hover {
+  background: #bbf7d0;
+}
+
+/* Tombol Edit */
+.wakaf-edit-button {
+  color: #1d4ed8;
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.wakaf-edit-button:hover {
+  background: #bfdbfe;
+}
+
+/* Tombol Hapus */
+.wakaf-delete-button {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.wakaf-delete-button:hover {
+  background: #fecaca;
+}
+
