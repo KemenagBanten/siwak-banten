@@ -2667,16 +2667,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const tombolTutup = document.getElementById('tutupTambahWakaf');
   const tombolBatal = document.getElementById('batalTambahWakaf');
 
-  // Membuka modal tambah wakaf
-  // Delegasi klik agar tetap bekerja jika tombol dibuat dinamis.
+    // Membuka modal tambah wakaf hanya melalui tombol pembuka.
   document.addEventListener('click', function (event) {
     const tombol = event.target.closest('button');
 
     if (!tombol || !modalTambah) return;
 
+    // Abaikan tombol yang berada di dalam modal mana pun.
+    if (tombol.closest('.wakaf-modal, .wakif-cepat-overlay')) {
+      return;
+    }
+
     if (
-      tombol.textContent.trim().includes('Tambah Data Wakaf') &&
-      !modalTambah.contains(tombol)
+      tombol.textContent.trim().includes('Tambah Data Wakaf')
     ) {
       modalTambah.style.display = 'flex';
     }
