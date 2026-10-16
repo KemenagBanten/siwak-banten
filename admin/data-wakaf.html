@@ -2402,11 +2402,16 @@ document.addEventListener('DOMContentLoaded', function () {
       try {
         const response = await fetch(SIWAK_API_URL, {
           method: 'POST',
-          body: JSON.stringify({
-            action: 'tambahWakaf',
-            token: token,
-            dataWakaf: dataWakaf
-          })
+          
+body: JSON.stringify({
+  action: nilaiInput('editIdWakaf')
+    ? 'updateWakaf'
+    : 'tambahWakaf',
+  token: token,
+  idWakaf: nilaiInput('editIdWakaf'),
+  dataWakaf: dataWakaf
+})
+
         });
 
         if (!response.ok) {
