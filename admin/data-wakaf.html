@@ -1875,8 +1875,7 @@ elemen.body.addEventListener('click', function(event) {
       return;
     }
 
-    // API penghapusan akan kita sambungkan setelah backend siap.
-    alert('Konfirmasi berhasil. Fungsi API Hapus belum dipasang.');
+   hapusWakafAdmin(idWakaf);
   }
 });
 
@@ -2044,6 +2043,73 @@ async function bukaEditWakaf(idWakaf) {
     alert(error.message || 'Gagal memuat data wakaf.');
   }
 }
+
+  
+async function hapusWakafAdmin(idWakaf) {
+  try {
+    
+const token = sessionStorage.getItem('siwakToken');
+
+
+    if (!token) {
+      alert('Sesi admin tidak ditemukan. Silakan login kembali.');
+      return;
+    }
+
+    const tombolHapus = document.querySelector(
+      '.wakaf-delete-button[data-id="' + idWakaf + '"]'
+    );
+
+    if (tombolHapus) {
+      tombolHapus.disabled = true;
+      tombolHapus.textContent = 'Menghapus...';
+    }
+
+    const respons = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'hapusWakaf',
+        token: token,
+        idWakaf: idWakaf
+      })
+    });
+
+    if (!respons.ok) {
+      throw new Error('Gagal menghubungi API.');
+    }
+
+    const hasil = await respons.json();
+
+    if (!hasil.success) {
+      throw new Error(
+        hasil.message || 'Data wakaf gagal dihapus.'
+      );
+    }
+
+    alert('Data wakaf berhasil dihapus.');
+
+    // Muat ulang tabel agar data yang dihapus tidak tampil lagi.
+    if (typeof loadDataWakaf === 'function') {
+      await loadDataWakaf();
+    } else {
+      window.location.reload();
+    }
+
+  } catch (error) {
+    alert(error.message || 'Terjadi kesalahan saat menghapus data.');
+
+  } finally {
+    const tombolHapus = document.querySelector(
+      '.wakaf-delete-button[data-id="' + idWakaf + '"]'
+    );
+
+    if (tombolHapus) {
+      tombolHapus.disabled = false;
+      tombolHapus.textContent = 'Hapus';
+    }
+  }
+}
+
 
 async function bukaDetailWakaf(idWakaf) {
   console.log('FUNGSI DETAIL WAKAF DIJALANKAN:', idWakaf);
