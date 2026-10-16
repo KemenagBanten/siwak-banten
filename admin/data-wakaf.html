@@ -1946,10 +1946,102 @@ if (daftarKabKota.length === 1) {
 }
 
 
+/* ===== DROPDOWN WILAYAH POPUP TAMBAH WAKIF ===== */
+function siapkanDropdownWilayahWakif() {
+  const kabKota = document.getElementById('cepatKabKotaWakif');
+  const kecamatan = document.getElementById('cepatKecamatanWakif');
+  const desa = document.getElementById('cepatDesaWakif');
+
+  if (!kabKota || !kecamatan || !desa) return;
+
+  function isiDropdown(select, daftar, labelAwal) {
+    select.replaceChildren();
+
+    const opsiAwal = document.createElement('option');
+    opsiAwal.value = '';
+    opsiAwal.textContent = labelAwal;
+    select.appendChild(opsiAwal);
+
+    daftar.forEach(function(wilayah) {
+      const opsi = document.createElement('option');
+      opsi.value = wilayah.kodeWilayah;
+      opsi.textContent = wilayah.namaWilayah;
+      select.appendChild(opsi);
+    });
+  }
+
+  function resetKecamatan() {
+    isiDropdown(kecamatan, [], 'Pilih Kecamatan');
+    isiDropdown(desa, [], 'Pilih Desa/Kelurahan');
+  }
+
+  function resetDesa() {
+    isiDropdown(desa, [], 'Pilih Desa/Kelurahan');
+  }
+
+  // Data wilayah digunakan bersama dengan form Wakaf utama.
+  function isiKabupatenKota() {
+    if (!Array.isArray(semuaWilayahFormWakaf) ||
+        semuaWilayahFormWakaf.length === 0) {
+      kabKota.innerHTML =
+        '<option value="">Data wilayah belum tersedia</option>';
+      return;
+    }
+
+    const daftarKabKota = semuaWilayahFormWakaf
+      .filter(w => w.jenisWilayah === 'KAB_KOTA')
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(kabKota, daftarKabKota, 'Pilih Kabupaten/Kota');
+  }
+
+  // Ketika Kabupaten/Kota dipilih, muat Kecamatan.
+  kabKota.addEventListener('change', function() {
+    resetKecamatan();
+
+    if (!kabKota.value) return;
+
+    const daftarKecamatan = semuaWilayahFormWakaf
+      .filter(w =>
+        w.jenisWilayah === 'KECAMATAN' &&
+        String(w.parentId) === String(kabKota.value)
+      )
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(kecamatan, daftarKecamatan, 'Pilih Kecamatan');
+  });
+
+  // Ketika Kecamatan dipilih, muat Desa/Kelurahan.
+  kecamatan.addEventListener('change', function() {
+    resetDesa();
+
+    if (!kecamatan.value) return;
+
+    const jenisDesa = [
+      'DESA',
+      'KELURAHAN',
+      'DESA_KELURAHAN'
+    ];
+
+    const daftarDesa = semuaWilayahFormWakaf
+      .filter(w =>
+        jenisDesa.includes(w.jenisWilayah) &&
+        String(w.parentId) === String(kecamatan.value)
+      )
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(desa, daftarDesa, 'Pilih Desa/Kelurahan');
+  });
+
+  isiKabupatenKota();
+}
+
   muatDropdownWakif();
 muatDropdownNazhir();
 muatDropdownPeruntukan();
-  muatDropdownWilayah();
+  muatDropdownWilayah().then(function() {
+  siapkanDropdownWilayahWakif();
+});
 
 function terapkanFilterWakaf() {
   const kata = elemen.cari.value.trim().toLowerCase();
