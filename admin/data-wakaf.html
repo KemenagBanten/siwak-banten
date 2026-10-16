@@ -1334,7 +1334,8 @@ const respons = await fetch(SIWAK_API_URL, {
 }
 
   
-async function muatDropdownWakif() {
+
+async function muatDropdownWakif(idWakifTerpilih = '') {
   const dropdown = document.getElementById('inputWakif');
 
   if (!dropdown) return;
@@ -1343,9 +1344,19 @@ async function muatDropdownWakif() {
     '<option value="">Memuat data Wakif...</option>';
 
   try {
-    const response = await fetch(
-      SIWAK_API_URL + '?action=dataWakif'
-    );
+    const token = sessionStorage.getItem('siwakToken');
+
+    if (!token) {
+      throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
+    }
+
+    const response = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'dataWakifAdmin',
+        token: token
+      })
+    });
 
     if (!response.ok) {
       throw new Error('Gagal mengambil data Wakif.');
@@ -1353,7 +1364,7 @@ async function muatDropdownWakif() {
 
     const result = await response.json();
 
-    console.log('DATA WAKIF UNTUK FORM:', result);
+    console.log('DATA WAKIF ADMIN UNTUK FORM:', result);
 
     if (
       !result.success ||
@@ -1368,9 +1379,9 @@ async function muatDropdownWakif() {
     const daftarWakif = result.data.data;
 
     dropdown.innerHTML =
-      '<option value="">Pilih wakif</option>';
+      '<option value="">Pilih Wakif</option>';
 
-    daftarWakif.forEach(function (wakif) {
+    daftarWakif.forEach(function(wakif) {
       const id = wakif.idWakif || wakif.id_wakif;
       const nama = wakif.namaWakif || wakif.nama_wakif;
 
@@ -1383,18 +1394,25 @@ async function muatDropdownWakif() {
       dropdown.appendChild(opsi);
     });
 
+    if (idWakifTerpilih) {
+      dropdown.value = idWakifTerpilih;
+    }
+
     if (dropdown.options.length === 1) {
       dropdown.innerHTML =
         '<option value="">Belum ada data Wakif</option>';
     }
+
   } catch (error) {
     console.error('ERROR DROPDOWN WAKIF:', error);
 
     dropdown.innerHTML =
       '<option value="">Gagal memuat data Wakif</option>';
+
+    console.error('Pesan:', error.message);
   }
 }
-  
+
 async function muatDropdownNazhir() {
   const dropdown = document.getElementById('inputNazhir');
   if (!dropdown) return;
