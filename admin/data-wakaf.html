@@ -3176,8 +3176,15 @@ loadDataWakaf();
         }
       }
 
-      // Popup tetap terbuka agar pesan berhasil bisa dibaca.
-      // Tutup secara manual setelah pesan terlihat.
+     
+      // Tutup popup Wakif setelah berhasil disimpan.
+      tutupPopupWakif();
+
+      // Kembali tampilkan form Tambah Data Wakaf.
+      if (modalTambahWakaf) {
+        modalTambahWakaf.style.display = 'block';
+      }
+
 
     } catch (error) {
       console.error('GAGAL SIMPAN WAKIF:', error);
