@@ -2668,22 +2668,35 @@ document.addEventListener('DOMContentLoaded', function () {
   const tombolBatal = document.getElementById('batalTambahWakaf');
 
     // Membuka modal tambah wakaf hanya melalui tombol pembuka.
-  document.addEventListener('click', function (event) {
-    const tombol = event.target.closest('button');
+  // Membuka modal Tambah Data Wakaf saja.
+document.addEventListener('click', function (event) {
+  const tombol = event.target.closest('button');
 
-    if (!tombol || !modalTambah) return;
+  if (!tombol || !modalTambah) return;
 
-    // Abaikan tombol yang berada di dalam modal mana pun.
-    if (tombol.closest('.wakaf-modal, .wakif-cepat-overlay')) {
-      return;
+  // Abaikan tombol di dalam modal atau popup.
+  if (tombol.closest('#modalTambahWakaf')) return;
+  if (tombol.closest('#modalTambahWakifCepat')) return;
+
+  // Abaikan tombol Tambah Wakif.
+  if (tombol.id === 'tombolTambahWakifCepat') return;
+
+  // Buka hanya ketika tombol Tambah Data Wakaf diklik.
+  if (
+    tombol.textContent.trim().includes('Tambah Data Wakaf')
+  ) {
+    const popupWakif = document.getElementById(
+      'modalTambahWakifCepat'
+    );
+
+    if (popupWakif) {
+      popupWakif.style.display = 'none';
+      popupWakif.hidden = true;
     }
 
-    if (
-      tombol.textContent.trim().includes('Tambah Data Wakaf')
-    ) {
-      modalTambah.style.display = 'flex';
-    }
-  });
+    modalTambah.style.display = 'flex';
+  }
+});
 
   
   // Menutup modal dan mengembalikan formulir ke mode Tambah.
@@ -2873,43 +2886,114 @@ loadDataWakaf();
   
 /* ===== BUKA DAN TUTUP POPUP TAMBAH WAKIF ===== */
 (function () {
-  const tombolBuka = document.getElementById('tombolTambahWakifCepat');
-  const modalWakif = document.getElementById('modalTambahWakifCepat');
-  const tombolTutup = document.getElementById('tutupTambahWakifCepat');
-  const tombolBatal = document.getElementById('batalTambahWakifCepat');
-  const formWakif = document.getElementById('formTambahWakifCepat');
+  const tombolBuka = document.getElementById(
+    'tombolTambahWakifCepat'
+  );
 
-  if (!tombolBuka || !modalWakif || !tombolTutup || !tombolBatal || !formWakif) {
-    console.error('Elemen popup Tambah Wakif belum ditemukan.');
+  const modalWakif = document.getElementById(
+    'modalTambahWakifCepat'
+  );
+
+  const tombolTutup = document.getElementById(
+    'tutupTambahWakifCepat'
+  );
+
+  const tombolBatal = document.getElementById(
+    'batalTambahWakifCepat'
+  );
+
+  const formWakif = document.getElementById(
+    'formTambahWakifCepat'
+  );
+
+  const modalTambahWakaf = document.getElementById(
+    'modalTambahWakaf'
+  );
+
+  if (
+    !tombolBuka ||
+    !modalWakif ||
+    !tombolTutup ||
+    !tombolBatal ||
+    !formWakif
+  ) {
+    console.error(
+      'Elemen popup Tambah Wakif belum ditemukan.'
+    );
     return;
   }
 
-  function bukaPopupWakif() {
-  modalWakif.hidden = false;
-  modalWakif.style.display = 'flex';
-}
-
+  // Kondisi awal: popup Wakif tertutup.
   function tutupPopupWakif() {
-  modalWakif.style.display = 'none';
-  modalWakif.hidden = true;
-  formWakif.reset();
+    modalWakif.style.display = 'none';
+    modalWakif.hidden = true;
+    formWakif.reset();
 
-      const pesan = document.getElementById('pesanTambahWakifCepat');
+    const pesan = document.getElementById(
+      'pesanTambahWakifCepat'
+    );
+
     if (pesan) {
       pesan.textContent = '';
     }
   }
 
-  tombolBuka.addEventListener('click', bukaPopupWakif);
-  tombolTutup.addEventListener('click', tutupPopupWakif);
-  tombolBatal.addEventListener('click', tutupPopupWakif);
-
-  // Klik area gelap di luar kotak popup untuk menutupnya.
-  modalWakif.addEventListener('click', function (event) {
-    if (event.target === modalWakif) {
-      tutupPopupWakif();
+  // Buka popup Wakif tanpa membuka modal Wakaf.
+  function bukaPopupWakif(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-  });
+
+    // Tutup modal Wakaf jika sedang terbuka.
+    if (modalTambahWakaf) {
+      modalTambahWakaf.style.display = 'none';
+    }
+
+    modalWakif.hidden = false;
+    modalWakif.style.display = 'flex';
+  }
+
+  tombolBuka.addEventListener(
+    'click',
+    bukaPopupWakif
+  );
+
+  tombolTutup.addEventListener(
+    'click',
+    tutupPopupWakif
+  );
+
+  tombolBatal.addEventListener(
+    'click',
+    tutupPopupWakif
+  );
+
+  // Tutup popup jika area gelap diklik.
+  modalWakif.addEventListener(
+    'click',
+    function (event) {
+      if (event.target === modalWakif) {
+        tutupPopupWakif();
+      }
+    }
+  );
+
+  // Tutup popup dengan tombol Escape.
+  document.addEventListener(
+    'keydown',
+    function (event) {
+      if (
+        event.key === 'Escape' &&
+        !modalWakif.hidden
+      ) {
+        tutupPopupWakif();
+      }
+    }
+  );
+
+  // Terapkan kondisi awal saat script dijalankan.
+  tutupPopupWakif();
 })();
 
 </script>
