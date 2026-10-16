@@ -3093,9 +3093,105 @@ loadDataWakaf();
     }
   );
 
+
+  // Simpan Wakif melalui API SIWAK.
+  formWakif.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const pesan = document.getElementById('pesanTambahWakifCepat');
+    const tombolSimpan = document.getElementById('simpanTambahWakifCepat');
+
+    function tampilkanPesan(teks, berhasil) {
+      pesan.textContent = teks;
+      pesan.style.color = berhasil ? 'green' : 'red';
+    }
+
+    try {
+      const token = sessionStorage.getItem('siwakToken');
+
+      if (!token) {
+        throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
+      }
+
+      const ambilNamaWilayah = function(id) {
+        const select = document.getElementById(id);
+        return select && select.selectedIndex > 0
+          ? select.options[select.selectedIndex].textContent.trim()
+          : '';
+      };
+
+      const jenisWakif = document.getElementById('cepatJenisWakif').value;
+      const nik = document.getElementById('cepatNikWakif').value.trim();
+
+      if (jenisWakif === 'PERORANGAN' && !nik) {
+        throw new Error('NIK wajib diisi untuk Wakif perorangan.');
+      }
+
+      const dataWakif = {
+        namaWakif: document.getElementById('cepatNamaWakif').value.trim(),
+        jenisWakif: jenisWakif,
+        nik: nik,
+        kontak: document.getElementById('cepatKontakWakif').value.trim(),
+        alamat: document.getElementById('cepatAlamatWakif').value.trim(),
+        kabKota: ambilNamaWilayah('cepatKabKotaWakif'),
+        kecamatan: ambilNamaWilayah('cepatKecamatanWakif'),
+        desaKelurahan: ambilNamaWilayah('cepatDesaWakif'),
+        keterangan: document.getElementById('cepatKeteranganWakif').value.trim()
+      };
+
+      tombolSimpan.disabled = true;
+      tombolSimpan.textContent = 'Menyimpan...';
+      tampilkanPesan('Sedang menyimpan data Wakif...', true);
+
+      const response = await fetch(SIWAK_API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'simpanWakifAdmin',
+          token: token,
+          dataWakif: dataWakif
+        })
+      });
+
+      const hasil = await response.json();
+
+      if (!response.ok || !hasil.success) {
+        throw new Error(hasil.message || 'Data Wakif gagal disimpan.');
+      }
+
+      tampilkanPesan(
+        hasil.message || 'Data Wakif berhasil disimpan.',
+        true
+      );
+
+      // Muat ulang pilihan Wakif pada form utama jika fungsinya tersedia.
+      if (typeof muatDropdownWakif === 'function') {
+        await muatDropdownWakif();
+      }
+
+      // Pilih Wakif baru secara otomatis jika ID dikembalikan API.
+      if (hasil.data && hasil.data.idWakif) {
+        const pilihanWakif = document.getElementById('inputWakif');
+        if (pilihanWakif) {
+          pilihanWakif.value = hasil.data.idWakif;
+        }
+      }
+
+      // Popup tetap terbuka agar pesan berhasil bisa dibaca.
+      // Tutup secara manual setelah pesan terlihat.
+
+    } catch (error) {
+      console.error('GAGAL SIMPAN WAKIF:', error);
+      tampilkanPesan(error.message || 'Terjadi kesalahan saat menyimpan Wakif.', false);
+    } finally {
+      tombolSimpan.disabled = false;
+      tombolSimpan.textContent = 'Simpan Wakif';
+    }
+  });
+
   // Terapkan kondisi awal saat script dijalankan.
   tutupPopupWakif();
 })();
+
 
 </script>
 </body>
