@@ -960,14 +960,24 @@
 
       <h3>2. Wakif dan Nazhir</h3>
 
-      <div class="wakaf-form-grid">
-        <div class="wakaf-form-group">
-          <label for="inputWakif">Wakif *</label>
-          <select id="inputWakif" name="id_wakif" required>
-            <option value="">Pilih wakif</option>
-          </select>
-          <small>Daftar wakif akan dihubungkan ke API.</small>
-        </div>
+      
+<div class="wakaf-form-group">
+  <label for="inputWakif">Wakif *</label>
+
+  <select id="inputWakif" name="id_wakif" required>
+    <option value="">Pilih wakif</option>
+  </select>
+
+  <button
+    type="button"
+    id="tombolTambahWakifCepat"
+    class="btn-tambah-wakif-cepat">
+    + Tambah Wakif
+  </button>
+
+  <small>Jika Wakif belum tersedia, tambahkan melalui tombol di atas.</small>
+</div>
+
 
         <div class="wakaf-form-group">
           <label for="inputNazhir">Nazhir *</label>
