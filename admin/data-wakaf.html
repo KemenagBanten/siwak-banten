@@ -1340,6 +1340,13 @@
 <!-- POPUP TAMBAH NAZHIR CEPAT -->
 <div id="modalTambahNazhirCepat" style="display: none;">
   <div class="wakaf-modal-content">
+    <button
+  type="button"
+  id="tutupTambahNazhirCepat"
+  aria-label="Tutup popup"
+>
+  ×
+</button>
     <h3>Tambah Nazhir Cepat</h3>
 
     <form id="formTambahNazhirCepat">
@@ -3488,6 +3495,10 @@ loadDataWakaf();
     'batalTambahNazhirCepat'
   );
 
+  const tombolTutup = document.getElementById(
+  'tutupTambahNazhirCepat'
+);
+  
   const modalTambahWakaf = document.getElementById(
     'modalTambahWakaf'
   );
@@ -3496,7 +3507,8 @@ loadDataWakaf();
     !tombolBuka ||
     !modalNazhir ||
     !formNazhir ||
-    !tombolBatal
+    !tombolBatal ||
+  !tombolTutup
   ) {
     console.error(
       'Elemen popup Tambah Nazhir belum ditemukan.'
@@ -3539,6 +3551,11 @@ loadDataWakaf();
     'click',
     tutupPopupNazhir
   );
+
+  tombolTutup.addEventListener(
+  'click',
+  tutupPopupNazhir
+);
 
   modalNazhir.addEventListener(
     'click',
