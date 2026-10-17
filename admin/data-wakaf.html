@@ -2557,8 +2557,34 @@ elemen.body.addEventListener('click', function(event) {
   // 1. Tombol Edit
   const tombolEdit = event.target.closest('.wakaf-edit-button');
 
+  
   if (tombolEdit) {
     const idWakaf = tombolEdit.dataset.id;
+
+    if (!idWakaf || idWakaf === '-') {
+      alert('ID Wakaf tidak ditemukan.');
+      return;
+    }
+
+    // Cegah klik berulang selama proses memuat.
+    if (tombolEdit.disabled) return;
+
+    const teksAsli = tombolEdit.textContent;
+    tombolEdit.disabled = true;
+    tombolEdit.textContent = 'Memuat...';
+
+    bukaEditWakaf(idWakaf)
+      .catch(function (error) {
+        console.error('Gagal membuka Edit Wakaf:', error);
+      })
+      .finally(function () {
+        tombolEdit.textContent = teksAsli;
+        tombolEdit.disabled = false;
+      });
+
+    return;
+  }
+
 
     if (!idWakaf || idWakaf === '-') {
       alert('ID Wakaf tidak ditemukan.');
