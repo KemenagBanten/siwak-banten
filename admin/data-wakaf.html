@@ -2860,6 +2860,16 @@ async function muatDaftarDokumenWakaf(idWakaf) {
               Ganti PDF
             </button>
 
+<button
+  type="button"
+  class="btn-hapus-dokumen-wakaf"
+  data-id-dokumen="${idDokumen}"
+  data-id-wakaf="${idWakafAman}"
+  ${!idDokumen ? 'disabled' : ''}
+  onclick="hapusDokumenWakaf(this)">
+  Hapus
+</button>
+
             <input
               type="file"
               accept=".pdf,application/pdf"
@@ -2976,6 +2986,66 @@ async function prosesGantiPDFWakaf(input) {
 }
 
   
+async function hapusDokumenWakaf(tombol) {
+  const idDokumen = tombol.dataset.idDokumen;
+  const idWakaf = tombol.dataset.idWakaf;
+  const token = sessionStorage.getItem('siwakToken');
+
+  if (!idDokumen || !idWakaf || !token) {
+    alert('ID dokumen, ID Wakaf, atau sesi login tidak tersedia.');
+    return;
+  }
+
+  const konfirmasi = confirm(
+    'Apakah Anda yakin ingin menghapus dokumen ini dari daftar aktif SIWAK?\n\n' +
+    'Dokumen akan dinonaktifkan. File PDF lama tetap tersimpan di Google Drive.'
+  );
+
+  if (!konfirmasi) return;
+
+  const teksTombol = tombol.textContent;
+
+  try {
+    tombol.disabled = true;
+    tombol.textContent = 'Menghapus...';
+
+    const respons = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'hapusDokumenWakaf',
+        token: token,
+        idDokumen: idDokumen,
+        idWakaf: idWakaf
+      })
+    });
+
+    if (!respons.ok) {
+      throw new Error('Gagal menghubungi API penghapusan dokumen.');
+    }
+
+    const hasil = await respons.json();
+
+    if (!hasil.success) {
+      throw new Error(
+        hasil.message || 'Dokumen gagal dihapus.'
+      );
+    }
+
+    alert('Dokumen berhasil dihapus dari daftar aktif.');
+
+    await muatDaftarDokumenWakaf(idWakaf);
+
+  } catch (error) {
+    console.error('Gagal menghapus dokumen:', error);
+
+    alert(error.message || 'Terjadi kesalahan saat menghapus dokumen.');
+
+  } finally {
+    tombol.disabled = false;
+    tombol.textContent = teksTombol || 'Hapus';
+  }
+}
+
 async function hapusWakafAdmin(idWakaf) {
   try {
     
