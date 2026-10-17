@@ -3626,7 +3626,7 @@ const pesanSukses = sedangEdit
        
         // Upload dokumen jika pengguna memilih file PDF.
         // Upload hanya dilakukan saat menambah Wakaf baru.
-        if (!sedangEdit && fileDokumen) {
+       if (fileDokumen) {
           if (pesanTambahWakaf) {
             pesanTambahWakaf.textContent =
               'Data Wakaf tersimpan. Sedang mengunggah dokumen...';
@@ -3651,7 +3651,9 @@ const pesanSukses = sedangEdit
             body: JSON.stringify({
               action: 'uploadDokumen',
               token: token,
-              id_wakaf: hasil.data.idWakaf,
+              id_wakaf: sedangEdit
+  ? nilaiInput('editIdWakaf')
+  : hasil.data.idWakaf,
               jenis_dokumen: jenisDokumen,
               nama_file: fileDokumen.name,
               fileData: fileData
@@ -3685,21 +3687,24 @@ const pesanSukses = sedangEdit
           await loadDataWakaf();
         }
 
-                // Tampilkan pesan sukses setelah proses selesai.
+               
+        // Tampilkan pesan sukses setelah penyimpanan selesai.
         const pesanAkhir = sedangEdit
-          ? 'Data Wakaf berhasil diperbarui.'
-          : fileDokumen
-            ? 'Data Wakaf dan dokumen berhasil disimpan.'
-            : 'Data Wakaf berhasil ditambahkan.';
+          ? (fileDokumen
+              ? 'Data Wakaf berhasil diperbarui dan dokumen berhasil diunggah.'
+              : 'Data Wakaf berhasil diperbarui.')
+          : (fileDokumen
+              ? 'Data Wakaf dan dokumen berhasil disimpan.'
+              : 'Data Wakaf berhasil ditambahkan.');
 
-        if (pesanTambahWakaf) {
-          pesanTambahWakaf.textContent =
-            pesanAkhir + '\nKode Wakaf: ' + hasil.data.kodeWakaf;
-        }
+        const kodeWakafAkhir =
+          hasil.data.kodeWakaf ||
+          nilaiInput('editIdWakaf');
 
         alert(
-          pesanAkhir + '\nKode Wakaf: ' + hasil.data.kodeWakaf
+          pesanAkhir + '\nKode Wakaf: ' + kodeWakafAkhir
         );
+
 
       } catch (error) {
         console.error('Gagal menyimpan data wakaf:', error);
