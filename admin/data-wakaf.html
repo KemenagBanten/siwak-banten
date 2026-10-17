@@ -3496,9 +3496,12 @@ loadDataWakaf();
       tutupPopupWakif();
 
       // Kembali tampilkan form Tambah Data Wakaf.
-      if (modalTambahWakaf) {
-  modalTambahWakaf.style.display = 'flex';
+     
+if (modalTambahWakaf) {
+  modalTambahWakaf.style.display = '';
+  modalTambahWakaf.classList.add('show');
 }
+
 
 
     } catch (error) {
