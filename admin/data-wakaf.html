@@ -1554,13 +1554,14 @@ function perbaruiRingkasanWakaf() {
       .toUpperCase()
       .replace(/[\s-]+/g, '_')
   );
-
-  const statusSudah = [
-    'BERSERTIFIKAT',
-    'SUDAH_BERSERTIFIKAT',
-    'SUDAH_BERSERTIFIKASI',
-    'BERSERTIFIKASI'
-  ];
+  
+const statusSudah = [
+  'SUDAH_SERTIFIKAT',
+  'BERSERTIFIKAT',
+  'SUDAH_BERSERTIFIKAT',
+  'SUDAH_BERSERTIFIKASI',
+  'BERSERTIFIKASI'
+];
 
   const sudah = statusSertifikat.filter(status =>
     statusSudah.includes(status)
