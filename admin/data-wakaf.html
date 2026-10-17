@@ -2770,6 +2770,7 @@ async function bukaEditWakaf(idWakaf) {
 }
 
   
+
 async function muatDaftarDokumenWakaf(idWakaf) {
   const token = sessionStorage.getItem('siwakToken');
   const wadah = document.getElementById('daftarDokumenWakaf');
@@ -2778,6 +2779,15 @@ async function muatDaftarDokumenWakaf(idWakaf) {
 
   wadah.innerHTML =
     '<p class="dokumen-wakaf-kosong">Memuat daftar dokumen...</p>';
+
+  const escapeHTML = (nilai) =>
+    String(nilai ?? '').replace(/[&<>"']/g, karakter => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[karakter]);
 
   try {
     const respons = await fetch(SIWAK_API_URL, {
@@ -2796,7 +2806,9 @@ async function muatDaftarDokumenWakaf(idWakaf) {
     const hasil = await respons.json();
 
     if (!hasil.success) {
-      throw new Error(hasil.message || 'Daftar dokumen gagal dimuat.');
+      throw new Error(
+        hasil.message || 'Daftar dokumen gagal dimuat.'
+      );
     }
 
     const dokumen = Array.isArray(hasil.data) ? hasil.data : [];
@@ -2808,38 +2820,54 @@ async function muatDaftarDokumenWakaf(idWakaf) {
     }
 
     wadah.innerHTML = dokumen.map((d, i) => {
-      const jenis = String(d.jenisDokumen || 'Jenis dokumen tidak diketahui')
-  .replace(/[&<>"']/g, karakter => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[karakter]);
+      const jenis = escapeHTML(
+        d.jenisDokumen || 'Jenis dokumen tidak diketahui'
+      );
 
-const nama = String(d.namaFile || 'Nama file tidak tersedia')
-  .replace(/[&<>"']/g, karakter => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[karakter]);
+      const nama = escapeHTML(
+        d.namaFile || 'Nama file tidak tersedia'
+      );
 
+      const idDokumen = escapeHTML(d.idDokumen || '');
+      const idWakafAman = escapeHTML(idWakaf);
       const url = String(d.fileUrl || '');
 
       const tautanValid = /^https:\/\/\S+$/i.test(url);
+      const urlAman = escapeHTML(url);
 
       return `
         <div class="wakaf-dokumen-item">
           <strong>${i + 1}. ${jenis.replace(/_/g, ' ')}</strong>
-<div>${nama}</div>
+
+          <div>${nama}</div>
+
           ${tautanValid
-            ? `<div><a href="${url.replace(/"/g, '&quot;')}"
-                 target="_blank" rel="noopener noreferrer">
-                 Lihat / Unduh Dokumen
-               </a></div>`
+            ? `<div>
+                 <a href="${urlAman}"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                   Lihat / Unduh Dokumen
+                 </a>
+               </div>`
             : '<div>Tautan dokumen tidak tersedia.</div>'}
+
+          <div style="margin-top:10px;">
+            <button
+              type="button"
+              class="btn-ganti-pdf-wakaf"
+              ${!idDokumen ? 'disabled' : ''}
+              onclick="this.nextElementSibling.click()">
+              Ganti PDF
+            </button>
+
+            <input
+              type="file"
+              accept=".pdf,application/pdf"
+              hidden
+              data-id-dokumen="${idDokumen}"
+              data-id-wakaf="${idWakafAman}"
+              onchange="prosesGantiPDFWakaf(this)">
+          </div>
         </div>
       `;
     }).join('');
