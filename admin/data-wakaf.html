@@ -1339,20 +1339,34 @@
 
 <!-- POPUP TAMBAH NAZHIR CEPAT -->
 <div id="modalTambahNazhirCepat" style="display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; overflow-y: auto;">
-  <div class="wakaf-modal-content">
-    <button
-  type="button"
-  id="tutupTambahNazhirCepat"
-  aria-label="Tutup popup"
->
-  ×
-</button>
-    <h3>Tambah Nazhir Cepat</h3>
+  
+<div class="wakaf-modal-content">
 
-    <form id="formTambahNazhirCepat">
+  <div class="wakaf-modal-header">
+    <h2>Tambah Nazhir Cepat</h2>
+
+    <button
+      type="button"
+      id="tutupTambahNazhirCepat"
+      class="wakaf-close"
+      aria-label="Tutup popup"
+    >
+      ×
+    </button>
+  </div>
+
+
+    
+<form id="formTambahNazhirCepat">
+
+  <div class="wakaf-form-grid">
+
+    <div class="wakaf-form-group">
       <label for="cepatNamaNazhir">Nama Nazhir *</label>
       <input type="text" id="cepatNamaNazhir" required>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatJenisNazhir">Jenis Nazhir *</label>
       <select id="cepatJenisNazhir" required>
         <option value="">Pilih jenis Nazhir</option>
@@ -1363,53 +1377,77 @@
         <option value="PEMERINTAH">Pemerintah</option>
         <option value="LAINNYA">Lainnya</option>
       </select>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatNomorRegistrasiNazhir">Nomor Registrasi</label>
       <input type="text" id="cepatNomorRegistrasiNazhir">
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatStatusNazhir">Status Nazhir</label>
       <select id="cepatStatusNazhir">
         <option value="DALAM_PROSES">Dalam Proses</option>
         <option value="AKTIF">Aktif</option>
       </select>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatKontakNazhir">Kontak</label>
       <input type="text" id="cepatKontakNazhir">
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatEmailNazhir">Email</label>
       <input type="email" id="cepatEmailNazhir">
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatAlamatNazhir">Alamat</label>
       <textarea id="cepatAlamatNazhir"></textarea>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatKabKotaNazhir">Kabupaten/Kota *</label>
       <select id="cepatKabKotaNazhir" required>
         <option value="">Pilih Kabupaten/Kota</option>
       </select>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatKecamatanNazhir">Kecamatan *</label>
       <select id="cepatKecamatanNazhir" required>
         <option value="">Pilih Kecamatan</option>
       </select>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatDesaNazhir">Desa/Kelurahan *</label>
       <select id="cepatDesaNazhir" required>
         <option value="">Pilih Desa/Kelurahan</option>
       </select>
+    </div>
 
+    <div class="wakaf-form-group">
       <label for="cepatKeteranganNazhir">Keterangan</label>
       <textarea id="cepatKeteranganNazhir"></textarea>
+    </div>
 
-      <div id="pesanTambahNazhirCepat"></div>
+  </div>
 
-      <button type="submit" id="simpanTambahNazhirCepat">
-        Simpan Nazhir
-      </button>
+  <div id="pesanTambahNazhirCepat"></div>
 
-      <button type="button" id="batalTambahNazhirCepat">
-        Batal
-      </button>
-    </form>
+  <div class="wakaf-form-actions">
+    <button type="button" id="batalTambahNazhirCepat" class="btn-secondary">
+      Batal
+    </button>
+    <button type="submit" id="simpanTambahNazhirCepat" class="btn-primary">
+      Simpan Nazhir
+    </button>
+  </div>
+
+</form>
+
   </div>
 </div>
 <!-- AKHIR POPUP TAMBAH NAZHIR CEPAT -->
