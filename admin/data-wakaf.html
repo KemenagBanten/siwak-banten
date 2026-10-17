@@ -2335,9 +2335,12 @@ function siapkanDropdownWilayahNazhir() {
       modalNazhir.hidden = true;
       formNazhir.reset();
 
-      if (modalTambahWakaf) {
-        modalTambahWakaf.style.display = 'block';
-      }
+     
+if (modalTambahWakaf) {
+  modalTambahWakaf.style.display = '';
+  modalTambahWakaf.classList.add('show');
+}
+
 
     } catch (error) {
       console.error('GAGAL SIMPAN NAZHIR:', error);
