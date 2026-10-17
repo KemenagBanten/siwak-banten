@@ -3444,7 +3444,32 @@ document.addEventListener('DOMContentLoaded', function () {
         popupWakif.hidden = true;
       }
 
+     
+      // Bersihkan formulir saat membuka mode Tambah.
+      const formTambah = document.getElementById('formTambahWakaf');
+      const idEdit = document.getElementById('editIdWakaf');
+      const daftarDokumen = document.getElementById('daftarDokumenWakaf');
+      const judulModal = modalTambah.querySelector('.wakaf-modal-header h2');
+      const tombolSimpan = document.getElementById('simpanTambahWakaf');
+      const pesanTambah = document.getElementById('pesanTambahWakaf');
+
+      if (formTambah) formTambah.reset();
+      if (idEdit) idEdit.value = '';
+
+      if (daftarDokumen) {
+        daftarDokumen.innerHTML =
+          '<p class="dokumen-wakaf-kosong">Dokumen yang sudah diunggah akan ditampilkan di sini.</p>';
+      }
+
+      if (judulModal) judulModal.textContent = 'Tambah Data Wakaf';
+      if (tombolSimpan) {
+        tombolSimpan.textContent = 'Simpan Data';
+        tombolSimpan.disabled = false;
+      }
+      if (pesanTambah) pesanTambah.textContent = '';
+
       modalTambah.style.display = 'flex';
+
     }
   });
 
@@ -3467,6 +3492,15 @@ document.addEventListener('DOMContentLoaded', function () {
     if (form) {
       form.reset();
     }
+    
+    // Kosongkan daftar dokumen saat modal ditutup.
+    const daftarDokumen = document.getElementById('daftarDokumenWakaf');
+
+    if (daftarDokumen) {
+      daftarDokumen.innerHTML =
+        '<p class="dokumen-wakaf-kosong">Dokumen yang sudah diunggah akan ditampilkan di sini.</p>';
+    }
+
 
     if (idEdit) {
       idEdit.value = '';
