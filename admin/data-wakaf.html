@@ -3531,8 +3531,11 @@ loadDataWakaf();
   }
 
   function bukaPopupNazhir(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  event.preventDefault();
+  event.stopPropagation();
+
+  console.log('TOMBOL TAMBAH NAZHIR DIKLIK');
+  console.log('Popup Nazhir ditemukan:', !!modalNazhir);
 
     if (modalTambahWakaf) {
       modalTambahWakaf.style.display = 'none';
