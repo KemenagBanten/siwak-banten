@@ -2112,11 +2112,205 @@ function siapkanDropdownWilayahWakif() {
   isiKabupatenKota();
 }
 
+  
+/* ===== DROPDOWN WILAYAH POPUP TAMBAH NAZHIR ===== */
+function siapkanDropdownWilayahNazhir() {
+  const kabKota = document.getElementById('cepatKabKotaNazhir');
+  const kecamatan = document.getElementById('cepatKecamatanNazhir');
+  const desa = document.getElementById('cepatDesaNazhir');
+
+  if (!kabKota || !kecamatan || !desa) return;
+
+  function isiDropdown(select, daftar, labelAwal) {
+    select.replaceChildren();
+
+    const opsiAwal = document.createElement('option');
+    opsiAwal.value = '';
+    opsiAwal.textContent = labelAwal;
+    select.appendChild(opsiAwal);
+
+    daftar.forEach(function(wilayah) {
+      const opsi = document.createElement('option');
+      opsi.value = wilayah.kodeWilayah;
+      opsi.textContent = wilayah.namaWilayah;
+      select.appendChild(opsi);
+    });
+  }
+
+  function resetKecamatan() {
+    isiDropdown(kecamatan, [], 'Pilih Kecamatan');
+    isiDropdown(desa, [], 'Pilih Desa/Kelurahan');
+  }
+
+  function resetDesa() {
+    isiDropdown(desa, [], 'Pilih Desa/Kelurahan');
+  }
+
+  function isiKabupatenKota() {
+    if (
+      !Array.isArray(semuaWilayahFormWakaf) ||
+      semuaWilayahFormWakaf.length === 0
+    ) {
+      isiDropdown(kabKota, [], 'Data wilayah belum tersedia');
+      return;
+    }
+
+    const daftarKabKota = semuaWilayahFormWakaf
+      .filter(w => w.jenisWilayah === 'KAB_KOTA')
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(kabKota, daftarKabKota, 'Pilih Kabupaten/Kota');
+  }
+
+  kabKota.addEventListener('change', function() {
+    resetKecamatan();
+
+    if (!kabKota.value) return;
+
+    const daftarKecamatan = semuaWilayahFormWakaf
+      .filter(w =>
+        w.jenisWilayah === 'KECAMATAN' &&
+        String(w.parentId) === String(kabKota.value)
+      )
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(kecamatan, daftarKecamatan, 'Pilih Kecamatan');
+  });
+
+  kecamatan.addEventListener('change', function() {
+    resetDesa();
+
+    if (!kecamatan.value) return;
+
+    const jenisDesa = [
+      'DESA',
+      'KELURAHAN',
+      'DESA_KELURAHAN'
+    ];
+
+    const daftarDesa = semuaWilayahFormWakaf
+      .filter(w =>
+        jenisDesa.includes(w.jenisWilayah) &&
+        String(w.parentId) === String(kecamatan.value)
+      )
+      .sort((a, b) => a.namaWilayah.localeCompare(b.namaWilayah));
+
+    isiDropdown(desa, daftarDesa, 'Pilih Desa/Kelurahan');
+  });
+
+  isiKabupatenKota();
+}
+
+  
+/* ===== SIMPAN NAZHIR CEPAT MELALUI API ===== */
+(function () {
+  const formNazhir = document.getElementById('formTambahNazhirCepat');
+  const tombolSimpan = document.getElementById('simpanTambahNazhirCepat');
+  const modalNazhir = document.getElementById('modalTambahNazhirCepat');
+  const modalTambahWakaf = document.getElementById('modalTambahWakaf');
+
+  if (!formNazhir || !tombolSimpan || !modalNazhir) {
+    console.error('Elemen form Tambah Nazhir belum ditemukan.');
+    return;
+  }
+
+  formNazhir.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const pesan = document.getElementById('pesanTambahNazhirCepat');
+
+    function tampilkanPesan(teks, berhasil) {
+      if (!pesan) return;
+      pesan.textContent = teks;
+      pesan.style.color = berhasil ? 'green' : 'red';
+    }
+
+    try {
+      const token = sessionStorage.getItem('siwakToken');
+
+      if (!token) {
+        throw new Error('Sesi admin tidak ditemukan. Silakan login kembali.');
+      }
+
+      function ambilNamaWilayah(id) {
+        const select = document.getElementById(id);
+        return select && select.selectedIndex > 0
+          ? select.options[select.selectedIndex].textContent.trim()
+          : '';
+      }
+
+      const dataNazhir = {
+        namaNazhir: document.getElementById('cepatNamaNazhir').value.trim(),
+        jenisNazhir: document.getElementById('cepatJenisNazhir').value,
+        nomorRegistrasi: document.getElementById('cepatNomorRegistrasiNazhir').value.trim(),
+        statusNazhir: document.getElementById('cepatStatusNazhir').value,
+        kontak: document.getElementById('cepatKontakNazhir').value.trim(),
+        email: document.getElementById('cepatEmailNazhir').value.trim(),
+        alamat: document.getElementById('cepatAlamatNazhir').value.trim(),
+        kabKota: ambilNamaWilayah('cepatKabKotaNazhir'),
+        kecamatan: ambilNamaWilayah('cepatKecamatanNazhir'),
+        desaKelurahan: ambilNamaWilayah('cepatDesaNazhir'),
+        keterangan: document.getElementById('cepatKeteranganNazhir').value.trim()
+      };
+
+      tombolSimpan.disabled = true;
+      tombolSimpan.textContent = 'Menyimpan...';
+      tampilkanPesan('Sedang menyimpan data Nazhir...', true);
+
+      const response = await fetch(SIWAK_API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'simpanNazhirAdmin',
+          token: token,
+          dataNazhir: dataNazhir
+        })
+      });
+
+      const hasil = await response.json();
+
+      if (!response.ok || !hasil.success) {
+        throw new Error(hasil.message || 'Data Nazhir gagal disimpan.');
+      }
+
+      if (typeof muatDropdownNazhir === 'function') {
+        await muatDropdownNazhir();
+      }
+
+      if (hasil.data && hasil.data.idNazhir) {
+        const dropdown = document.getElementById('inputNazhir');
+        if (dropdown) {
+          dropdown.value = hasil.data.idNazhir;
+        }
+      }
+
+      tampilkanPesan(hasil.message || 'Data Nazhir berhasil disimpan.', true);
+
+      // Tutup popup dan kembali ke form Wakaf setelah berhasil.
+      modalNazhir.style.display = 'none';
+      modalNazhir.hidden = true;
+      formNazhir.reset();
+
+      if (modalTambahWakaf) {
+        modalTambahWakaf.style.display = 'block';
+      }
+
+    } catch (error) {
+      console.error('GAGAL SIMPAN NAZHIR:', error);
+      tampilkanPesan(error.message || 'Terjadi kesalahan saat menyimpan Nazhir.', false);
+    } finally {
+      tombolSimpan.disabled = false;
+      tombolSimpan.textContent = 'Simpan Nazhir';
+    }
+  });
+})();
+
+  
   muatDropdownWakif();
 muatDropdownNazhir();
 muatDropdownPeruntukan();
   muatDropdownWilayah().then(function() {
   siapkanDropdownWilayahWakif();
+  siapkanDropdownWilayahNazhir();
 });
 
 function terapkanFilterWakaf() {
