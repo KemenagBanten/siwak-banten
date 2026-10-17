@@ -1133,9 +1133,15 @@
   <div class="wakaf-form-group">
     <label for="inputNazhir">Nazhir *</label>
 
-    <select id="inputNazhir" name="id_nazhir" required>
-      <option value="">Pilih nazhir</option>
-    </select>
+    
+<select id="inputNazhir" name="id_nazhir" required>
+  <option value="">Pilih nazhir</option>
+</select>
+
+<button type="button" id="tombolTambahNazhirCepat" class="btn-secondary" style="margin-top: 8px;">
+  + Tambah Nazhir
+</button>
+
 
     <small>Daftar nazhir akan dihubungkan ke API.</small>
   </div>
@@ -1330,6 +1336,76 @@
 
   </div>
 </div>
+
+<!-- POPUP TAMBAH NAZHIR CEPAT -->
+<div id="modalTambahNazhirCepat" style="display: none;">
+  <div class="wakaf-modal-content">
+    <h3>Tambah Nazhir Cepat</h3>
+
+    <form id="formTambahNazhirCepat">
+      <label for="cepatNamaNazhir">Nama Nazhir *</label>
+      <input type="text" id="cepatNamaNazhir" required>
+
+      <label for="cepatJenisNazhir">Jenis Nazhir *</label>
+      <select id="cepatJenisNazhir" required>
+        <option value="">Pilih jenis Nazhir</option>
+        <option value="PERORANGAN">Perorangan</option>
+        <option value="BADAN_HUKUM">Badan Hukum</option>
+        <option value="ORGANISASI">Organisasi</option>
+        <option value="LEMBAGA">Lembaga</option>
+        <option value="PEMERINTAH">Pemerintah</option>
+        <option value="LAINNYA">Lainnya</option>
+      </select>
+
+      <label for="cepatNomorRegistrasiNazhir">Nomor Registrasi</label>
+      <input type="text" id="cepatNomorRegistrasiNazhir">
+
+      <label for="cepatStatusNazhir">Status Nazhir</label>
+      <select id="cepatStatusNazhir">
+        <option value="DALAM_PROSES">Dalam Proses</option>
+        <option value="AKTIF">Aktif</option>
+      </select>
+
+      <label for="cepatKontakNazhir">Kontak</label>
+      <input type="text" id="cepatKontakNazhir">
+
+      <label for="cepatEmailNazhir">Email</label>
+      <input type="email" id="cepatEmailNazhir">
+
+      <label for="cepatAlamatNazhir">Alamat</label>
+      <textarea id="cepatAlamatNazhir"></textarea>
+
+      <label for="cepatKabKotaNazhir">Kabupaten/Kota *</label>
+      <select id="cepatKabKotaNazhir" required>
+        <option value="">Pilih Kabupaten/Kota</option>
+      </select>
+
+      <label for="cepatKecamatanNazhir">Kecamatan *</label>
+      <select id="cepatKecamatanNazhir" required>
+        <option value="">Pilih Kecamatan</option>
+      </select>
+
+      <label for="cepatDesaNazhir">Desa/Kelurahan *</label>
+      <select id="cepatDesaNazhir" required>
+        <option value="">Pilih Desa/Kelurahan</option>
+      </select>
+
+      <label for="cepatKeteranganNazhir">Keterangan</label>
+      <textarea id="cepatKeteranganNazhir"></textarea>
+
+      <div id="pesanTambahNazhirCepat"></div>
+
+      <button type="submit" id="simpanTambahNazhirCepat">
+        Simpan Nazhir
+      </button>
+
+      <button type="button" id="batalTambahNazhirCepat">
+        Batal
+      </button>
+    </form>
+  </div>
+</div>
+<!-- AKHIR POPUP TAMBAH NAZHIR CEPAT -->
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -3197,6 +3273,102 @@ loadDataWakaf();
 
   // Terapkan kondisi awal saat script dijalankan.
   tutupPopupWakif();
+})();
+
+  
+/* ===== BUKA DAN TUTUP POPUP TAMBAH NAZHIR ===== */
+(function () {
+  const tombolBuka = document.getElementById(
+    'tombolTambahNazhirCepat'
+  );
+
+  const modalNazhir = document.getElementById(
+    'modalTambahNazhirCepat'
+  );
+
+  const formNazhir = document.getElementById(
+    'formTambahNazhirCepat'
+  );
+
+  const tombolBatal = document.getElementById(
+    'batalTambahNazhirCepat'
+  );
+
+  const modalTambahWakaf = document.getElementById(
+    'modalTambahWakaf'
+  );
+
+  if (
+    !tombolBuka ||
+    !modalNazhir ||
+    !formNazhir ||
+    !tombolBatal
+  ) {
+    console.error(
+      'Elemen popup Tambah Nazhir belum ditemukan.'
+    );
+    return;
+  }
+
+  function tutupPopupNazhir() {
+    modalNazhir.style.display = 'none';
+    modalNazhir.hidden = true;
+    formNazhir.reset();
+
+    const pesan = document.getElementById(
+      'pesanTambahNazhirCepat'
+    );
+
+    if (pesan) {
+      pesan.textContent = '';
+    }
+  }
+
+  function bukaPopupNazhir(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (modalTambahWakaf) {
+      modalTambahWakaf.style.display = 'none';
+    }
+
+    modalNazhir.hidden = false;
+    modalNazhir.style.display = 'flex';
+  }
+
+  tombolBuka.addEventListener(
+    'click',
+    bukaPopupNazhir
+  );
+
+  tombolBatal.addEventListener(
+    'click',
+    tutupPopupNazhir
+  );
+
+  modalNazhir.addEventListener(
+    'click',
+    function (event) {
+      if (event.target === modalNazhir) {
+        tutupPopupNazhir();
+      }
+    }
+  );
+
+  document.addEventListener(
+    'keydown',
+    function (event) {
+      if (
+        event.key === 'Escape' &&
+        !modalNazhir.hidden
+      ) {
+        tutupPopupNazhir();
+      }
+    }
+  );
+
+  // Kondisi awal: popup Nazhir tertutup.
+  tutupPopupNazhir();
 })();
 
 
