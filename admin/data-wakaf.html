@@ -1220,6 +1220,38 @@
         </div>
       </div>
 
+      
+      <h3>5. Dokumen Wakaf</h3>
+
+      <div class="wakaf-form-grid">
+
+        <div class="wakaf-form-group">
+          <label for="inputJenisDokumen">Jenis Dokumen</label>
+          <select id="inputJenisDokumen" name="jenis_dokumen">
+            <option value="">Pilih jenis dokumen</option>
+            <option value="AIW">AIW</option>
+            <option value="APAIW">APAIW</option>
+            <option value="SERTIFIKAT_TANAH">Sertifikat Tanah</option>
+            <option value="AKTA_NOTARIS">Akta Notaris</option>
+            <option value="SURAT_UKUR">Surat Ukur</option>
+            <option value="LAINNYA">Dokumen Lainnya</option>
+          </select>
+        </div>
+
+        <div class="wakaf-form-group">
+          <label for="inputFileDokumen">Pilih Dokumen (PDF, maksimal 10 MB)</label>
+          <input
+            id="inputFileDokumen"
+            name="file_dokumen"
+            type="file"
+            accept="application/pdf,.pdf">
+          <small>Dokumen bersifat opsional. Anda dapat menyimpan data Wakaf tanpa mengunggah dokumen.</small>
+        </div>
+
+      </div>
+
+      <p id="pesanUploadDokumen" role="status" aria-live="polite"></p>
+
       <div class="wakaf-form-actions">
         <button type="button" class="wakaf-button"
                 id="batalTambahWakaf">Batal</button>
@@ -3189,6 +3221,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const token = sessionStorage.getItem('siwakToken');
 
+      // Validasi dokumen sebelum data Wakaf disimpan.
+      const inputFileDokumen =
+        document.getElementById('inputFileDokumen');
+
+      const fileDokumen =
+        inputFileDokumen && inputFileDokumen.files
+          ? inputFileDokumen.files[0]
+          : null;
+
+      const jenisDokumen =
+        nilaiInput('inputJenisDokumen');
+
+      if (fileDokumen) {
+        const batasUkuranPDF = 10 * 1024 * 1024;
+
+        if (
+          fileDokumen.type !== 'application/pdf' &&
+          !fileDokumen.name.toLowerCase().endsWith('.pdf')
+        ) {
+          alert('Dokumen harus berformat PDF.');
+          inputFileDokumen.focus();
+          return;
+        }
+
+        if (fileDokumen.size > batasUkuranPDF) {
+          alert('Ukuran file PDF maksimal 10 MB.');
+          inputFileDokumen.focus();
+          return;
+        }
+
+        if (!jenisDokumen) {
+          alert('Pilih jenis dokumen terlebih dahulu.');
+          document.getElementById('inputJenisDokumen').focus();
+          return;
+        }
+      }
+
       if (!token) {
         alert('Sesi login tidak ditemukan. Silakan login kembali.');
         return;
@@ -3261,14 +3330,58 @@ const pesanSukses = sedangEdit
   ? 'Data wakaf berhasil diperbarui.'
   : 'Data wakaf berhasil ditambahkan.';
 
-if (pesanTambahWakaf) {
-  pesanTambahWakaf.textContent =
-    pesanSukses + '\nKode Wakaf: ' + hasil.data.kodeWakaf;
-}
+       
+        // Upload dokumen jika pengguna memilih file PDF.
+        // Upload hanya dilakukan saat menambah Wakaf baru.
+        if (!sedangEdit && fileDokumen) {
+          if (pesanTambahWakaf) {
+            pesanTambahWakaf.textContent =
+              'Data Wakaf tersimpan. Sedang mengunggah dokumen...';
+          }
 
-alert(
-  pesanSukses + '\nKode Wakaf: ' + hasil.data.kodeWakaf
-);
+          const fileData = await new Promise(function(resolve, reject) {
+            const reader = new FileReader();
+
+            reader.onload = function() {
+              resolve(reader.result);
+            };
+
+            reader.onerror = function() {
+              reject(new Error('File PDF gagal dibaca.'));
+            };
+
+            reader.readAsDataURL(fileDokumen);
+          });
+
+          const responseUpload = await fetch(SIWAK_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'uploadDokumen',
+              token: token,
+              id_wakaf: hasil.data.idWakaf,
+              jenis_dokumen: jenisDokumen,
+              nama_file: fileDokumen.name,
+              fileData: fileData
+            })
+          });
+
+          if (!responseUpload.ok) {
+            throw new Error('Gagal menghubungi API untuk upload dokumen.');
+          }
+
+          const hasilUpload = await responseUpload.json();
+
+          if (!hasilUpload.success) {
+            throw new Error(
+              hasilUpload.message || 'Dokumen gagal diunggah.'
+            );
+          }
+
+          if (pesanTambahWakaf) {
+            pesanTambahWakaf.textContent =
+              'Data Wakaf dan dokumen berhasil disimpan.';
+          }
+        }
 
 
         formTambahWakaf.reset();
@@ -3278,6 +3391,22 @@ alert(
         if (typeof loadDataWakaf === 'function') {
           await loadDataWakaf();
         }
+
+                // Tampilkan pesan sukses setelah proses selesai.
+        const pesanAkhir = sedangEdit
+          ? 'Data Wakaf berhasil diperbarui.'
+          : fileDokumen
+            ? 'Data Wakaf dan dokumen berhasil disimpan.'
+            : 'Data Wakaf berhasil ditambahkan.';
+
+        if (pesanTambahWakaf) {
+          pesanTambahWakaf.textContent =
+            pesanAkhir + '\nKode Wakaf: ' + hasil.data.kodeWakaf;
+        }
+
+        alert(
+          pesanAkhir + '\nKode Wakaf: ' + hasil.data.kodeWakaf
+        );
 
       } catch (error) {
         console.error('Gagal menyimpan data wakaf:', error);
