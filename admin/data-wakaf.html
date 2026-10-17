@@ -2851,33 +2851,35 @@ async function muatDaftarDokumenWakaf(idWakaf) {
                </div>`
             : '<div>Tautan dokumen tidak tersedia.</div>'}
 
-          <div style="margin-top:10px;">
-            <button
-              type="button"
-              class="btn-ganti-pdf-wakaf"
-              ${!idDokumen ? 'disabled' : ''}
-              onclick="this.nextElementSibling.click()">
-              Ganti PDF
-            </button>
+         
+<div style="margin-top:10px;">
+  <button
+    type="button"
+    class="btn-ganti-pdf-wakaf"
+    ${!idDokumen ? 'disabled' : ''}
+    onclick="this.nextElementSibling.click()">
+    Ganti PDF
+  </button>
 
-<button
-  type="button"
-  class="btn-hapus-dokumen-wakaf"
-  data-id-dokumen="${idDokumen}"
-  data-id-wakaf="${idWakafAman}"
-  ${!idDokumen ? 'disabled' : ''}
-  onclick="hapusDokumenWakaf(this)">
-  Hapus
-</button>
+  <input
+    type="file"
+    accept=".pdf,application/pdf"
+    hidden
+    data-id-dokumen="${idDokumen}"
+    data-id-wakaf="${idWakafAman}"
+    onchange="prosesGantiPDFWakaf(this)">
 
-            <input
-              type="file"
-              accept=".pdf,application/pdf"
-              hidden
-              data-id-dokumen="${idDokumen}"
-              data-id-wakaf="${idWakafAman}"
-              onchange="prosesGantiPDFWakaf(this)">
-          </div>
+  <button
+    type="button"
+    class="btn-hapus-dokumen-wakaf"
+    data-id-dokumen="${idDokumen}"
+    data-id-wakaf="${idWakafAman}"
+    ${!idDokumen ? 'disabled' : ''}
+    onclick="hapusDokumenWakaf(this)">
+    Hapus
+  </button>
+</div>
+
         </div>
       `;
     }).join('');
