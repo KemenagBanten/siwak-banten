@@ -2760,10 +2760,85 @@ async function bukaEditWakaf(idWakaf) {
     if (modal) {
       modal.style.display = 'flex';
     }
+    
+    await muatDaftarDokumenWakaf(identitas.idWakaf || idWakaf);
 
   } catch (error) {
     console.error('Gagal memuat data untuk edit:', error);
     alert(error.message || 'Gagal memuat data wakaf.');
+  }
+}
+
+  
+async function muatDaftarDokumenWakaf(idWakaf) {
+  const token = sessionStorage.getItem('siwakToken');
+  const wadah = document.getElementById('daftarDokumenWakaf');
+
+  if (!wadah) return;
+
+  wadah.innerHTML =
+    '<p class="dokumen-wakaf-kosong">Memuat daftar dokumen...</p>';
+
+  try {
+    const respons = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'daftarDokumenWakaf',
+        token: token,
+        idWakaf: idWakaf
+      })
+    });
+
+    if (!respons.ok) {
+      throw new Error('Gagal menghubungi API dokumen.');
+    }
+
+    const hasil = await respons.json();
+
+    if (!hasil.success) {
+      throw new Error(hasil.message || 'Daftar dokumen gagal dimuat.');
+    }
+
+    const dokumen = Array.isArray(hasil.data) ? hasil.data : [];
+
+    if (dokumen.length === 0) {
+      wadah.innerHTML =
+        '<p class="dokumen-wakaf-kosong">Belum ada dokumen yang diunggah.</p>';
+      return;
+    }
+
+    wadah.innerHTML = dokumen.map((d, i) => {
+      const nama = String(d.namaFile || d.jenisDokumen || 'Dokumen')
+        .replace(/[&<>"']/g, karakter => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[karakter]);
+
+      const url = String(d.fileUrl || '');
+
+      const tautanValid = /^https:\/\/\S+$/i.test(url);
+
+      return `
+        <div class="wakaf-dokumen-item">
+          <strong>${i + 1}. ${nama}</strong>
+          ${tautanValid
+            ? `<div><a href="${url.replace(/"/g, '&quot;')}"
+                 target="_blank" rel="noopener noreferrer">
+                 Lihat / Unduh Dokumen
+               </a></div>`
+            : '<div>Tautan dokumen tidak tersedia.</div>'}
+        </div>
+      `;
+    }).join('');
+
+  } catch (error) {
+    console.error('Gagal memuat daftar dokumen:', error);
+
+    wadah.innerHTML =
+      '<p class="dokumen-wakaf-kosong">Daftar dokumen gagal dimuat.</p>';
   }
 }
 
