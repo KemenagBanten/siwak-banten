@@ -2880,6 +2880,101 @@ async function muatDaftarDokumenWakaf(idWakaf) {
   }
 }
 
+
+async function prosesGantiPDFWakaf(input) {
+  const file = input.files && input.files[0];
+
+  if (!file) return;
+
+  const idDokumen = input.dataset.idDokumen;
+  const idWakaf = input.dataset.idWakaf;
+  const token = sessionStorage.getItem('siwakToken');
+
+  // Validasi jenis file
+  if (
+    file.type !== 'application/pdf' &&
+    !file.name.toLowerCase().endsWith('.pdf')
+  ) {
+    alert('File harus berformat PDF.');
+    input.value = '';
+    return;
+  }
+
+  // Validasi ukuran maksimal 10 MB
+  if (file.size > 10 * 1024 * 1024) {
+    alert('Ukuran PDF maksimal 10 MB.');
+    input.value = '';
+    return;
+  }
+
+  if (!idDokumen || !idWakaf || !token) {
+    alert('ID dokumen, ID wakaf, atau sesi login tidak tersedia.');
+    input.value = '';
+    return;
+  }
+
+  const tombol = input.previousElementSibling;
+  const teksTombol = tombol ? tombol.textContent : '';
+
+  try {
+    if (tombol) {
+      tombol.disabled = true;
+      tombol.textContent = 'Mengunggah...';
+    }
+
+    const fileData = await new Promise((resolve, reject) => {
+      const pembaca = new FileReader();
+
+      pembaca.onload = () => resolve(pembaca.result);
+      pembaca.onerror = () =>
+        reject(new Error('File PDF gagal dibaca.'));
+
+      pembaca.readAsDataURL(file);
+    });
+
+    const respons = await fetch(SIWAK_API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'gantiFileDokumenWakaf',
+        token: token,
+        idDokumen: idDokumen,
+        idWakaf: idWakaf,
+        nama_file: file.name,
+        fileData: fileData
+      })
+    });
+
+    if (!respons.ok) {
+      throw new Error('Gagal menghubungi API penggantian dokumen.');
+    }
+
+    const hasil = await respons.json();
+
+    if (!hasil.success) {
+      throw new Error(
+        hasil.message || 'PDF gagal diganti.'
+      );
+    }
+
+    alert('PDF berhasil diganti.');
+
+    await muatDaftarDokumenWakaf(idWakaf);
+
+  } catch (error) {
+    console.error('Gagal mengganti PDF:', error);
+
+    alert(error.message || 'Terjadi kesalahan saat mengganti PDF.');
+
+  } finally {
+    input.value = '';
+
+    if (tombol) {
+      tombol.disabled = false;
+      tombol.textContent = teksTombol || 'Ganti PDF';
+    }
+  }
+}
+
   
 async function hapusWakafAdmin(idWakaf) {
   try {
