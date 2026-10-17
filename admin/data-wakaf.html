@@ -2808,14 +2808,23 @@ async function muatDaftarDokumenWakaf(idWakaf) {
     }
 
     wadah.innerHTML = dokumen.map((d, i) => {
-      const nama = String(d.namaFile || d.jenisDokumen || 'Dokumen')
-        .replace(/[&<>"']/g, karakter => ({
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#39;'
-        })[karakter]);
+      const jenis = String(d.jenisDokumen || 'Jenis dokumen tidak diketahui')
+  .replace(/[&<>"']/g, karakter => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[karakter]);
+
+const nama = String(d.namaFile || 'Nama file tidak tersedia')
+  .replace(/[&<>"']/g, karakter => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[karakter]);
 
       const url = String(d.fileUrl || '');
 
@@ -2823,7 +2832,8 @@ async function muatDaftarDokumenWakaf(idWakaf) {
 
       return `
         <div class="wakaf-dokumen-item">
-          <strong>${i + 1}. ${nama}</strong>
+          <strong>${i + 1}. ${jenis.replace(/_/g, ' ')}</strong>
+<div>${nama}</div>
           ${tautanValid
             ? `<div><a href="${url.replace(/"/g, '&quot;')}"
                  target="_blank" rel="noopener noreferrer">
