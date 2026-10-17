@@ -3536,7 +3536,13 @@ loadDataWakaf();
 
   console.log('TOMBOL TAMBAH NAZHIR DIKLIK');
   console.log('Popup Nazhir ditemukan:', !!modalNazhir);
+console.log('Sebelum dibuka:', modalNazhir.style.display);
 
+modalNazhir.hidden = false;
+modalNazhir.style.display = 'flex';
+
+console.log('Sesudah dibuka:', modalNazhir.style.display);
+    
     if (modalTambahWakaf) {
       modalTambahWakaf.style.display = 'none';
     }
