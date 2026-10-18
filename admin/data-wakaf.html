@@ -1207,6 +1207,17 @@
                     name="alamat_lengkap" rows="3" required></textarea>
         </div>
 
+                <div class="wakaf-form-group">
+          <label for="inputSumberKoordinat">Sumber Koordinat</label>
+          <select id="inputSumberKoordinat" name="sumber_koordinat">
+            <option value="">Pilih sumber koordinat</option>
+            <option value="GPS">GPS</option>
+            <option value="Google Maps">Google Maps</option>
+            <option value="Manual">Manual</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        
         <div class="wakaf-form-group">
           <label for="inputLatitude">Latitude</label>
           <small>Masukkan angka antara -5 sampai -7. Gunakan titik (.) sebagai pemisah desimal.</small>
@@ -3635,9 +3646,10 @@ document.addEventListener('DOMContentLoaded', function () {
         kabKota: nilaiInput('inputKabKota'),
         kecamatan: nilaiInput('inputKecamatan'),
         desaKelurahan: nilaiInput('inputDesa'),
-        alamatLengkap: nilaiInput('inputAlamatLokasi'),
-        latitude: nilaiInput('inputLatitude'),
-        longitude: nilaiInput('inputLongitude')
+       alamatLengkap: nilaiInput('inputAlamatLokasi'),
+latitude: nilaiInput('inputLatitude'),
+longitude: nilaiInput('inputLongitude'),
+sumberKoordinat: nilaiInput('inputSumberKoordinat')
       };
 
       if (pesanTambahWakaf) {
