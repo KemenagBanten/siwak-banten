@@ -372,6 +372,180 @@ let semuaDataWakaf = [];
 let detailWakafMap = null;
 let detailWakafMarker = null;
 
+
+/* =========================================================
+   PETA WAKAF PUBLIK - HALAMAN UTAMA
+========================================================= */
+
+let petaWakafPublik = null;
+let layerMarkerWakafPublik = null;
+
+async function loadPetaWakafPublik() {
+  const elemenPeta = document.getElementById('petaWakafPublik');
+  const elemenStatus = document.getElementById('statusPetaWakafPublik');
+
+  // Jalankan hanya jika elemen peta tersedia
+  if (!elemenPeta) return;
+
+  // Pastikan pustaka Leaflet sudah dimuat
+  if (typeof L === 'undefined') {
+    if (elemenStatus) {
+      elemenStatus.textContent = 'Peta belum dapat dimuat. Silakan muat ulang halaman.';
+    }
+    console.error('Leaflet belum dimuat.');
+    return;
+  }
+
+  // Cegah peta dibuat berulang kali
+  if (!petaWakafPublik) {
+    petaWakafPublik = L.map('petaWakafPublik')
+      .setView([-6.405, 106.15], 9);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(petaWakafPublik);
+
+    layerMarkerWakafPublik = L.layerGroup()
+      .addTo(petaWakafPublik);
+  }
+
+  if (elemenStatus) {
+    elemenStatus.textContent = 'Memuat lokasi wakaf...';
+  }
+
+  try {
+    const response = await fetch(
+      SIWAK_API_URL + '?action=dataWakaf'
+    );
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data wakaf.');
+    }
+
+    const result = await response.json();
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(
+        result.message || 'Format data wakaf tidak sesuai.'
+      );
+    }
+
+    const data = result.data.data;
+
+    // Bersihkan marker lama jika fungsi dipanggil ulang
+    layerMarkerWakafPublik.clearLayers();
+
+    let jumlahMarker = 0;
+    const batasPeta = [];
+
+    data.forEach(function(item) {
+      const latitude = Number(item.latitude);
+      const longitude = Number(item.longitude);
+
+      // Lewati data yang koordinatnya kosong atau tidak valid
+      if (
+        item.latitude === null ||
+        item.latitude === undefined ||
+        item.longitude === null ||
+        item.longitude === undefined ||
+        String(item.latitude).trim() === '' ||
+        String(item.longitude).trim() === '' ||
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+      ) {
+        return;
+      }
+
+      const marker = L.marker([latitude, longitude]);
+
+      const isiPopup = `
+        <div style="min-width:190px">
+          <strong>${escapeHTMLPublik(item.kodeWakaf || item.idWakaf || '-')}</strong>
+          <hr style="margin:6px 0">
+          <div><b>Jenis aset:</b> ${escapeHTMLPublik(item.jenisAset || '-')}</div>
+          <div><b>Peruntukan:</b> ${escapeHTMLPublik(item.peruntukan || '-')}</div>
+          <div><b>Wilayah:</b> ${escapeHTMLPublik(item.desa || '-')},
+            ${escapeHTMLPublik(item.kecamatan || '-')}</div>
+          <div><b>Kab/Kota:</b> ${escapeHTMLPublik(item.kabKota || '-')}</div>
+          <div><b>Luas:</b> ${escapeHTMLPublik(item.luas ?? 0)}
+            ${escapeHTMLPublik(item.satuanLuas || 'm²')}</div>
+          <div><b>Sertifikasi:</b> ${escapeHTMLPublik(item.statusSertifikasi || '-')}</div>
+        </div>
+      `;
+
+      marker.bindPopup(isiPopup);
+      marker.addTo(layerMarkerWakafPublik);
+
+      batasPeta.push([latitude, longitude]);
+      jumlahMarker++;
+    });
+
+    if (batasPeta.length > 0) {
+      if (batasPeta.length === 1) {
+        petaWakafPublik.setView(batasPeta[0], 14);
+      } else {
+        petaWakafPublik.fitBounds(batasPeta, {
+          padding: [30, 30],
+          maxZoom: 13
+        });
+      }
+
+      if (elemenStatus) {
+        elemenStatus.textContent =
+          jumlahMarker.toLocaleString('id-ID') +
+          ' titik lokasi wakaf ditampilkan pada peta.';
+      }
+    } else {
+      petaWakafPublik.setView([-6.405, 106.15], 9);
+
+      if (elemenStatus) {
+        elemenStatus.textContent =
+          'Belum ada data wakaf dengan koordinat yang valid.';
+      }
+    }
+
+    // Leaflet menghitung ulang ukuran setelah elemen tampil
+    setTimeout(function() {
+      if (petaWakafPublik) {
+        petaWakafPublik.invalidateSize();
+      }
+    }, 200);
+
+    console.log('PETA WAKAF PUBLIK:', {
+      totalData: data.length,
+      jumlahMarker: jumlahMarker
+    });
+
+  } catch (error) {
+    console.error('ERROR PETA WAKAF PUBLIK:', error);
+
+    if (elemenStatus) {
+      elemenStatus.textContent =
+        'Lokasi wakaf gagal dimuat. Silakan muat ulang halaman.';
+    }
+  }
+}
+
+/* Pengaman teks popup agar data tidak dianggap sebagai HTML */
+function escapeHTMLPublik(nilai) {
+  return String(nilai)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+
 /* =========================================================
    LOAD DATA WAKAF
    ========================================================= */
