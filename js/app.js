@@ -398,9 +398,18 @@ async function loadPetaWakafPublik() {
 
   // Cegah peta dibuat berulang kali
   if (!petaWakafPublik) {
-   petaWakafPublik = L.map('petaWakafPublik', {
-  scrollWheelZoom: false
-}).setView([-6.405, 106.15], 9);
+   const batasBanten = L.latLngBounds(
+  [-7.05, 104.95],
+  [-5.85, 106.85]
+);
+
+petaWakafPublik = L.map('petaWakafPublik', {
+  scrollWheelZoom: false,
+  maxBounds: batasBanten,
+  maxBoundsViscosity: 1.0,
+  minZoom: 8,
+  maxZoom: 16
+}).fitBounds(batasBanten);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
@@ -489,16 +498,6 @@ async function loadPetaWakafPublik() {
       batasPeta.push([latitude, longitude]);
       jumlahMarker++;
     });
-
-    if (batasPeta.length > 0) {
-      if (batasPeta.length === 1) {
-        petaWakafPublik.setView(batasPeta[0], 14);
-      } else {
-        petaWakafPublik.fitBounds(batasPeta, {
-          padding: [30, 30],
-          maxZoom: 13
-        });
-      }
 
       if (elemenStatus) {
         elemenStatus.textContent =
