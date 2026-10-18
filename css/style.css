@@ -4002,3 +4002,11 @@ body {
     min-height: 280px;
   }
 }
+
+
+/* Samakan warna judul bagian dan judul card SIWAK */
+.section-heading h2,
+.map-placeholder h3,
+.utilization-card strong {
+  color: #127776 !important;
+}
