@@ -4064,3 +4064,13 @@ body {
   text-decoration: underline;
 }
 
+/* Navigasi scroll halaman utama */
+html {
+  scroll-behavior: smooth;
+}
+
+#statistik,
+#peta-wakaf,
+#pemanfaatan {
+  scroll-margin-top: 100px;
+}
