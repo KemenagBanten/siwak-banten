@@ -3887,3 +3887,15 @@ body {
   color: #243536 !important;
   border-color: #d99613 !important;
 }
+
+
+/* Warna tulisan Hero SIWAK Banten */
+.siwak-hero h1,
+.siwak-hero h1 span {
+  color: #ffffff !important;
+}
+
+/* Kicker Hero: emas menjadi hijau */
+.siwak-hero .page-kicker {
+  color: #eca726 !important;
+}
