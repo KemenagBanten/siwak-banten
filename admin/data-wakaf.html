@@ -4144,8 +4144,44 @@ console.log('Sesudah dibuka:', modalNazhir.style.display);
   // Kondisi awal: popup Nazhir tertutup.
   tutupPopupNazhir();
 })();
+// Akurasi lokasi otomatis berdasarkan sumber koordinat.
+(function () {
+  const inputSumberKoordinat =
+    document.getElementById('inputSumberKoordinat');
 
+  const inputAkurasiLokasi =
+    document.getElementById('inputAkurasiLokasi');
+
+  if (!inputSumberKoordinat || !inputAkurasiLokasi) {
+    console.log('Input sumber atau akurasi lokasi tidak ditemukan.');
+    return;
+  }
+
+  function perbaruiAkurasiLokasi() {
+    const sumber =
+      inputSumberKoordinat.value.trim().toUpperCase();
+
+    const daftarAkurasi = {
+      'GPS': 'TINGGI',
+      'GOOGLE MAPS': 'SEDANG',
+      'MANUAL': 'RENDAH',
+      'LAINNYA': 'RENDAH'
+    };
+
+    inputAkurasiLokasi.value =
+      daftarAkurasi[sumber] || '';
+  }
+
+  inputSumberKoordinat.addEventListener(
+    'change',
+    perbaruiAkurasiLokasi
+  );
+
+  // Isi akurasi saat halaman/form pertama kali dimuat.
+  perbaruiAkurasiLokasi();
+})();
 
 </script>
+
 </body>
 </html>
