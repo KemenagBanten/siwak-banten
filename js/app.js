@@ -222,6 +222,152 @@ document.addEventListener(
 const SIWAK_API_URL =
   'https://script.google.com/macros/s/AKfycbxNziYiLidgouOhoOVOkZP_gdr2ifXqAYwzmgfoSAPaRfIxCAD2NsgtK0r2S-l0noda/exec';
 
+/* =========================================================
+   STATISTIK HALAMAN PUBLIK
+========================================================= */
+
+async function loadStatistikPublik() {
+  const elemenWakaf = document.getElementById('statWakaf');
+  const elemenLuas = document.getElementById('statLuas');
+  const elemenBersertifikat = document.getElementById('statBersertifikat');
+  const elemenPersentase = document.getElementById('statPersentase');
+
+  // Jalankan hanya pada halaman yang memiliki kotak statistik
+  if (
+    !elemenWakaf &&
+    !elemenLuas &&
+    !elemenBersertifikat &&
+    !elemenPersentase
+  ) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      SIWAK_API_URL + '?action=dataWakaf'
+    );
+
+    if (!response.ok) {
+      throw new Error('Gagal mengambil data wakaf.');
+    }
+
+    const result = await response.json();
+
+    if (
+      !result.success ||
+      !result.data ||
+      !Array.isArray(result.data.data)
+    ) {
+      throw new Error(
+        result.message || 'Format data wakaf tidak sesuai.'
+      );
+    }
+
+    const data = result.data.data;
+
+    // Jumlah data wakaf yang dikembalikan API
+    const totalWakaf = Number(result.data.total ?? data.length);
+
+    // Jumlah aset yang sudah bersertifikat
+    const dataBersertifikat = data.filter(function(item) {
+      const status = String(
+        item.statusSertifikasi || ''
+      ).trim().toUpperCase();
+
+      return [
+        'SUDAH',
+        'SUDAH_SERTIFIKAT',
+        'SUDAH SERTIFIKAT',
+        'SUDAH_BERSERTIFIKAT',
+        'SUDAH BERSERTIFIKAT'
+      ].includes(status);
+    });
+
+    const totalBersertifikat = dataBersertifikat.length;
+
+    // Normalisasi luas ke meter persegi agar satuannya seragam
+    const totalLuasM2 = data.reduce(function(total, item) {
+      const luas = Number(
+        String(item.luas ?? 0).replace(',', '.')
+      );
+
+      if (!Number.isFinite(luas) || luas < 0) {
+        return total;
+      }
+
+      const satuan = String(
+        item.satuanLuas || 'm2'
+      ).trim().toLowerCase();
+
+      return total + (
+        satuan === 'ha' ||
+        satuan === 'hektar' ||
+        satuan === 'hectare'
+          ? luas * 10000
+          : luas
+      );
+    }, 0);
+
+    const persentase = totalWakaf > 0
+      ? (totalBersertifikat / totalWakaf) * 100
+      : 0;
+
+    if (elemenWakaf) {
+      elemenWakaf.textContent =
+        totalWakaf.toLocaleString('id-ID');
+    }
+
+    if (elemenLuas) {
+      if (totalLuasM2 >= 10000) {
+        elemenLuas.textContent =
+          (totalLuasM2 / 10000).toLocaleString('id-ID', {
+            maximumFractionDigits: 2
+          }) + ' ha';
+      } else {
+        elemenLuas.textContent =
+          totalLuasM2.toLocaleString('id-ID', {
+            maximumFractionDigits: 2
+          }) + ' m²';
+      }
+    }
+
+    if (elemenBersertifikat) {
+      elemenBersertifikat.textContent =
+        totalBersertifikat.toLocaleString('id-ID');
+    }
+
+    if (elemenPersentase) {
+      elemenPersentase.textContent =
+        persentase.toLocaleString('id-ID', {
+          maximumFractionDigits: 1
+        }) + '%';
+    }
+
+    console.log('STATISTIK PUBLIK SIWAK:', {
+      totalWakaf,
+      totalLuasM2,
+      totalBersertifikat,
+      persentase
+    });
+
+  } catch (error) {
+    console.error('ERROR STATISTIK PUBLIK:', error);
+
+    // Tampilkan tanda gagal, bukan angka rekaan
+    [
+      elemenWakaf,
+      elemenLuas,
+      elemenBersertifikat,
+      elemenPersentase
+    ].forEach(function(elemen) {
+      if (elemen) {
+        elemen.textContent = '—';
+        elemen.title = 'Statistik gagal dimuat';
+      }
+    });
+  }
+}
+
 let semuaDataWakaf = [];
 let detailWakafMap = null;
 let detailWakafMarker = null;
@@ -2937,3 +3083,7 @@ document.addEventListener(
 );
 
 loadDataWakif();
+// Muat statistik pada halaman publik
+document.addEventListener('DOMContentLoaded', function() {
+  loadStatistikPublik();
+});
