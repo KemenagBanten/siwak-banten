@@ -308,22 +308,22 @@ textarea {
 }
 
 
+
 /* =========================================================
    MOBILE MENU
 ========================================================= */
 
 .mobile-menu-toggle {
   display: none;
-
   width: 40px;
   height: 40px;
-
   border: 1px solid var(--border);
   border-radius: 9px;
-
-  background: white;
-  color: var(--green-900);
-
+  background: #ffffff;
+  color: #14532d;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
 }
 
