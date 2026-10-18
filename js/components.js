@@ -178,7 +178,7 @@ function renderHeader() {
 
 <!-- LOGIN -->
 <a href="#" class="nav-link nav-login">
-  Login Operator
+  Login
 </a>
 
 
