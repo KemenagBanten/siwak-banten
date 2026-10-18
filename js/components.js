@@ -163,10 +163,24 @@ function renderHeader() {
           </div>
 
 
-          <!-- LOGIN -->
-          <a href="#" class="nav-link nav-login">
-            Login Operator
-          </a>
+         
+<!-- MODE TERANG / GELAP -->
+<button
+  class="theme-toggle"
+  id="themeToggle"
+  type="button"
+  aria-label="Aktifkan mode gelap"
+  title="Ganti tema"
+>
+  <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+  <span class="theme-toggle-label">Gelap</span>
+</button>
+
+<!-- LOGIN -->
+<a href="#" class="nav-link nav-login">
+  Login Operator
+</a>
+
 
         </nav>
 
