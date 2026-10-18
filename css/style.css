@@ -3865,3 +3865,25 @@ body {
   color: #243536;
   border-color: #d99613;
 }
+
+
+/* Judul dan subjudul SIWAK BANTEN */
+.site-header .brand-title,
+.site-header .brand-subtitle {
+  color: #ffffff !important;
+}
+
+/* Tombol Login berwarna emas */
+.site-header .nav-login {
+  background-color: #eca726 !important;
+  color: #243536 !important;
+  border: 1px solid #eca726 !important;
+  border-radius: 6px;
+}
+
+/* Efek hover tombol Login */
+.site-header .nav-login:hover {
+  background-color: #d99613 !important;
+  color: #243536 !important;
+  border-color: #d99613 !important;
+}
