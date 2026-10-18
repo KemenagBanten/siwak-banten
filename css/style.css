@@ -3868,7 +3868,9 @@ body {
 
 
 /* Judul dan subjudul SIWAK BANTEN */
-.site-header .brand-title,
+.site-header .brand-title {
+  color: #eca726 !important;
+},
 .site-header .brand-subtitle {
   color: #ffffff !important;
 }
@@ -3892,7 +3894,7 @@ body {
 /* Warna tulisan Hero SIWAK Banten */
 .siwak-hero h1,
 .siwak-hero h1 span {
-  color: #ffffff !important;
+  color: #127776 !important;
 }
 
 /* Kicker Hero: emas menjadi hijau */
