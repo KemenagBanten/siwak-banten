@@ -4023,3 +4023,9 @@ body {
   color: #127776 !important;
 }
 
+
+/* Warna tulisan tombol sekunder di Hero */
+.siwak-hero .btn-secondary {
+  color: #127776 !important;
+  border-color: #127776 !important;
+}
