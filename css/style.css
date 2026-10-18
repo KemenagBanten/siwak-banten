@@ -4074,3 +4074,11 @@ html {
 #pemanfaatan {
   scroll-margin-top: 100px;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+#sebaran-data-wakaf {
+  scroll-margin-top: 110px;
+}
