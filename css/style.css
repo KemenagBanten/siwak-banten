@@ -4018,23 +4018,8 @@ body {
 }
 
 
-/* Warna tulisan di dalam card statistik */
-.public-stat-label {
-  color: #127776 !important;
-}
-
-/* Warna tulisan di dalam card pemanfaatan */
-.utilization-card small {
-  color: #127776 !important;
-}
-
-/* Warna nama wilayah pada card distribusi */
-.distribution-row span {
-  color: #127776 !important;
-}
-
-/* Warna tulisan di dalam card peta */
-.map-placeholder p {
+/* Warna angka statistik SIWAK Banten */
+.public-stat-number {
   color: #127776 !important;
 }
 
