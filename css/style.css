@@ -3813,3 +3813,29 @@ body {
   }
 }
 
+
+/* NAVBAR SIWAK BANTEN */
+.site-header {
+  background: #127776;
+  color: #ffffff;
+}
+
+/* Tulisan dan menu navbar */
+.site-header a,
+.site-header .nav-link,
+.site-header .navbar-brand {
+  color: #ffffff;
+}
+
+/* Menu yang sedang dipilih */
+.site-header a.active,
+.site-header .nav-link.active,
+.site-header a[aria-current="page"] {
+  color: #eca726;
+}
+
+/* Efek saat kursor diarahkan ke menu */
+.site-header a:hover,
+.site-header .nav-link:hover {
+  color: #eca726;
+}
