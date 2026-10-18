@@ -3891,11 +3891,8 @@ body {
 }
 
 
-/* Warna baru judul dan subjudul HERO SIWAK BANTEN */
-.siwak-hero h1 {
-  color: #164e4e !important;
-}
-
+/* Warna judul dan subjudul HERO SIWAK BANTEN */
+.siwak-hero h1,
 .siwak-hero h1 span {
   color: #127776 !important;
 }
