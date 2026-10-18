@@ -4044,12 +4044,19 @@ body {
   color: #ECA726 !important;
 }
 
-#site-footer .footer-developer,
-#site-footer .footer-developer a {
-  color: #ECA726 !important;
+#site-footer .footer-developer {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(236, 167, 38, 0.35);
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff !important;
 }
 
 #site-footer .footer-developer a {
+  color: #ffffff !important;
+  font-size: 11px;
+  font-weight: 400;
   text-decoration: none;
 }
 
