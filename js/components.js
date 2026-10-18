@@ -243,15 +243,3 @@ function renderFooter() {
 renderFooter();
 
 
-/* Navigasi scroll halaman utama */
-html {
-  scroll-behavior: smooth;
-}
-
-#beranda,
-#statistik,
-#peta-wakaf,
-#pemanfaatan {
-  scroll-margin-top: 100px;
-}
-
