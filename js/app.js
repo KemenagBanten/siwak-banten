@@ -3257,7 +3257,11 @@ document.addEventListener(
 );
 
 loadDataWakif();
-// Muat statistik pada halaman publik
+
+
+ // Muat statistik dan peta pada halaman publik
 document.addEventListener('DOMContentLoaded', function() {
   loadStatistikPublik();
+  loadPetaWakafPublik();
 });
+
