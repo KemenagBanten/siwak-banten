@@ -4029,3 +4029,31 @@ body {
   color: #127776 !important;
   border-color: #127776 !important;
 }
+
+
+/* FOOTER SIWAK BANTEN - TEMA TEAL DAN EMAS */
+#site-footer footer,
+.site-footer {
+  background: #127776 !important;
+  color: #ffffff;
+}
+
+#site-footer .footer-brand,
+#site-footer .footer-title,
+#site-footer .footer-office {
+  color: #ECA726 !important;
+}
+
+#site-footer .footer-developer,
+#site-footer .footer-developer a {
+  color: #ECA726 !important;
+}
+
+#site-footer .footer-developer a {
+  text-decoration: none;
+}
+
+#site-footer .footer-developer a:hover {
+  text-decoration: underline;
+}
+
