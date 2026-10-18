@@ -1903,6 +1903,7 @@ textarea {
     display: flex;
   }
 
+ 
   .nav-link {
     width: 100%;
     min-height: 42px;
@@ -1910,7 +1911,23 @@ textarea {
     padding: 10px 12px;
     border-radius: 8px;
     font-size: 12px;
+    color: #40544b;
   }
+
+  .main-nav .nav-link:not(.nav-login) {
+    color: #40544b;
+  }
+
+  .main-nav .nav-link:not(.nav-login):hover,
+  .main-nav .nav-link:not(.nav-login).active {
+    color: #14532d;
+    background: #eaf4ed;
+  }
+
+  .main-nav .nav-login {
+    color: #ffffff;
+  }
+
 
   .nav-dropdown {
     width: 100%;
