@@ -50,22 +50,9 @@ function renderHeader() {
           </a>
 
           <!-- DATA WAKAF -->
-          <div class="nav-dropdown">
-            <button
-              class="nav-link nav-dropdown-toggle"
-              type="button"
-              aria-expanded="false"
-            >
-              Data Wakaf
-              <span class="dropdown-arrow">⌄</span>
-            </button>
-
-            <div class="nav-dropdown-menu">
-              <a href="data-wakaf.html">Data Wakaf</a>
-              <a href="data-wakif.html">Data Wakif</a>
-              <a href="data-nazhir.html">Data Nazhir</a>
-            </div>
-          </div>
+<a href="index.html#sebaran-data-wakaf" class="nav-link">
+  Data Wakaf
+</a>
 
           <!-- PETA WAKAF -->
           <a href="index.html#peta-wakaf" class="nav-link">
