@@ -3899,7 +3899,7 @@ body {
 
 /* Tulisan kecil di atas judul */
 .siwak-hero .page-kicker {
-  color: #c58a16 !important;
+  color: ##164e4e !important;
 }
 
 
@@ -4010,3 +4010,10 @@ body {
 .utilization-card strong {
   color: #127776 !important;
 }
+
+
+/* Samakan warna semua kicker SIWAK Banten */
+.page-kicker {
+  color: #127776 !important;
+}
+
