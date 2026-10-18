@@ -1217,6 +1217,17 @@
             <option value="Lainnya">Lainnya</option>
           </select>
         </div>
+
+                <div class="wakaf-form-group">
+          <label for="inputAkurasiLokasi">Akurasi Lokasi (Otomatis)</label>
+          <input
+            type="text"
+            id="inputAkurasiLokasi"
+            name="akurasi_lokasi"
+            readonly
+            placeholder="Terisi otomatis dari sumber koordinat"
+          >
+        </div>
         
         <div class="wakaf-form-group">
           <label for="inputLatitude">Latitude</label>
@@ -3650,6 +3661,34 @@ document.addEventListener('DOMContentLoaded', function () {
 latitude: nilaiInput('inputLatitude'),
 longitude: nilaiInput('inputLongitude'),
 sumberKoordinat: nilaiInput('inputSumberKoordinat')
+        // Akurasi lokasi otomatis berdasarkan sumber koordinat.
+const inputSumberKoordinat =
+  document.getElementById('inputSumberKoordinat');
+
+const inputAkurasiLokasi =
+  document.getElementById('inputAkurasiLokasi');
+
+function perbaruiAkurasiLokasi() {
+  if (!inputSumberKoordinat || !inputAkurasiLokasi) return;
+
+  const sumber = inputSumberKoordinat.value.trim().toUpperCase();
+
+  const daftarAkurasi = {
+    'GPS': 'TINGGI',
+    'GOOGLE MAPS': 'SEDANG',
+    'MANUAL': 'RENDAH',
+    'LAINNYA': 'RENDAH'
+  };
+
+  inputAkurasiLokasi.value = daftarAkurasi[sumber] || '';
+}
+
+if (inputSumberKoordinat) {
+  inputSumberKoordinat.addEventListener(
+    'change',
+    perbaruiAkurasiLokasi
+  );
+}
       };
 
       if (pesanTambahWakaf) {
