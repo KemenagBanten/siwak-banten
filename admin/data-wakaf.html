@@ -3661,35 +3661,7 @@ document.addEventListener('DOMContentLoaded', function () {
 latitude: nilaiInput('inputLatitude'),
 longitude: nilaiInput('inputLongitude'),
 sumberKoordinat: nilaiInput('inputSumberKoordinat')
-        // Akurasi lokasi otomatis berdasarkan sumber koordinat.
-const inputSumberKoordinat =
-  document.getElementById('inputSumberKoordinat');
-
-const inputAkurasiLokasi =
-  document.getElementById('inputAkurasiLokasi');
-
-function perbaruiAkurasiLokasi() {
-  if (!inputSumberKoordinat || !inputAkurasiLokasi) return;
-
-  const sumber = inputSumberKoordinat.value.trim().toUpperCase();
-
-  const daftarAkurasi = {
-    'GPS': 'TINGGI',
-    'GOOGLE MAPS': 'SEDANG',
-    'MANUAL': 'RENDAH',
-    'LAINNYA': 'RENDAH'
-  };
-
-  inputAkurasiLokasi.value = daftarAkurasi[sumber] || '';
-}
-
-if (inputSumberKoordinat) {
-  inputSumberKoordinat.addEventListener(
-    'change',
-    perbaruiAkurasiLokasi
-  );
-}
-      };
+             };
 
       if (pesanTambahWakaf) {
         pesanTambahWakaf.textContent = 'Menyimpan data wakaf...';
