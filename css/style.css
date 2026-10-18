@@ -4082,3 +4082,29 @@ html {
 #sebaran-data-wakaf {
   scroll-margin-top: 110px;
 }
+
+
+/* Peta GIS pada halaman utama SIWAK */
+.public-leaflet-map {
+  width: 100%;
+  height: 420px;
+  min-height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eef3f2;
+  z-index: 1;
+}
+
+.public-map-status {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary, #64748b);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .public-leaflet-map {
+    height: 320px;
+    min-height: 280px;
+  }
+}
