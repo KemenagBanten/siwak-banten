@@ -3839,3 +3839,29 @@ body {
 .site-header .nav-link:hover {
   color: #eca726;
 }
+
+
+/* Judul dan subjudul situs di navbar */
+.site-header .site-title,
+.site-header .site-subtitle,
+.site-header .site-brand-title,
+.site-header .site-brand-subtitle {
+  color: #ffffff;
+}
+
+/* Tombol Login */
+.site-header .btn-login,
+.site-header .login-button,
+.site-header .btn-login-operator {
+  background: #eca726;
+  color: #243536;
+  border: 1px solid #eca726;
+}
+
+.site-header .btn-login:hover,
+.site-header .login-button:hover,
+.site-header .btn-login-operator:hover {
+  background: #d99613;
+  color: #243536;
+  border-color: #d99613;
+}
