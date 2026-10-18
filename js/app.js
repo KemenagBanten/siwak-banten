@@ -380,45 +380,48 @@ let detailWakafMarker = null;
 let petaWakafPublik = null;
 let layerMarkerWakafPublik = null;
 
+
 async function loadPetaWakafPublik() {
   const elemenPeta = document.getElementById('petaWakafPublik');
   const elemenStatus = document.getElementById('statusPetaWakafPublik');
 
-  // Jalankan hanya jika elemen peta tersedia
   if (!elemenPeta) return;
 
-  // Pastikan pustaka Leaflet sudah dimuat
   if (typeof L === 'undefined') {
     if (elemenStatus) {
-      elemenStatus.textContent = 'Peta belum dapat dimuat. Silakan muat ulang halaman.';
+      elemenStatus.textContent = 'Pustaka peta belum dimuat.';
     }
     console.error('Leaflet belum dimuat.');
     return;
   }
 
-  // Cegah peta dibuat berulang kali
-  if (!petaWakafPublik) {
-   const batasBanten = L.latLngBounds(
-  [-7.05, 104.95],
-  [-5.85, 106.85]
-);
+  // Perkiraan area Provinsi Banten
+  const batasBanten = L.latLngBounds(
+    [-7.05, 104.95],
+    [-5.85, 106.85]
+  );
 
-petaWakafPublik = L.map('petaWakafPublik', {
-  scrollWheelZoom: false,
-  maxBounds: batasBanten,
-  maxBoundsViscosity: 1.0,
-  minZoom: 8,
-  maxZoom: 16
-}).fitBounds(batasBanten);
+  if (!petaWakafPublik) {
+    petaWakafPublik = L.map('petaWakafPublik', {
+      scrollWheelZoom: false,
+      maxBounds: batasBanten,
+      maxBoundsViscosity: 1.0,
+      minZoom: 8,
+      maxZoom: 16
+    });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 19
     }).addTo(petaWakafPublik);
 
-    layerMarkerWakafPublik = L.layerGroup()
-      .addTo(petaWakafPublik);
+    layerMarkerWakafPublik = L.layerGroup().addTo(petaWakafPublik);
   }
+
+  // Fokus tampilan awal ke Banten
+  petaWakafPublik.fitBounds(batasBanten, {
+    padding: [10, 10]
+  });
 
   if (elemenStatus) {
     elemenStatus.textContent = 'Memuat lokasi wakaf...';
@@ -446,18 +449,14 @@ petaWakafPublik = L.map('petaWakafPublik', {
     }
 
     const data = result.data.data;
-
-    // Bersihkan marker lama jika fungsi dipanggil ulang
     layerMarkerWakafPublik.clearLayers();
 
     let jumlahMarker = 0;
-    const batasPeta = [];
 
     data.forEach(function(item) {
       const latitude = Number(item.latitude);
       const longitude = Number(item.longitude);
 
-      // Lewati data yang koordinatnya kosong atau tidak valid
       if (
         item.latitude === null ||
         item.latitude === undefined ||
@@ -494,26 +493,16 @@ petaWakafPublik = L.map('petaWakafPublik', {
 
       marker.bindPopup(isiPopup);
       marker.addTo(layerMarkerWakafPublik);
-
-      batasPeta.push([latitude, longitude]);
       jumlahMarker++;
     });
 
-      if (elemenStatus) {
-        elemenStatus.textContent =
-          jumlahMarker.toLocaleString('id-ID') +
-          ' titik lokasi wakaf ditampilkan pada peta.';
-      }
-    } else {
-      petaWakafPublik.setView([-6.405, 106.15], 9);
-
-      if (elemenStatus) {
-        elemenStatus.textContent =
-          'Belum ada data wakaf dengan koordinat yang valid.';
-      }
+    if (elemenStatus) {
+      elemenStatus.textContent = jumlahMarker > 0
+        ? jumlahMarker.toLocaleString('id-ID') +
+          ' titik lokasi wakaf ditampilkan pada peta.'
+        : 'Belum ada data wakaf dengan koordinat yang valid.';
     }
 
-    // Leaflet menghitung ulang ukuran setelah elemen tampil
     setTimeout(function() {
       if (petaWakafPublik) {
         petaWakafPublik.invalidateSize();
