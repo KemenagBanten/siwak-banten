@@ -2786,6 +2786,30 @@ async function bukaEditWakaf(idWakaf) {
 
     document.getElementById('inputLongitude').value =
       lokasi.longitude || '';
+    
+    // Isi sumber koordinat dan akurasi lokasi.
+    const inputSumberKoordinat =
+      document.getElementById('inputSumberKoordinat');
+
+    const inputAkurasiLokasi =
+      document.getElementById('inputAkurasiLokasi');
+
+    if (inputSumberKoordinat) {
+      const sumberTersimpan =
+        lokasi.sumberKoordinat ||
+        lokasi.sumber_koordinat ||
+        '';
+
+      inputSumberKoordinat.value = sumberTersimpan;
+    }
+
+    if (inputAkurasiLokasi) {
+      inputAkurasiLokasi.value =
+        lokasi.akurasiLokasi ||
+        lokasi.akurasi_lokasi ||
+        '';
+    }
+
 
     // Tampilkan modal dengan judul mode Edit.
     const modal = document.getElementById('modalTambahWakaf');
