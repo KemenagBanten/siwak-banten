@@ -198,6 +198,68 @@ function renderHeader() {
 
 renderHeader();
 
+
+/* =========================================================
+   MODE TERANG / GELAP SIWAK BANTEN
+========================================================= */
+
+(function () {
+  const tombolTema = document.getElementById('themeToggle');
+
+  if (!tombolTema) return;
+
+  const ikonTema = tombolTema.querySelector('.theme-toggle-icon');
+  const labelTema = tombolTema.querySelector('.theme-toggle-label');
+  const html = document.documentElement;
+
+  function terapkanTema(tema) {
+    html.setAttribute('data-theme', tema);
+
+    const modeGelap = tema === 'dark';
+
+    if (ikonTema) {
+      ikonTema.textContent = modeGelap ? '☀️' : '🌙';
+    }
+
+    if (labelTema) {
+      labelTema.textContent = modeGelap ? 'Terang' : 'Gelap';
+    }
+
+    tombolTema.setAttribute(
+      'aria-label',
+      modeGelap ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'
+    );
+
+    try {
+      localStorage.setItem('siwak-theme', tema);
+    } catch (error) {
+      console.warn('Preferensi tema tidak dapat disimpan.');
+    }
+  }
+
+  let temaAwal = 'light';
+
+  try {
+    const temaTersimpan = localStorage.getItem('siwak-theme');
+
+    if (temaTersimpan === 'light' || temaTersimpan === 'dark') {
+      temaAwal = temaTersimpan;
+    }
+  } catch (error) {
+    console.warn('Preferensi tema tidak dapat dibaca.');
+  }
+
+  terapkanTema(temaAwal);
+
+  tombolTema.addEventListener('click', function () {
+    const temaSekarang = html.getAttribute('data-theme');
+    const temaBerikutnya =
+      temaSekarang === 'dark' ? 'light' : 'dark';
+
+    terapkanTema(temaBerikutnya);
+  });
+})();
+
 /* =========================================================
    MASTER FOOTER
 ========================================================= */
