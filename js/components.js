@@ -260,27 +260,23 @@ renderHeader();
   });
 })();
 
+
 /* =========================================================
    MASTER FOOTER
 ========================================================= */
 
 function renderFooter() {
-
-  const footerContainer =
-    document.getElementById('site-footer');
+  const footerContainer = document.getElementById('site-footer');
 
   if (!footerContainer) {
     return;
   }
 
   footerContainer.innerHTML = `
-
     <footer class="site-footer">
-
       <div class="footer-inner">
 
-        <div>
-
+        <div class="footer-brand">
           <div class="footer-title">
             SIWAK BANTEN
           </div>
@@ -288,13 +284,10 @@ function renderFooter() {
           <p>
             Sistem Informasi Wakaf Banten
           </p>
-
         </div>
 
-
         <div class="footer-info">
-
-          <div>
+          <div class="footer-office">
             <strong>
               KANTOR WILAYAH KEMENTERIAN AGAMA PROVINSI BANTEN
             </strong>
@@ -315,16 +308,19 @@ function renderFooter() {
           <div class="footer-copyright">
             © 2026 SIWAK Banten
           </div>
-
         </div>
 
       </div>
 
+      <div class="footer-developer">
+        Developed by
+        <a href="https://www.yudhicandra.my.id"
+           target="_blank"
+           rel="noopener noreferrer">@ydhcndr</a>
+      </div>
     </footer>
-
   `;
 }
-
 
 /* =========================================================
    RENDER MASTER FOOTER
