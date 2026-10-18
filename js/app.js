@@ -398,8 +398,9 @@ async function loadPetaWakafPublik() {
 
   // Cegah peta dibuat berulang kali
   if (!petaWakafPublik) {
-    petaWakafPublik = L.map('petaWakafPublik')
-      .setView([-6.405, 106.15], 9);
+   petaWakafPublik = L.map('petaWakafPublik', {
+  scrollWheelZoom: false
+}).setView([-6.405, 106.15], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
