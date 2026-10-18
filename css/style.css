@@ -3901,3 +3901,104 @@ body {
 .siwak-hero .page-kicker {
   color: #eca726 !important;
 }
+
+
+/* =====================================================
+   RINGKASAN PUBLIK: STATISTIK + PETA
+===================================================== */
+
+.public-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.8fr) minmax(0, 1.5fr);
+  gap: 22px;
+  align-items: stretch;
+  margin: 24px auto 36px;
+  width: min(1200px, calc(100% - 40px));
+}
+
+/* Hilangkan jarak berlebih di dalam area ringkasan */
+.public-overview-grid .public-stat-section,
+.public-overview-grid .public-map-section {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Judul bagian lebih ringkas */
+.public-overview-grid .section-heading {
+  margin-bottom: 16px;
+}
+
+.public-overview-grid .section-heading h2 {
+  font-size: 21px;
+  margin-bottom: 6px;
+}
+
+.public-overview-grid .section-heading p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Statistik tersusun vertikal di kolom kiri */
+.public-overview-grid .public-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.public-overview-grid .public-stat-card {
+  min-height: 78px;
+  padding: 14px 16px;
+}
+
+/* Peta memenuhi kolom kanan */
+.public-overview-grid .map-preview-card {
+  height: 100%;
+  min-height: 330px;
+}
+
+.public-overview-grid .map-placeholder {
+  min-height: 330px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Tampilan tablet dan HP */
+@media (max-width: 760px) {
+  .public-overview-grid {
+    grid-template-columns: 1fr;
+    width: calc(100% - 28px);
+    gap: 24px;
+  }
+
+  .public-overview-grid .public-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .public-overview-grid .public-stat-card {
+    min-height: 90px;
+    padding: 10px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .public-overview-grid .public-stat-number {
+    font-size: 20px;
+  }
+
+  .public-overview-grid .public-stat-label {
+    font-size: 11px;
+  }
+
+  .public-overview-grid .public-stat-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .public-overview-grid .map-preview-card,
+  .public-overview-grid .map-placeholder {
+    min-height: 280px;
+  }
+}
